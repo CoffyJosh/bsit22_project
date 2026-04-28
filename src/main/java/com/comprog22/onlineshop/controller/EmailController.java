@@ -5,10 +5,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comprog22.onlineshop.model.EmailMessage;
 import com.comprog22.onlineshop.services.EmailService;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/mail")
@@ -19,21 +18,15 @@ public class EmailController {
         this.emailService = emailService;
     }
 
-    @GetMapping("/sendMsg")
-    public String sendEmail(@RequestParam String recipient) {
-        EmailMessage m = new EmailMessage(recipient,
-                "This is a test message",
-                "This is a test message. Please ignore this email if received.\n");
-
+    @PostMapping("/sendMsg")
+    public String sendEmail(@RequestBody EmailMessage m) {
         try {
             emailService.sendMail(m);
         } catch (Exception e) {
-            return "Error sending mail to " + recipient + "\n" + e; 
+            return "Error sending mail to " + m.getRecipient() + "\n" + e; 
         }
   
-
-        return "Email sent to " + recipient;
+        return "Email sent to " + m.getRecipient();
     }
-
 
 }
