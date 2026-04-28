@@ -1,48 +1,165 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="description" content="Basic HTML template for an online shop project" />
-    <title>Online Shop</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My App</title>
 
-    <!-- Favicon -->
-    <link rel="icon" href="/favicon.ico" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-    <!-- Styles: create src/main/resources/static/css/styles.css or adjust path -->
-    <link rel="stylesheet" href="css/styles.css" />
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
 
-    <!-- Basic theme color for mobile browsers -->
-    <meta name="theme-color" content="#0d6efd" />
+        /* Navbar */
+        .navbar {
+            background: #2c3e50;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .navbar h1 {
+            font-size: 22px;
+        }
+
+        .nav-links a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            color: white;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .hero button {
+            padding: 12px 25px;
+            border: none;
+            background: white;
+            color: #333;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .hero button:hover {
+            background: #eee;
+        }
+
+        /* Features */
+        .features {
+            display: flex;
+            justify-content: space-around;
+            padding: 60px 40px;
+        }
+
+        .feature {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 30%;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .feature h3 {
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .feature {
+                width: 80%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav aria-label="Main navigation">
-            <a href="/" class="brand">Online Shop</a>
-            <ul class="nav">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <main>
-        <section>
-            <h1>Welcome</h1>
-            <p>This is a starter template. Replace this content with your application markup.</p>
-        </section>
-    </main>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>My App</h1>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Features</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
 
-    <footer>
-        <small>&copy; <span id="year"></span> Online Shop</small>
-    </footer>
+    <!-- Hero -->
+    <div class="hero">
+        <h2>Welcome to My App</h2>
+        <p>Your simple solution for everything</p>
+        <button>Get Started</button>
+    </div>
 
-    <!-- Scripts -->
-    <script>
-        // Set current year in footer
-        document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
+    <!-- Features -->
+    <div class="features">
+        <div class="feature">
+            <h3>Fast</h3>
+            <p>Quick and efficient performance.</p>
+        </div>
+        <div class="feature">
+            <h3>Secure</h3>
+            <p>Your data is safe with us.</p>
+        </div>
+        <div class="feature">
+            <h3>Easy</h3>
+            <p>Simple and user-friendly interface.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2026 My App. All rights reserved.</p>
+    </div>
+
 </body>
 </html>
