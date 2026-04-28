@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 public class TestController {
-
+    
     @GetMapping("/helloWorld")
     public String getMethodName() {
         return "Hello World my Niggas!";
@@ -17,5 +17,7 @@ public class TestController {
     public String index() {
         return "index.html";
     }
+    
+  
 }
     

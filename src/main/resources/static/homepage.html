@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+<h1> Welcome To My APP</h1>
+<p1> Hi!</p1>
+</head>
+<body>
+    <h1>HELLO WORLD</h1>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            type:"GET",
+            url:"/hello?name=John",
+            success: function(response){
+                alert(response);
+            }
+        })
+    });
+</script>
+
+</html>
