@@ -1,8 +1,9 @@
 package com.comprog22.onlineshop.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
@@ -17,7 +18,10 @@ public class TestController {
     public String index() {
         return "index.html";
     }
-    
-  
+
+    @GetMapping("/hello")
+    public String helloPage(@RequestParam(name = "name") String name){
+        return "Hello " + name;
+    }
 }
     
