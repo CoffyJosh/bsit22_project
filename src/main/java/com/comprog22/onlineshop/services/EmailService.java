@@ -2,6 +2,7 @@ package com.comprog22.onlineshop.services;
 
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.comprog22.onlineshop.model.EmailMessage;
@@ -16,6 +17,7 @@ import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
+
     private static final String EMAIL = "OnlySchools1738@gmail.com";
     private static final String PASS = "utoi gket anyg mwtx";
 

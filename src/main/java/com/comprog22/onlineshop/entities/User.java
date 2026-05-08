@@ -1,11 +1,15 @@
 package com.comprog22.onlineshop.entities;
 
-
 import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.comprog22.onlineshop.enums.Role;
+import com.comprog22.onlineshop.enums.UserStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,10 +36,15 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private Role role;
+    private Role role = Role.USER;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private UserStatus status = UserStatus.ACTIVE;
 }

@@ -2,8 +2,14 @@ package com.comprog22.onlineshop.entities;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.comprog22.onlineshop.enums.PaymentStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,9 +35,11 @@ public class Payment {
     @Column(name = "method", nullable = false)
     private String method;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private PaymentStatus status;
 
+    @CreationTimestamp
     @Column(name = "paid_at")
     private LocalDateTime paidAt;
 }

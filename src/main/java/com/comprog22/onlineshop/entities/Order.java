@@ -2,8 +2,14 @@ package com.comprog22.onlineshop.entities;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.comprog22.onlineshop.enums.OrderStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,12 +43,14 @@ public class Order {
     @Column(name = "game_user_id", nullable = false)
     private String gameUserId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private OrderStatus status;
 
     @Column(name = "total_amount", nullable = false)
     private Double totalAmount;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 }
