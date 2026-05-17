@@ -1,6 +1,10 @@
 package com.comprog22.onlineshop.entities;
 
-import com.comprog22.onlineshop.enums.TopupStatus;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.comprog22.onlineshop.enums.ProductStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,30 +18,33 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+
 @Entity
 @Data
-@Table(name = "topup_options")
-public class TopupOption {
+@Table(name = "products")
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
-    @Column(name = "label", nullable = false)
-    private String label;
+    @Column(name = "game_name")
+    private String name;
 
-    @Column(name = "value", nullable = false)
-    private Integer value;
-
-    @Column(name = "price", nullable = false)
+    @Column(name = "price")
     private Double price;
 
+    @Column(name = "value")
+    private String value;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private TopupStatus status;
+    private ProductStatus status = ProductStatus.AVAILABLE;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 }

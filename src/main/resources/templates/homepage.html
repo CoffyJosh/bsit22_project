@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang ="en">
+<html xlmns:th="https://www.thymeleaf.org">
 <head>
     <title>Online-Store Homepage</title>
 </head>
@@ -19,7 +19,7 @@
     $(document).ready(function(){
         $.ajax({
             type:"GET",
-            url:"/hello?name=John",
+            url:"/testing/hello?name=John",
             success: function(response){
                 alert(response);
             }

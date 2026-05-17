@@ -1,8 +1,7 @@
 package com.comprog22.onlineshop.entities;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import org.hibernate.annotations.CreationTimestamp;
 
 import com.comprog22.onlineshop.enums.OrderStatus;
 
@@ -25,32 +24,32 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "tracking_code", nullable = false, unique = true)
+    private String trackingCode;
 
     @ManyToOne
-    @JoinColumn(name = "game_id", nullable = false)
-    private Game game;
+    @JoinColumn(name = "user_id", nullable = true)  // Guest can also make an order without logging in
+    private User user; 
 
     @ManyToOne
-    @JoinColumn(name = "topup_id", nullable = false)
-    private TopupOption topupOption;
-
-    @Column(name = "game_user_id", nullable = false)
-    private String gameUserId;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private OrderStatus status;
+    @JoinColumn(name = "voucher_id")
+    private Voucher voucher;
 
     @Column(name = "total_amount", nullable = false)
-    private Double totalAmount;
+    private BigDecimal totalAmount;
 
-    @CreationTimestamp
+    @Column(name = "discount_amount", nullable = false)
+    private BigDecimal discountAmount;
+
+    @Column(name = "final_amount", nullable = false)
+    private BigDecimal finalAmount;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 }

@@ -1,5 +1,7 @@
 package com.comprog22.onlineshop.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,9 @@ public class UserService {
     
     public User register(User user){
         return userRepo.save(user);
+    }
+
+    public List<User> registerBatch(List<User> users){
+        return userRepo.saveAll(users);
     }
 }

@@ -1,5 +1,9 @@
 package com.comprog22.onlineshop.entities;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.comprog22.onlineshop.enums.GameStatus;
 
 import jakarta.persistence.Column;
@@ -25,10 +29,14 @@ public class Game {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "provider_type", nullable = false)
-    private String providerType;
+    @Column(name = "image_url", nullable = true)
+    private String imageUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private GameStatus status;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 }

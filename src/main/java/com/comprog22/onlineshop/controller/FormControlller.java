@@ -8,6 +8,11 @@ public class FormControlller {
 
     @RequestMapping("/home")
     public String gotoHome(){
-        return "homepage.html";
+        return "homepage";
+    }
+
+    @RequestMapping("/index")
+    public String index() {
+        return "index";
     }
 }
