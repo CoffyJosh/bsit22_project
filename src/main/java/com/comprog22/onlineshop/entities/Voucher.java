@@ -6,8 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.comprog22.onlineshop.enums.DiscountType;
 import com.comprog22.onlineshop.enums.Status;
-import com.comprog22.onlineshop.enums.VoucherStatus;
-import com.comprog22.onlineshop.enums.VoucherType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +18,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
-import tools.jackson.databind.cfg.EnumFeature;
 
 @Entity
 @Data
@@ -35,7 +32,7 @@ public class Voucher {
     @JoinColumn(name = "product_id", nullable = true)
     private Product product;
 
-    @Column(name = "code", nullable = false)
+    @Column(name = "code", nullable = false, unique = true)
     private String code;
 
     @Column(name = "value", nullable = false)

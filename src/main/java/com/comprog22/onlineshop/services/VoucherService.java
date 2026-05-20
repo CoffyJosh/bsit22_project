@@ -1,0 +1,51 @@
+package com.comprog22.onlineshop.services;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.comprog22.onlineshop.entities.Voucher;
+import com.comprog22.onlineshop.enums.Status;
+import com.comprog22.onlineshop.repository.VoucherRepo;
+
+@Service
+public class VoucherService {
+
+    @Autowired
+    private VoucherRepo voucherRepo;
+
+    public Voucher create(Voucher voucher) {
+        return voucherRepo.save(voucher);
+    }
+
+    public Optional<Voucher> findByCode(String code) {
+        return voucherRepo.findByCode(code);
+    }
+
+    public List<Voucher> getAll() {
+        return voucherRepo.findAll();
+    }
+
+    public boolean isValid(Voucher v) {
+
+        return v.getStatus() == Status.ACTIVE
+                && v.getUsedCount() < v.getUsageLimit()
+                && v.getExpirationDate().isAfter(LocalDateTime.now());
+    }
+
+    public Voucher incrementUsage(Voucher v) {
+        v.setUsedCount(v.getUsedCount() + 1);
+        return voucherRepo.save(v);
+    }
+
+    public Voucher updateStatus(Long id, Status status) {
+        Voucher v = voucherRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Voucher not found"));
+
+        v.setStatus(status);
+        return voucherRepo.save(v);
+    }
+}

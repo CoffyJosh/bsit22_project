@@ -3,6 +3,8 @@ package com.comprog22.onlineshop.entities;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.comprog22.onlineshop.enums.OrderStatus;
 
 import jakarta.persistence.Column;
@@ -50,6 +52,7 @@ public class Order {
     @Column(nullable = false)
     private OrderStatus status;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 }

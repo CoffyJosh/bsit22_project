@@ -32,8 +32,8 @@ public class Product {
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
-    @Column(name = "game_name")
-    private String name;
+    @Column(name = "currency_name")
+    private String currency_name;
 
     @Column(name = "price")
     private Double price;
