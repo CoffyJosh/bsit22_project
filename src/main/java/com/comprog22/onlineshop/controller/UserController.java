@@ -29,7 +29,7 @@ public class UserController {
         if (user.getPassword() != null)
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        return userService.register(user);
+        return userService.createUser(user);
     }
 
     @PostMapping("/register/batch")
@@ -39,6 +39,6 @@ public class UserController {
                 u.setPassword(PasswordUtil.hash(u.getPassword()));
         }
 
-        return userService.registerBatch(users);
+        return userService.createUserByBatch(users);
     }
 }
