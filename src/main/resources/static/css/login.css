@@ -283,7 +283,7 @@ body {
   align-items: center;
   gap: 10px;
 
-  color: #50506A;
+  color: #626281;
   font-family: "Orbitron";
   font-weight: 400;
   font-size: 9px;
@@ -297,7 +297,7 @@ body {
   content: "";
   flex: 1;
   height: 1px;
-  background: #50506A;
+  background: #626281;
   opacity: 0.4;
 }
 
