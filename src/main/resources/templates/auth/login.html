@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Login</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="left-container">
+        <div class="header">
+          <img th:src="@{/images/logo.png}" alt="aura_games_logo">
+          <div>
+            <h1 class="logo-name">AURA</h1>
+            <h2 class="logo-subtitle">FAST & SECURE DIGITAL GAME TOP-UPS</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-container">
+        <div class="wrapper">
+          <div class="login-box">
+
+            <form th:action="@{/login}" method="post">
+
+              <div class="login-header">
+                <h1 class="login-title">
+                  <span style="color:#8A3FFC;">A</span><span style="color:#E0218A;">URA</span>
+                  <span style="color:#9090A8;"> GAMES</span>
+                </h1>
+
+                <p class="login-subtitle">
+                  WELCOME BACK NIGGERS
+                </p>
+              </div>
+
+              <div class="input-wrapper">
+                <label class="input-label">EMAIL ADDRESS</label>
+
+                <img class="input-icon"
+                     th:src="@{/images/email_icon.png}">
+
+                <input class="text-input"
+                       type="text"
+                       name="username"
+                       placeholder="username@domain.com"
+                       required>
+              </div>
+
+              <div class="input-wrapper">
+                <label class="input-label">PASSWORD</label>
+
+                <img class="input-icon"
+                     th:src="@{/images/password_icon.png}">
+
+                <input class="text-input"
+                       type="password"
+                       name="password"
+                       placeholder="••••••••••••"
+                       required>
+              </div>
+
+              <div class="options-row">
+                <div class="toggle-button">
+                  <label>
+                    <input type="checkbox"> Remember Me?
+                  </label>
+                </div>
+
+                <div>
+                  <a class="forgot-password"
+                     href="https://www.youtube.com/watch?v=1Uzw1Zr1FE4"
+                     target="_blank">
+                    Forgot password?
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <button class="login-button" type="submit">
+                  LOGIN →
+                </button>
+              </div>
+
+              <div class="divider">
+                <span>OR CONTINUE WITH</span>
+              </div>
+
+              <div class="oauth-buttons">
+
+                <div>
+                  <img class="oauth-img"
+                       th:src="@{/images/oauth_google.png}">
+                </div>
+
+                <div>
+                  <img class="oauth-img"
+                       th:src="@{/images/oauth_steam.png}">
+                </div>
+
+                <div>
+                  <img class="oauth-img"
+                       th:src="@{/images/oauth_discord.png}">
+                </div>
+
+              </div>
+
+              <div style="font-family: Orbitron; font-size: 10px; color:#ffffff85; letter-spacing: 2px;">
+                <p>
+                  No account yet?
+                  <a class="register-now"
+                     href="https://www.youtube.com/watch?v=1Uzw1Zr1FE4">
+                    Register now.
+                  </a>
+                </p>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
+
+<script>
+    const texts = [
+        "FAST & SECURE DIGITAL GAME TOP-UPS",
+        "INSTANT IN-GAME CURRENCY DELIVERY",
+        "BUY V-BUCKS, UC, DIAMONDS INSTANTLY",
+        "LEVEL UP WITH INSTANT TOP-UPS"
+    ];
+
+    let i = 0;
+
+    setInterval(() => {
+        const el = document.querySelector(".logo-subtitle");
+
+        // expand spacing + fade out
+        el.style.letterSpacing = "10px";
+        el.style.opacity = "0";
+
+        setTimeout(() => {
+            // swap text
+            i = (i + 1) % texts.length;
+            el.textContent = texts[i];
+
+            // reset spacing + fade in
+            el.style.letterSpacing = "5px";
+            el.style.opacity = "1";
+        }, 
+        200);
+
+    }, 8000);
+</script>

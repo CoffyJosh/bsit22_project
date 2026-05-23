@@ -1,6 +1,6 @@
 package com.comprog22.onlineshop.services;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +22,10 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setStatus(UserStatus.ACTIVE);
         return userRepo.save(user);
+    }
+
+    public List<User> registerByBatch(List<User> users) {
+        return users.stream().map(this::register).toList();
     }
 
     public User oauthLogin(String email, String name) {

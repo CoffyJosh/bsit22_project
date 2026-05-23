@@ -24,14 +24,6 @@ public class UserService {
         return userRepo.findById(id);
     }
 
-    public User createUser(User user) {
-        return userRepo.save(user);
-    }
-
-    public List<User> createUserByBatch(List<User> users) {
-        return userRepo.saveAll(users);
-    }
-
     public Optional<User> findById(Long id) {
         return userRepo.findById(id);
     }

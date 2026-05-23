@@ -1,8 +1,6 @@
 package com.comprog22.onlineshop.services;
 
 import java.util.Properties;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.comprog22.onlineshop.model.EmailMessage;
