@@ -32,6 +32,10 @@ public class UserService {
         return userRepo.findByEmail(email);
     }
 
+    public boolean existsByName(String name){
+        return userRepo.existsByName(name);
+    }
+
     public boolean existsByEmail(String email) {
         return userRepo.existsByEmail(email);
     }

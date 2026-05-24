@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Authentication-Page</title>
+
+    <!-- CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@400..800&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@400..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="left-container">
+        <div class="header">
+          <img th:src="@{/images/logo.png}" alt="aura_games_logo">
+          <div>
+            <h1 class="logo-name">AURA</h1>
+            <h2 class="logo-subtitle">FAST & SECURE DIGITAL GAME TOP-UPS</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-container">
+        <div class="form-box" id="auth-form-container">
+          <div id="auth-form-content">
+            <div th:replace="~{__${view}__}"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script th:src="@{/js/auth.js}"></script>
+
+  </body>
+</html>
+

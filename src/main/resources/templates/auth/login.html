@@ -1,163 +1,72 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <title>Login</title>
+<div th:fragment="content">
+    <form th:action="@{/login}" method="post">
 
-    <!-- CSS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@400..800&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/login.css}">
-  </head>
+        <div class="login-header">
+            <h1 class="title">
+                <span style="color:#8A3FFC;">A</span><span style="color:#E0218A;">URA</span>
+                <span style="color:#9090A8;"> GAMES</span>
+            </h1>
 
-  <body>
-    <div class="container">
-
-      <div class="left-container">
-        <div class="header">
-          <img th:src="@{/images/logo.png}" alt="aura_games_logo">
-          <div>
-            <h1 class="logo-name">AURA</h1>
-            <h2 class="logo-subtitle">FAST & SECURE DIGITAL GAME TOP-UPS</h2>
-          </div>
+            <p class="subtitle"> WELCOME BACK GAMERS</p>
         </div>
-      </div>
 
-      <div class="right-container">
-        <div class="wrapper">
-          <div class="login-box">
+        <div class="input-wrapper">
+            <label class="input-label">EMAIL ADDRESS</label>
+            <img class="input-icon" th:src="@{/images/email_icon.png}">
+            <input class="text-input"
+                    type="text"
+                    name="username"
+                    placeholder="username@domain.com"
+                    required>
+        </div>
 
-            <form th:action="@{/login}" method="post">
+        <div class="input-wrapper">
+            <label class="input-label">PASSWORD</label>
+            <img class="input-icon" th:src="@{/images/password_icon.png}">
+            <input class="password-input"
+                    type="password"
+                    name="password"
+                    placeholder="••••••••••••"
+                    required>
+        </div>
 
-              <div class="login-header">
-                <h1 class="login-title">
-                  <span style="color:#8A3FFC;">A</span><span style="color:#E0218A;">URA</span>
-                  <span style="color:#9090A8;"> GAMES</span>
-                </h1>
-
-                <p class="login-subtitle">
-                  WELCOME BACK GAMERS
-                </p>
-              </div>
-
-              <div class="input-wrapper">
-                <label class="input-label">EMAIL ADDRESS</label>
-
-                <img class="input-icon"
-                     th:src="@{/images/email_icon.png}">
-
-                <input class="text-input"
-                       type="text"
-                       name="username"
-                       placeholder="username@domain.com"
-                       required>
-              </div>
-
-              <div class="input-wrapper">
-                <label class="input-label">PASSWORD</label>
-
-                <img class="input-icon"
-                     th:src="@{/images/password_icon.png}">
-
-                <input class="text-input"
-                       type="password"
-                       name="password"
-                       placeholder="••••••••••••"
-                       required>
-              </div>
-
-              <div class="options-row">
-                <div class="toggle-button">
-                  <label>
+        <div class="options-row">
+            <div class="check-box">
+                <label>
                     <input type="checkbox"> Remember Me?
-                  </label>
-                </div>
+                </label>
+            </div>
 
-                <div>
-                  <a class="forgot-password"
-                     href="https://www.youtube.com/watch?v=1Uzw1Zr1FE4"
-                     target="_blank">
+            <div>
+                <a class="hyperlink-1" href="https://www.youtube.com/watch?v=1Uzw1Zr1FE4" target="_blank">
                     Forgot password?
-                  </a>
-                </div>
-              </div>
-
-              <div>
-                <button class="login-button" type="submit">
-                  LOGIN →
-                </button>
-              </div>
-
-              <div class="divider">
-                <span>OR CONTINUE WITH</span>
-              </div>
-
-              <div class="oauth-buttons">
-
-                <div>
-                  <img class="oauth-img"
-                       th:src="@{/images/oauth_google.png}">
-                </div>
-
-                <div>
-                  <img class="oauth-img"
-                       th:src="@{/images/oauth_steam.png}">
-                </div>
-
-                <div>
-                  <img class="oauth-img"
-                       th:src="@{/images/oauth_discord.png}">
-                </div>
-
-              </div>
-
-              <div style="font-family: Orbitron; font-size: 10px; color:#ffffff85; letter-spacing: 2px;">
-                <p>
-                  No account yet?
-                  <a class="register-now"
-                     href="https://www.youtube.com/watch?v=1Uzw1Zr1FE4">
-                    Register now.
-                  </a>
-                </p>
-              </div>
-
-            </form>
-
-          </div>
+                </a>
+            </div>
         </div>
-      </div>
 
-    </div>
-  </body>
-</html>
+        <div>
+            <button class="submit-button" type="submit">LOGIN →</button>
+        </div>
 
-<script>
-    const texts = [
-        "FAST & SECURE DIGITAL GAME TOP-UPS",
-        "INSTANT IN-GAME CURRENCY DELIVERY",
-        "BUY V-BUCKS, UC, DIAMONDS INSTANTLY",
-        "LEVEL UP WITH INSTANT TOP-UPS"
-    ];
+        <div class="divider"><span>OR CONTINUE WITH</span></div>
+        <div class="oauth-buttons">
+            <div><img class="oauth-img" th:src="@{/images/oauth_google.png}"></div>
+            <div><img class="oauth-img" th:src="@{/images/oauth_steam.png}"></div>
+            <div><img class="oauth-img" th:src="@{/images/oauth_discord.png}"></div>
+        </div>
 
-    let i = 0;
+        <div style="font-family: Orbitron; font-size: 10px; color:#ffffff85; letter-spacing: 2px;">
+            <p>
+                No account yet?
+                <a class="hyperlink-3" 
+                    hx-get="/register" 
+                    hx-target="#auth-form-content"
+                    hx-swap="innerHTML" 
+                    href="/register">
+                    REGISTER →.
+                </a>
+            </p>
+        </div>
 
-    setInterval(() => {
-        const el = document.querySelector(".logo-subtitle");
-
-        // expand spacing + fade out
-        el.style.letterSpacing = "10px";
-        el.style.opacity = "0";
-
-        setTimeout(() => {
-            // swap text
-            i = (i + 1) % texts.length;
-            el.textContent = texts[i];
-
-            // reset spacing + fade in
-            el.style.letterSpacing = "5px";
-            el.style.opacity = "1";
-        }, 
-        200);
-
-    }, 8000);
-</script>
+    </form>
+</div>

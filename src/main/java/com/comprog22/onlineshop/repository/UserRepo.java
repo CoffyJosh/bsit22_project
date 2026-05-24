@@ -15,4 +15,6 @@ public interface UserRepo extends JpaRepository<User, Long>{
     long countByStatus(UserStatus status);
 
     boolean existsByEmailAndPasswordIsNull(String email);
+
+    boolean existsByName(String name);
 }
