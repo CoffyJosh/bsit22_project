@@ -25,6 +25,36 @@ function initPage() {
     }
 
     // ------------------------
+    // CONTINOUS ENTERING FIELDS
+    // ------------------------
+    const inputs = document.querySelectorAll('.text-input, .password-input');
+    const termsCheckbox = document.getElementById('terms');
+    const registerBtn = document.getElementById('submit-registration');
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('keydown', function (e) {
+
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const nextInput = inputs[index + 1];
+
+                // If another input exists
+                if (nextInput) {
+                    nextInput.focus();
+                } else {
+                    // LAST INPUT
+                    if (!termsCheckbox.checked) {
+                        termsCheckbox.focus();
+                    } else {
+                        // simulate button click
+                        registerBtn.click();
+                    }
+                }
+            }
+        });
+    });
+
+    // ------------------------
     // STATE
     // ------------------------
     const warningText = document.getElementById('warningText');
@@ -167,11 +197,12 @@ function initPage() {
     // ------------------------
     function setResendAvailable() {
         const resendButton = document.getElementById('resend-button');
-        const timerText = document.getElementById('resend-timer');
+
+        if (!resendButton) return; // prevent crash
+        
         resendButton.disabled = false;
         resendButton.style.opacity = '1';
         resendButton.style.cursor = 'pointer';
-        timerText.textContent = '';
     }
 
     function startResendTimer(seconds) {
@@ -374,6 +405,13 @@ function initPage() {
     // ------------------------
     // CONFIRM BUTTON
     // ------------------------
+    const confirmButton = document.getElementById('confirm-button');
+
+    function updateConfirmState() {
+        const code = Array.from(codeBoxes).map(b => b.value).join('');
+        confirmButton.disabled = code.length !== 6;
+    }
+
     function setConfirmLoading(IsLoading){
         if (IsLoading){
             confirmButton.disabled = true;
@@ -381,10 +419,12 @@ function initPage() {
         }else{
             confirmButton.disabled = false;
             confirmButton.innerHTML = 'CONFIRM →';
+            updateConfirmState();
         }
 
     }
-    document.getElementById('confirm-button').addEventListener('click', async () => {
+
+    confirmButton.addEventListener('click', async () => {
         const confirmButton = document.getElementById('confirm-button');
         setConfirmLoading(true);
 
@@ -392,29 +432,52 @@ function initPage() {
 
         if (code.length < 6) {
             confirmWarningText.textContent = "* Please enter the full 6-digit code *";
+            setConfirmLoading(false);
             updateConfirmState();
             return;
         }
 
         const verifyRes = await fetch(`/api/auth/verify-code?email=${userData.email}&code=${code}&purpose=registration`, { method: 'POST' });
-        const verifyData = await verifyRes.text();
+        const verifyData = (await verifyRes.text()).trim();
 
-        // INVALID or NOT FOUND
-        if (verifyData === "INVALID" || verifyData === "NOT_FOUND") {
-            confirmWarningText.textContent = "* Invalid code *";
-            setConfirmLoading(false);
-            return;
+        console.log("STATUS:", verifyRes.status);
+        console.log("BODY:", verifyData);
+
+        switch(verifyRes.status){
+            case 410:
+                confirmWarningText.textContent = "* Code expired, please register again *";
+                setTimeout(() => {
+                    const reg = document.getElementById('registration-section');
+                    const conf = document.getElementById('confirmation-section');
+                    fadeTo(conf, reg);
+
+                    resetRegistrationUI();
+                    setSubmitLoading(false);
+                }, 2000);
+                return;
+            
+            case 404:
+                confirmWarningText.textContent = "* Code missing, please register again *";
+                setTimeout(() => {
+                    const reg = document.getElementById('registration-section');
+                    const conf = document.getElementById('confirmation-section');
+                    fadeTo(conf, reg);
+
+                    resetRegistrationUI();
+                    setSubmitLoading(false);
+                }, 2000);
+                return;
+
+            case 400:
+                confirmWarningText.textContent = "* Invalid code *";
+                setConfirmLoading(false);
+                return;
         }
 
-        // EXPIRED
-        if (verifyData === "EXPIRED") {
-            confirmWarningText.textContent = "* Code expired, please register again *";
-            setTimeout(() => {
-                const reg = document.getElementById('registration-section');
-                const conf = document.getElementById('confirmation-section');
-                fadeTo(conf, reg);
-            }, 2000);
-
+        // INVALID
+        if (!verifyRes.ok) {
+            confirmWarningText.textContent = "* Invalid code *";
+            setConfirmLoading(false);
             return;
         }
 
@@ -472,15 +535,23 @@ function initPage() {
     // CODE BOXES
     // ------------------------
     const codeBoxes = document.querySelectorAll('.code-box');
-    const confirmButton = document.getElementById('confirm-button');
-
-    function updateConfirmState() {
-        const code = Array.from(codeBoxes).map(b => b.value).join('');
-        confirmButton.disabled = code.length !== 6;
-    }
 
     codeBoxes.forEach((box, index) => {
         box.addEventListener('keydown', (e) => {
+
+            // For user pressing enter
+            if (e.key === 'Enter') {
+
+                const allFilled = Array.from(codeBoxes).every(b => b.value !== '');
+                const code = Array.from(codeBoxes).map(b => b.value).join('');
+
+                if (allFilled && code.length === 6 && !confirmButton.disabled) {
+                    e.preventDefault();
+                    confirmButton.click();
+                }
+
+                return;
+            }
             if ((e.ctrlKey || e.metaKey) && e.key === 'v') return;
 
             if (e.key === 'Backspace') {
@@ -531,7 +602,7 @@ function initPage() {
         const success = document.getElementById('success-display-section');
         fadeTo(conf, success);
 
-        let count = 3;
+        let count = 5;
         const countdown = document.getElementById('redirect-countdown');
 
         const countInterval = setInterval(() => {
