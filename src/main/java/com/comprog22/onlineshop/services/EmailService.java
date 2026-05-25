@@ -1,6 +1,7 @@
 package com.comprog22.onlineshop.services;
 
 import java.util.Properties;
+
 import org.springframework.stereotype.Service;
 
 import com.comprog22.onlineshop.model.EmailMessage;
@@ -24,7 +25,7 @@ public class EmailService {
         msg.setFrom(new InternetAddress(EMAIL));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailMessage.getRecipient()));
         msg.setSubject(emailMessage.getSubject());
-        msg.setText(emailMessage.getBody());
+        msg.setContent(emailMessage.getBody(), "text/html; charset=UTF-8");
         Transport.send(msg);
     }
 
