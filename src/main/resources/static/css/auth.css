@@ -59,6 +59,7 @@ body {
   transform: translateY(-30px);
 
   background: linear-gradient(to right,rgb(153, 0, 255), rgb(161, 20, 255), rgb(255, 0, 242), rgb(255, 151, 255));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -117,7 +118,7 @@ body {
   background-color: rgba(54, 54, 54, 0.25);
   backdrop-filter: blur(10px);
 
-  transition: height 0.3s ease, width 0.3s ease;
+
 }
 
 .form-box form {
@@ -126,6 +127,7 @@ body {
   gap: 12px;
   width: auto;
 
+  transition: height 0.3s ease, width 0.3s ease;
 }
 
 
