@@ -409,6 +409,7 @@ body {
   cursor: pointer;
 }
 
+.confirm-button:disabled,
 .submit-button:disabled {
   opacity: 0.4;
   cursor: not-allowed;

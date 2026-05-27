@@ -33,7 +33,7 @@ public class FormControlller {
             return "auth/login :: content"; // just the fragment for HTMX swaps
         }
 
-        model.addAttribute("view", "auth/login :: content");
+        model.addAttribute("view", "auth/login");
         return "auth/auth"; // full page for direct URL visits
     }
 
@@ -48,7 +48,22 @@ public class FormControlller {
             return "auth/register :: content";
         }
 
-        model.addAttribute("view", "auth/register :: content");
+        model.addAttribute("view", "auth/register");
+        return "auth/auth";
+    }
+
+    @GetMapping("/account-recovery")
+    public String accountRecovery(Authentication auth, Model model, @RequestHeader(value = "HX-Request", required = false) String htmxRequest, HttpServletResponse response) {
+        if (auth != null && auth.isAuthenticated()) {
+            return "redirect:/";
+        }
+
+        if (htmxRequest != null) {
+            response.setHeader("HX-Title", "Aura Games - Recovery");
+            return "auth/account-recovery :: content";
+        }
+
+        model.addAttribute("view", "auth/account-recovery");
         return "auth/auth";
     }
 }

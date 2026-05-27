@@ -1,7 +1,7 @@
-<div th:fragment="content">
+<div th:fragment="content" data-page-title="AURA GAMES | Login">
     <form th:action="@{/login}" method="post">
 
-        <div class="login-header">
+        <div class="form-header">
             <h1 class="title">
                 <span style="color:#8A3FFC;">A</span><span style="color:#E0218A;">URA</span>
                 <span style="color:#9090A8;"> GAMES</span>
@@ -38,7 +38,11 @@
             </div>
 
             <div>
-                <a class="hyperlink-1" href="https://www.youtube.com/watch?v=1Uzw1Zr1FE4" target="_blank">
+                <a class="hyperlink-1"                    
+                    href="/account-recovery"
+                    hx-target="#auth-form-content"
+                    hx-swap="innerHTML"
+                    hx-push-url="true">
                     Forgot password?
                 </a>
             </div>
@@ -59,10 +63,10 @@
             <p>
                 No account yet?
                 <a class="hyperlink-3" 
-                    hx-get="/register" 
+                    href="/register"
                     hx-target="#auth-form-content"
-                    hx-swap="innerHTML" 
-                    href="/register">
+                    hx-swap="innerHTML"
+                    hx-push-url="true">
                     REGISTER →.
                 </a>
             </p>
