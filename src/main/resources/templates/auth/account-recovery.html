@@ -1,0 +1,63 @@
+<div th:fragment="content" data-page-title="AURA GAMES | Account Recovery">
+    <form>
+
+        <div id="email-section" class="fade">
+            <h1 class="title">
+                <span style="color:#9090A8;">ACCOUNT RECOVERY</span>
+            </h1>
+        </div>
+        <br>
+        <div class="input-wrapper">
+            <label class="input-label">EMAIL ADDRESS</label>
+            <img class="input-icon" th:src="@{/images/email_icon.png}">
+            <input class="text-input"
+                    type="email"
+                    name="username"
+                    placeholder="username@domain.com"
+                    required>
+        </div>
+
+        <button class="confirm-button" id="confirm-button" type="button">SEND CODE</button>
+        <button class="back-button" type="button" onclick="window.history.back()">← BACK</button>
+
+        <div id="confirmation-section" class="fade hidden" style="display:none;">
+            <div>
+                <h1 class="title">
+                    <span style="color:#8A3FFC;">V</span><span style="color:#E0218A;">ERIFY</span>
+                </h1>
+                <div style="font-family: Orbitron; font-size: 9px; color:#ffffff85; letter-spacing: 2px; padding-bottom: 15px; padding: 0;">
+                    <p>We've sent a 6-digit code to your email.</p>
+                </div>
+            </div>
+
+            <!-- 6 CODE BOXES -->
+            <p class="warning-text" id="confirmWarningText"></p>
+            <div id="code-boxes" style="display: flex; gap: 10px; justify-content: center;">
+                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+            </div>
+
+            <button class="confirm-button" id="confirm-button" type="button">CONFIRM →</button>
+
+            <div class="resend-row">
+                <span style="font-family: Orbitron; font-size: 9px; color:#ffffff55; letter-spacing: 1.5px;">
+                    Didn't get the email?
+                </span>
+                <span id="resend-button" class="resend-link">Resend</span>
+            </div>
+
+            <button class="back-button" id="return-button" type="button">← BACK</button>
+        </div>
+
+        <div id="password-section" class="fade hidden" style="display:none;">
+            <h1 class="title">
+                <span style="color:#9090A8;">ENTER NEW PASSWORD</span>
+            </h1>
+        </div>
+
+    </form>
+</div>

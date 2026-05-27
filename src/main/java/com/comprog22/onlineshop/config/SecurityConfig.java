@@ -25,7 +25,9 @@ public class SecurityConfig {
                     
                     "/login",
                     "/register",
-
+                    "/account-recovery",
+                    
+                    "/s/**",
                     "/css/**",
                     "/images/**",
                     "/js/**",

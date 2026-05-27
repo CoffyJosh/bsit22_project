@@ -15,43 +15,104 @@ function loadScript(src, callback) {
 // ----------------------------
 // PAGE SWAPPING
 // ----------------------------
+function updatePageTitle() {
+    const fragment = document.querySelector('[data-page-title]');
+    if (fragment) {
+        document.title = fragment.getAttribute('data-page-title');
+    }
+}
+
+// ----------------------------
+// FADE OUT BEFORE SWAP
+// ----------------------------
 document.addEventListener("htmx:beforeSwap", function(e) {
+    if (e.detail.target.id !== 'auth-form-content') return;
+    
     const container = document.getElementById("auth-form-content");
     
+    // Prevent automatic swap
+    e.detail.shouldSwap = false;
+    
+    // Fade out
     container.style.transition = "opacity 0.3s ease";
     container.style.opacity = "0";
 
-    e.detail.shouldSwap = false;
-
-    setTimeout(function() {
+    // Swap after fade completes
+    setTimeout(() => {
         e.detail.target.innerHTML = e.detail.serverResponse;
         htmx.process(e.detail.target);
-
-        const url = e.detail.pathInfo.requestPath;
-        window.history.pushState({}, "", url);
-        document.title = url === "/register" ? "AURA GAMES | Register" : "AURA GAMES | Login";
         
-        container.style.transition = "opacity 0.3s ease";
-        container.style.opacity = "1";
-
-        if (url === "/register") {
-            loadScript("/js/register.js", () => {
+        // Manually push URL to history
+        const url = e.detail.xhr.responseURL || window.location.pathname;
+        window.history.pushState({}, "", url);
+        
+        // Fade in
+        setTimeout(() => {
+            container.style.transition = "opacity 0.3s ease";
+            container.style.opacity = "1";
+            
+            updatePageTitle();
+            
+            // Load scripts
+            if (url.includes("/register")) {
+                loadScript("/js/register.js", () => {
+                    if (typeof initPage === 'function') initPage();
+                });
+            } else if (url.includes("/login")){
                 if (typeof initPage === 'function') initPage();
-            });
-        } else {
-            if (typeof initPage === 'function') initPage();
-        }
+            } else if (url.includes("/account-recovery")){
+                if (typeof initPage === 'function') initPage();
+            }
+        }, 50);
+    }, 300);
+});
 
+// ----------------------------
+// HANDLE BROWSER BACK BUTTON
+// ----------------------------
+window.addEventListener('popstate', function(e) {
+    const currentUrl = window.location.pathname;
+    const container = document.getElementById("auth-form-content");
+    
+    // Fade out
+    container.style.transition = "opacity 0.3s ease";
+    container.style.opacity = "0";
+
+    setTimeout(() => {
+        htmx.ajax('GET', currentUrl, {
+            target: '#auth-form-content',
+            swap: 'innerHTML',
+            onLoad: function() {
+                // Fade in after swap completes
+                setTimeout(() => {
+                    container.style.transition = "opacity 0.3s ease";
+                    container.style.opacity = "1";
+                    updatePageTitle();
+                    
+                    // Load scripts
+                    if (currentUrl.includes("/register")) {
+                        loadScript("/js/register.js", () => {
+                            if (typeof initPage === 'function') initPage();
+                        });
+                    } else if (currentUrl.includes("/login")){
+                        if (typeof initPage === 'function') initPage();
+                    } else if (currentUrl.includes("/account-recovery")){
+                        if (typeof initPage === 'function') initPage();
+                    }
+                }, 50);
+            }
+        });
     }, 300);
 });
 
 // ----------------------------
 // PAGE TITLE ON LOAD
 // ----------------------------
-if (window.location.pathname === "/register") {
-    document.title = "AURA GAMES | Register";
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updatePageTitle);
 } else {
-    document.title = "AURA GAMES | Login";
+    // Already loaded (if script runs after DOM is ready)
+    setTimeout(updatePageTitle, 0);
 }
 
 // ----------------------------

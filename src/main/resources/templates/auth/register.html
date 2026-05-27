@@ -1,4 +1,4 @@
-<div th:fragment="content">
+<div th:fragment="content" data-page-title="AURA GAMES | Register">
     <form th:action="@{/register}" method="post">
         <div id="registration-section" class="fade">
             <div>
@@ -9,10 +9,10 @@
                     <p>
                         Already have an account?
                         <a class="hyperlink-3" 
-                            hx-get="/login" 
+                            href="/login"
                             hx-target="#auth-form-content"
-                            hx-swap="innerHTML" 
-                            href="/login">
+                            hx-swap="innerHTML"
+                            hx-push-url="true">
                             SIGN IN →
                         </a>
                     </p>
@@ -31,7 +31,7 @@
             <div class="input-wrapper">
                 <label class="input-label">EMAIL ADDRESS</label>
                 <img class="input-icon" th:src="@{/images/email_icon.png}">
-                <input class="text-input" type="email"
+                <input class="text-input" type="    "
                         name="email"
                         placeholder="username@domain.com"
                         required>
@@ -73,7 +73,7 @@
 
             <div class="check-box" >
                 <label>
-                    <input type="checkbox" class="check-box-label" id="terms"> 
+                    <input type="checkbox" class="check-box-label"> 
                     <span style="color: #8888A4;">I agree to</span>
                     <span class="hyperlink-3" style="color:#8A3FFC">Terms of Service</span>
                     <span style="color: #8888A4;">and</span>
