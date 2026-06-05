@@ -7,13 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.comprog22.onlineshop.entities.Game;
+import com.comprog22.onlineshop.entities.GameImage;
 import com.comprog22.onlineshop.enums.GameStatus;
 import com.comprog22.onlineshop.repository.GameRepo;
+import com.comprog22.onlineshop.repository.GameImageRepo;
 
 @Service
 public class GameService {
  @Autowired
     private GameRepo gameRepo;
+    private GameImageRepo gameImageRepo;
 
     public Game create(Game game) {
         return gameRepo.save(game);
@@ -25,6 +28,10 @@ public class GameService {
 
     public List<Game> getAll() {
         return gameRepo.findAll();
+    }
+
+    public List<Game> getAllByOrderAsc() {
+        return gameRepo.findAllByOrderByNameAsc();
     }
 
     public List<Game> getByStatus(GameStatus status) {
@@ -41,5 +48,13 @@ public class GameService {
 
     public Game archive(Long id) {
         return updateStatus(id, GameStatus.DEPRECATED);
+    }
+
+    public List<Game> getRecent() {
+        return gameRepo.findTop5ByOrderByCreatedAtDesc();
+    }
+
+    public Optional<GameImage> getGameImage(Long gameId, String imageType, int sortOrder) {
+        return gameImageRepo.findByGame_IdAndTypeAndSortOrder(gameId, imageType, sortOrder);
     }
 }

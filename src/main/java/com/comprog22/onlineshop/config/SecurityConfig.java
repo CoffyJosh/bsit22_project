@@ -19,7 +19,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/",
-                    "/api/auth/**",
+                    "/api/**",
                     "/browse/**",
                     "/index",
                     
@@ -39,8 +39,22 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/", true)
-                .failureUrl("/login?error")
+                .successHandler((request, response, authentication) -> {
+                    if ("true".equals(request.getHeader("HX-Request"))) {
+                        response.setHeader("HX-Redirect", "/");
+                        response.setStatus(200);
+                    } else {
+                        response.sendRedirect("/");
+                    }
+                })
+                .failureHandler((request, response, exception) -> {
+                    if ("true".equals(request.getHeader("HX-Request"))) {
+                        response.setHeader("HX-Redirect", "/login?error");
+                        response.setStatus(200);
+                    } else {
+                        response.sendRedirect("/login?error");
+                    }
+                })
                 .permitAll())
             .logout(logout -> logout
                 .logoutUrl("/logout")

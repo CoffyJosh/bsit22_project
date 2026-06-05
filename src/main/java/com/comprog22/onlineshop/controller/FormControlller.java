@@ -12,11 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class FormControlller {
 
-    @RequestMapping("/home")
-    public String gotoHome(){
-        return "homepage";
-    }
-
     @RequestMapping("/index")
     public String index() {
         return "index";

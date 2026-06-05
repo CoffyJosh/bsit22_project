@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "aura-games-498215",
+  "private_key_id": "ef58a9440d9af1c4ff1eeec02328fcf7fa0ccc13",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDdZ2wQVPoh5bMp\njwudXxV+Q9Y1Qmrf1v2sd3jUHlEgUgEQGpgoWr+2eznxOjAtM4W9pEE3q59/SAaE\nii6iUs/qV5C/fRuMKRHA8o9QcqY2geqRZj7XWj3TbduXLcsuYsc/yQFIvXs4Nejd\nVksIOOHnV0D2v9fqUEyLkJQ9mw4prIf+KIL6TgChzgq8zD8YTWk5xs436ThvMHNa\nIZrooRGlKLCI60jlWKyym4Hev2r9CxFjJAts4DB45Su08fpsyuIhyHKsDNHzHbpV\nqh2yC99Tc15hUv+JKj63Lz45fNR+8KLapc5Oi5i20eCOz6iIiAPbD5RdwIZsR0Ul\nVifkNAiPAgMBAAECggEAJW7tgetkKSQFgTLKw25Gm4ULrBCRMkxOsoC2oKKJk93Z\niSf97uC9BjTabJMqfxH1fEVPs4JkYqhCVdlpHg/DUHtCoWWdKTruYgGAwpjHynJ3\nvuKbIF0FFADAflSDRFH2Hy40deB3e17+AqIq6HZ5l1wUw0NXVaoC7xvgPHRBVkEh\ncbgzUMfDjERPsGr70n0vKeU+7MCO/rdliDlGy4o8hJS7uSFZnzNa1LjJFMJy5Jkm\nRf+0VoieNQrbMtHuGVaMZEHKzrdADU8n7mLlwfc25/FR/NPoBq5X12VPE/S32z3M\n1ix1ykOfPS+SSHwnGSMf16ZctnpBODKoDfh02DTH7QKBgQDu2RImXdZznSu3GdhA\ny32pP+9R+JfsE0V7stTRSTkDVi9f62gv/z1EwQiGPBWv5UMV/Cl/Yb8zvmOjaorQ\nMb+a5lGg/C+CTAneCD6lkpnA9u82wnNL56porJebs7ymETxyvHwzHY8VwsW65d8H\nwYfhBlkeJS7yZsevU3j7hj8uXQKBgQDtTapi05cpHgFRgXXaeny/G5M9xm2YM7Vc\ndqjd44nVBAIfNhZACQdc5fkys7CQ5JsJby5WcAAa69qaWoa/4NsFXkbvbse55Lab\n0bQmZZbPZqpBGbrdxRfzNEeGB5AzDNmIgF6JmrL77a/QZ/lWEKNmAo6lVUCqJ+cP\nhuF8hXjr2wKBgQDTJmGOO2zHfo3T6+wqs/qeMmBOthcQY6UMivbrIfFeCsYM5R6R\nN/KhIol3qgx+GI6rE+ZXr0EJ7GlHYXvgO+qodK57RBZ3+OLMP7uqQiTc2zB014h3\n9RDIQrQwuL+wjBJFWG3v/lStJygIZwk5YRTPkP4d0T9kmgoz6/ZLXc3jHQKBgEut\nTP0fRUGTlBAOHSuDjGzVumsk8KZtNxU5sjiw66/HC3YwpX/eYT67CHGm5FQQ03B6\nyGhAZ4guVxSKchaW+sIHgs+woHkj+yhOBAmKtEGIGBuSvQkkZbLlpTmVB+N/4Y+q\ngHuZniLBdiQcRGOyAqnxftQzD+AzwXguJ5KybhGpAoGBAMqPOVL1h4IgfUhuyyXF\nRJclV59Dp+460yIohbifSpjrpmDesJpsaTnC/dS7wsv2A6sgy233QIEa8QpfLn+N\nSpEoT8ChfaCTGJ98z6IdbA3dh0KFKs96BfaiNX3G4Z95ooVrnt+V6wm5PgE5V/DP\nniRg2xlmCwyLOwgEZaTjGFUA\n-----END PRIVATE KEY-----\n",
+  "client_email": "aura-games-drive-service@aura-games-498215.iam.gserviceaccount.com",
+  "client_id": "107136351243341360308",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/aura-games-drive-service%40aura-games-498215.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

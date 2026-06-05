@@ -138,7 +138,7 @@ function initPage() {
             hasSpecial;
 
         if (val.length === 0) {
-            setStrength('NONE', '0%', '#FFFFFF77');
+            setStrength('Requirements', '0%', '#FFFFFF77');
             return;
         }
 
@@ -359,9 +359,6 @@ function initPage() {
         confirmWarningText.textContent = '';
         updateConfirmState();
 
-        const confirmButton = document.getElementById('confirm-button');
-        setConfirmLoading(false);
-
         await showConfirmation(email);
     });
 
@@ -406,6 +403,7 @@ function initPage() {
     // CONFIRM BUTTON
     // ------------------------
     const confirmButton = document.getElementById('confirm-button');
+    let verificationSuccess = false;
 
     function updateConfirmState() {
         const code = Array.from(codeBoxes).map(b => b.value).join('');
@@ -425,7 +423,6 @@ function initPage() {
     }
 
     confirmButton.addEventListener('click', async () => {
-        const confirmButton = document.getElementById('confirm-button');
         setConfirmLoading(true);
 
         const code = Array.from(codeBoxes).map(box => box.value).join('');
@@ -452,7 +449,6 @@ function initPage() {
                     fadeTo(conf, reg);
 
                     resetRegistrationUI();
-                    setSubmitLoading(false);
                 }, 2000);
                 return;
             
@@ -464,19 +460,18 @@ function initPage() {
                     fadeTo(conf, reg);
 
                     resetRegistrationUI();
-                    setSubmitLoading(false);
                 }, 2000);
                 return;
 
             case 400:
-                confirmWarningText.textContent = "* Invalid code *";
+                confirmWarningText.textContent = "* Invalid code 1*";
                 setConfirmLoading(false);
                 return;
         }
 
         // INVALID
         if (!verifyRes.ok) {
-            confirmWarningText.textContent = "* Invalid code *";
+            confirmWarningText.textContent = "* Invalid code 2*";
             setConfirmLoading(false);
             return;
         }
@@ -493,7 +488,6 @@ function initPage() {
         // Check first if registration is success
         if (!registerData) {
             confirmWarningText.textContent = "* Registering Error *";
-            setConfirmLoading(false);
             return;
         }
  
@@ -515,6 +509,7 @@ function initPage() {
             method: 'POST'
         });
 
+        verificationSuccess = true;
         showSuccess();
     });
 
@@ -598,6 +593,8 @@ function initPage() {
     });
 
     function showSuccess() {
+         if (!verificationSuccess) return;
+
         const conf = document.getElementById('confirmation-section');
         const success = document.getElementById('success-display-section');
         fadeTo(conf, success);
@@ -615,5 +612,3 @@ function initPage() {
         }, 1000);
     }
 }
-
-initPage();
