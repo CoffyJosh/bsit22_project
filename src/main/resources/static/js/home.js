@@ -19,26 +19,32 @@ async function getImageUrl(gameId, imageType, sortNumber) {
 }
 
 async function loadGamesIntoGrid(container, games) {
-  container.empty();
+  const fragment = $(document.createDocumentFragment());
 
+  // Show the placeholder first
+  const gameCount = games.length;
+  const placeholder = `<div class="grid-item-placeholder"></div>`;
+  for(let i = 0; i < gameCount; i++){
+    fragment.append(placeholder);
+  }
+
+  container.empty();
+  container.append(fragment);
+  fragment.empty();
+
+  // Load games
   for (const game of games) {
     const html = await displayGameCard(game);
-    const el = $(html).css({ opacity: 0, transform: 'translateY(20px)', transition: 'opacity 1s ease, transform 0.3s ease' });
-    container.append(el);
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        el.css({ opacity: 1, transform: 'translateY(0)' });
-      });
-    });
-
-    await new Promise(resolve => setTimeout(resolve, 50));
+    fragment.append(html);
   }
+
+  container.empty();
+  container.append(fragment);
 }
 
 async function displayGameCard(game) {
   const isPC = game.platform === 'PC' || game.platform === 'BOTH';
-  const isMobile = game.platform === 'Mobile' || game.platform === 'BOTH';
+  const isMobile = game.platform === 'MOBILE' || game.platform === 'BOTH';
   const imgUrl = await getImageUrl(game.gameId, "thumbnail", 1);
 
   return `
@@ -97,6 +103,7 @@ doc.ready(function (){
   loadPopularGames();
   loadProfileButton();
   loadAllGames();
+  registerEvents();
 });
 
 
@@ -122,37 +129,46 @@ doc.on('click', '.grid-item', async function(){
 });
 
 
-// Nav bar -------------------------------------------------
+// Buttons and Stuff -------------------------------------------------
 // ---------------------------------------------------------
-const authBtn = $('#authBtn')
-authBtn.click(function (){
-  window.location.href = "/login";
-})
+function registerEvents(){
+  const registerBtn = $('#registerBtn');
+  const loginBtn = $('#loginBtn');
+  const profileBtn = $('#profileBtn');
+  const homeBtn = $('#homeBtn');
+  const shopBtn = $('#shopBtn');
+  const navBar = $('#navbar')
 
-const homeBtn = $('#homeBtn')
-homeBtn.click(function(){
-  window.location.href = "/";
-})
+  loginBtn.click(function (){
+    window.location.href = "/login";
+  })
 
-const profileBtn = $('#profileBtn')
-profileBtn.click(function (){
-  alert("You have been diddled by the Diddler!");
-})
+  registerBtn.click(function (){
+    window.location.href = "/register";
+  })
 
-const navBar = $('#navbar')
-$(window).on('scroll', function() {
-  if ($(this).scrollTop() > 10) {
-      navBar.css('background-color', '#16161fff');
-  } else {
-      navBar.css('background-color', '#16161f65');
-  }
-});
+  homeBtn.click(function(){
+    window.location.href = "/";
+  })
 
-const shopBtn = $('#shopBtn');
-shopBtn.click(function (){
-  $('html, body').animate({
-    scrollTop: $('#popular-games').offset().top - $('#navbar').outerHeight()
-  }, 500,'easeOutCubic');
-});
+  profileBtn.click(function (){
+    alert("You have been diddled by the Diddler!");
+  })
 
+  $(window).on('scroll', function() {
+    if ($(this).scrollTop() > 10) {
+        navBar.css('background-color', '#16161fff');
+    } else {
+        navBar.css('background-color', '#16161f65');
+    }
+  });
+
+  shopBtn.click(function (){
+    $('html, body').animate({
+      scrollTop: $('#popular-games').offset().top - $('#navbar').outerHeight()
+    }, 500,'easeOutCubic');
+  });
+
+
+}
 

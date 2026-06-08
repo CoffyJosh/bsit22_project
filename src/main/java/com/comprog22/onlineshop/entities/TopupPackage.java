@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.comprog22.onlineshop.enums.ProductStatus;
+import com.comprog22.onlineshop.enums.TopupPackageStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,8 +21,8 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "products")
-public class Product {
+@Table(name = "topup_packages")
+public class TopupPackage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,19 +32,21 @@ public class Product {
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
-    @Column(name = "currency_name")
-    private String currency_name;
+    @Column(name = "currency_name", nullable = false)
+    private String currencyName;
 
-    @Column(name = "price")
+    @Column(name = "amount", nullable = false)
+    private Integer amount;
+
+    @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "value")
-    private String value;
+    @Column(name = "region", nullable = true)
+    private String region;
 
     @Enumerated(EnumType.STRING)
-    private ProductStatus status = ProductStatus.AVAILABLE;
+    private TopupPackageStatus status = TopupPackageStatus.AVAILABLE;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 }

@@ -1,5 +1,6 @@
 package com.comprog22.onlineshop.entities;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,14 +30,19 @@ public class Voucher {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = true)
-    private Product product;
+    @JoinColumn(name = "topup_package_id", nullable = true)
+    private TopupPackage topupPackage;
 
     @Column(name = "code", nullable = false, unique = true)
     private String code;
 
-    @Column(name = "value", nullable = false)
-    private Double discountValue; // ₱20 OR 20%
+    // Single source of truth for discount
+    @Column(name = "discount_value", nullable = false)
+    private BigDecimal discountValue;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private DiscountType type;
 
     @Column(name = "usage_limit", nullable = false)
     private int usageLimit = 1;
@@ -44,18 +50,14 @@ public class Voucher {
     @Column(name = "used_count", nullable = false)
     private int usedCount = 0;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private DiscountType type;
-
     @Column(name = "expiration_date", nullable = false)
     private LocalDateTime expirationDate;
-
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }

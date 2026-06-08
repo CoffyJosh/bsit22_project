@@ -51,7 +51,7 @@
         <img th:src="@{/images/notif_icon.png}" alt="notif-icon" style="width: 20px; height: 20px;">
       </button>
 
-      <button class="button1" style="display:flex; align-items:center; justify-content:center;">
+      <button class="button1" style="display:flex; align-items:center; justify-content:center; ">
 
         <div style="width:14px; height:9px; border:2.5px solid white;
                     border-radius:25%; transform: translateY(-1px);
@@ -59,7 +59,7 @@
         </div>
 
         <!-- Logged out -->
-        <span sec:authorize="!isAuthenticated()" id="authBtn">
+        <span sec:authorize="!isAuthenticated()" id="loginBtn">
             LOGIN / SIGNUP
         </span>
 
@@ -79,7 +79,7 @@
             <p style="margin: 0px; padding: 0px">⚡ FAST • SECURE • RELIABLE</p>
           </div>
 
-          <h1 style="font-family: 'Orbitron'; font-size: 60px; color: white; margin-top: 10px;">
+          <h1 class="header-text" style="font-size: 60px; margin-top: 10px;">
             Top Up Your
             Favorite Games
             <span class="special-text">Instantly</span>
@@ -102,7 +102,6 @@
       </div>
 
     </div>
-   
 
     <!-- Popular Games -->
     <div class="popular-games-wrapper">
@@ -113,11 +112,6 @@
         <div class="grid-wrapper">
 
           <div class="grid-container" id="popular-games-grid">
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
           </div>
 
         </div>
@@ -131,21 +125,58 @@
 
         <!-- List of Games -->
         <div class="grid-wrapper">
-
           <div class="grid-container" id="all-games-grid">
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-            <div class="grid-item-placeholder"></div>
-
           </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- CTA Section -->
+    <div class="cta-wrapper">
+      <div class="cta-box" id="cta-section">
+        <div class= "cta-text">
+          <h1 class="header-text" style="font-size: 50px;">READY TO BUY YOUR</h1> 
+          <h1 class="special-text" style="font-family: 'Orbitron'; font-size: 50px;">SKIN COLLECTION?</h1> 
+          <p class="text-1" style="margin-top: 10px;">Unlock member-only discounts, save vouchers, and track all your purchases in one place.</p>        
+        </div>
+
+        <div>
+          <button class="button1 button-shop" style="margin-left:350px; width: 200px;"  id="registerBtn">
+            <img th:src="@{/images/play_icon.svg}" alt="hero-image" style="transform: translateX(-10px);">
+            Signup Now
+          </button>
+        </div>
+
+      </div>
+    </div>
+   
+    <!-- Footer Section -->
+    <div class="footer-wrapper">
+      <div class="footer-box" id="footer-section">
+
+          <!-- Name of Site -->
+          <h2  id="aura-games-title"
+              style="margin: 50px 0px 0px 0px; 
+              width:auto; 
+              height:auto;    
+              font-family:'Orbitron'; 
+              font-size:20px;color: 
+              rgb(255, 255, 255);">
+              Aura Games
+          </h2>
+        
+          <!-- Tagline and stuff -->
+          <div class="text-1" style="margin: 0px">
+            <p style="margin: 5px 0px 5px 0px;">Fast, secure game top-ups for your favorite titles</p>
+            <p style="margin: 5px 0px 5px 0px;">Onlyschools1738@gmail.com</p>
+
+            <!-- Line -->
+            <div style="width: 100%; height: 0px; border-style: solid; border-width: 1px; border-color: rgba(255, 255, 255, 0.075); margin: 40px 0px 5px 0px;"></div>
+            <p style="margin: 10px 0px 5px 0px;">© 2026 Aura Games. All rights reserved</p>
+          </div>
+          
+        </div>
+        
       </div>
     </div>
 

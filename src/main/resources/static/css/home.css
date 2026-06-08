@@ -6,7 +6,9 @@ body {
 
 /* ----------------- Wrapper Defaults ----------------- */
 .popular-games-wrapper,
+.cta-wrapper,
 .all-games-wrapper,
+.footer-wrapper,
 .landing-screen-wrapper {
   position: relative;
   width: 100%;
@@ -23,6 +25,33 @@ body {
 .grid-wrapper {
   width:100%;
   align-self: center;
+}
+
+.header-text {
+  font-family: 'Orbitron'; 
+  font-weight: 20px; 
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.special-text {
+  margin:0;
+
+  background: linear-gradient(to right,rgb(153, 0, 255), rgb(161, 20, 255), rgb(255, 0, 242), rgb(255, 151, 255));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 0 10px #ff00d46c;
+}
+
+.text-1 {
+  font-family: 'DM Sans'; 
+  font-size: 16px; 
+  color: #A0A0C0; 
+  padding: 0; 
+  margin: 0;
 }
 
 /* ----------------- Grid ----------------- */
@@ -391,17 +420,6 @@ body {
   font-size: 16px;
 }
 
-.special-text {
-  margin:0;
-
-  background: linear-gradient(to right,rgb(153, 0, 255), rgb(161, 20, 255), rgb(255, 0, 242), rgb(255, 151, 255));
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  text-shadow: 0 0 10px #ff00d46c;
-}
-
 .boxed-text {
   width: fit-content;
   height: fit-content;
@@ -423,16 +441,18 @@ body {
   box-shadow: 0 0 40px rgba(255,255,255,0.3);
 }
 
+
+
 /* ----------------- Popular Games ----------------- */
 .popular-games-wrapper {
   min-height: 45vh;
-  background-color: #08000f;
+  background-color: #08000f;  
   justify-content: center;
 }
 
 .popular-games-box {
   width: 70%;
-  display: flex;          /* ← was block */
+  display: flex;          
   flex-direction: column;
   padding-block: 40px;
 }
@@ -451,4 +471,53 @@ body {
   display: flex;          /* ← was block */
   flex-direction: column;
   padding-block: 40px;
+}
+
+
+
+
+/* ----------------- CTA Section ----------------- */
+.cta-wrapper {
+  background-image: url("/images/landing_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  min-height: 35vh;
+  justify-content: center;
+}
+
+.cta-box {
+  width: 70%;
+  display: flex;          
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+
+.cta-text {
+  padding: 0;
+  margin: 0;
+  width:auto;
+  text-align: left;
+}
+
+
+
+/* ----------------- Footer Section ----------------- */
+.footer-wrapper {
+  background-color: #111118;
+  min-height: 25vh;
+  justify-content: center;
+}
+
+.footer-box {
+  width: 60%;
+}
+
+.footer-text {
+  padding: 0;
+  margin: 0;
+  width:auto;
+  text-align: left;
 }

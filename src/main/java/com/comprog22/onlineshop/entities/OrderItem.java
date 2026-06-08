@@ -26,8 +26,8 @@ public class OrderItem {
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "topup_package_id", nullable = false)
+    private TopupPackage topupPackage;
 
     @Column(nullable = false)
     private Integer quantity;

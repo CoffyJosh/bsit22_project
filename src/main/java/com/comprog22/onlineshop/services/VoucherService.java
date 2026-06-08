@@ -30,10 +30,23 @@ public class VoucherService {
     }
 
     public boolean isValid(Voucher v) {
+        if (v == null)
+            return false;
 
         return v.getStatus() == Status.ACTIVE
                 && v.getUsedCount() < v.getUsageLimit()
                 && v.getExpirationDate().isAfter(LocalDateTime.now());
+    }
+
+    public Voucher getValidVoucher(String code) {
+        Voucher v = voucherRepo.findByCode(code)
+                .orElseThrow(() -> new RuntimeException("Voucher not found"));
+
+        if (!isValid(v)) {
+            throw new RuntimeException("Voucher is invalid or expired");
+        }
+
+        return v;
     }
 
     public Voucher incrementUsage(Voucher v) {
