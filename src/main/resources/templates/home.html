@@ -12,7 +12,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@400..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-
+    
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/home.css}">
   </head>
 
@@ -69,7 +70,7 @@
 
       </button>
     </div>
-
+    
     <!-- Header and Stuff -->
     <div class="landing-screen-wrapper center-content">
       <div class="landing-screen-box">
@@ -110,7 +111,6 @@
 
         <!-- List of Games -->
         <div class="grid-wrapper">
-
           <div class="grid-container" id="popular-games-grid">
           </div>
 
@@ -141,22 +141,24 @@
         </div>
 
         <div>
-          <button class="button1 button-shop" style="margin-left:350px; width: 200px;"  id="registerBtn">
+          <button class="button1 button-register" id="registerBtn">
             <img th:src="@{/images/play_icon.svg}" alt="hero-image" style="transform: translateX(-10px);">
-            Signup Now
+            CREATE AN ACCOUNT NOW!
           </button>
         </div>
 
       </div>
     </div>
+
+    <div style="width: 100%; height: 0px; border-style: solid; border-width: 4px; border-color: #000000;"></div>
    
     <!-- Footer Section -->
     <div class="footer-wrapper">
       <div class="footer-box" id="footer-section">
 
           <!-- Name of Site -->
-          <h2  id="aura-games-title"
-              style="margin: 50px 0px 0px 0px; 
+          <h2 id="aura-games-title"
+              style="margin: 30px 0px 0px 0px; 
               width:auto; 
               height:auto;    
               font-family:'Orbitron'; 
@@ -168,21 +170,15 @@
           <!-- Tagline and stuff -->
           <div class="text-1" style="margin: 0px">
             <p style="margin: 5px 0px 5px 0px;">Fast, secure game top-ups for your favorite titles</p>
-            <p style="margin: 5px 0px 5px 0px;">Onlyschools1738@gmail.com</p>
+            <p style="margin: 5px 0px 5px 0px; color: rgba(255, 255, 255, 0.301); font-size: 13px;">Onlyschools1738@gmail.com</p>
 
             <!-- Line -->
             <div style="width: 100%; height: 0px; border-style: solid; border-width: 1px; border-color: rgba(255, 255, 255, 0.075); margin: 40px 0px 5px 0px;"></div>
+            
+            
             <p style="margin: 10px 0px 5px 0px;">© 2026 Aura Games. All rights reserved</p>
-          </div>
-          
-        </div>
-        
+          </div>   
       </div>
-    </div>
-
-    <!-- Bottom Page -->
-    <div class="bottom-page-box" id="bottom-page">
-
     </div>
 
     <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"></html>  
@@ -190,5 +186,6 @@
     <script th:src="@{/js/jquery-4.0.0.js}"></script>
     <script th:src="@{/js/jquery.easing.js}"></script>
     <script th:src="@{/js/home.js}"></script>
+    <script th:src="@{/js/navbar.js}"></script>
   </body>
 </html>

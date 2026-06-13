@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Aura Games | </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@400..800&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@400..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@400..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@400..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Orbitron:wght@400..900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/game.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+  </head>
+
+  <body>
+
+    <!-- Data -->
+    <div id="game-data"
+        th:attr="data-id=${game.id}, data-name=${game.name}">
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar" id="navbar">
+      <div class ="home-wrapper" id="homeBtn">
+        <img th:src="@{/images/logo.png}" alt="aura-games-logo" style="width: 75px; height:75px;" id="aura-games-logo">
+        <h2  id="aura-games-title"
+            style="margin: 0px;
+            width:150px; 
+            height:75px; 
+            display:flex; 
+            align-items:center; 
+            justify-content:center; 
+            font-family:'Orbitron'; 
+            font-size:20px;color: 
+            rgb(255, 255, 255);"
+            >
+          Aura Games
+        </h2>
+      </div>
+
+      <div class="input-wrapper" id="homeBtn">
+        <img class="input-icon" th:src="@{/images/search_icon.png}">
+          <input class="search-input" 
+                  type="text"
+                  name="search"
+                  placeholder="Search games, categories, keys…"
+                  
+                  style="margin-right: 250px;">
+      </div>
+
+
+      <button class="button2" style="margin-right: 18px;">
+        <img th:src="@{/images/notif_icon.png}" alt="notif-icon" style="width: 20px; height: 20px;">
+      </button>
+
+      <button class="button1" style="display:flex; align-items:center; justify-content:center; ">
+
+        <div style="width:14px; height:9px; border:2.5px solid white;
+                    border-radius:25%; transform: translateY(-1px);
+                    margin-right: 7px;">
+        </div>
+
+        <!-- Logged out -->
+        <span sec:authorize="!isAuthenticated()" id="loginBtn">
+            LOGIN / SIGNUP
+        </span>
+
+        <!-- Logged in -->
+        <span sec:authorize="isAuthenticated()" id="profileBtn">
+        </span>
+
+      </button>
+    </div>
+
+    <!-- Body Wrapper -->
+    <div class="body-wrapper">
+
+      <!-- Left Side Wrapper -->
+      <div class="leftside-wrapper">
+
+        <div class="banner-box">
+          <img th:src="@{/images/games/Valorant/banner.jpg}" alt="game-logo" id="banner-image"> 
+          <h1 id="game-display-name"></h1> 
+        </div>
+
+        <div class="package-box">
+          <h1 style="color: #F0EEFF; font-family: 'Rajdhani'; font-weight: 10px; font-size: 30px;">SELECT A PACKAGE</h1>
+          <div style="width: 100%; height: 0; border-style: solid; border-width: 1px; border-color: rgba(255, 255, 255, 0.116); margin: 0px 0px 25px 0px; padding: 0;"></div>
+
+          <!-- List of Packages -->
+          <div class="package-grid-container" id="package-grid">
+          </div>
+
+          
+        </div>
+
+        <div class="account-info-box">
+          <h1 style="color: #F0EEFF; font-family: 'Rajdhani'; font-weight: 10px; font-size: 30px;">ENTER YOUR ACCOUNT DETAILS</h1>
+          <div style="width: 100%; height: 0; border-style: solid; border-width: 1px; border-color: rgba(255, 255, 255, 0.116); margin: 0px 0px 25px 0px; padding: 0;"></div>
+          
+          <!-- Change dynamically based on game's form fields-->
+          <div id="userinfo-formbox">
+            <div class="input-wrapper">
+              <label class="input-label" for="username">User ID</label>
+              <input class="text-input"
+                      type="text"
+                      name="username"
+                      placeholder="e.g. 123456789"
+                      maxlength="25" 
+                      required
+                      id="username">
+            </div>
+            <br>
+            <div class="input-wrapper">
+              <label class="input-label" for="zone-id">Zone ID</label>
+              <input class="text-input"
+                      type="text"
+                      name="zone-id"
+                      placeholder="e.g. 1234"
+                      required>
+            </div>
+          </div>
+         
+          
+          <div class="payment-selection">
+            <div class="payment-selection-content">
+              <h1>Payment Method</h1>
+              <h2>Choose how you want to pay</h2>
+              <br>
+
+              <!-- GCASH -->
+              <div class="payment-box" data-payment-type="gcash" id="payment-option">
+                
+                <div class="payment-content-left">
+                  <div class="payment-symbol-holder" style="background-color: rgba(255, 255, 255, 0.479);">
+                    <p>G</p>
+                  </div>
+
+                  <div>
+                    <h1>GCash</h1>
+                    <h2>Pay via GCash e-wallet</h2>
+                  </div>
+                </div>
+
+                <div class="payment-content-right">
+                  <div class="payment-instant-tag">
+                    <h3>Instant</h3>
+                  </div>
+
+                  <div class="payment-toggle-circle"></div>
+                </div>
+              </div>
+
+              <!-- Maya -->
+              <div class="payment-box" data-payment-type="maya">
+                
+                <div class="payment-content-left">
+                  <div class="payment-symbol-holder" style="background-color: rgba(255, 255, 255, 0.479);">
+                    <p>M</p>
+                  </div>
+
+                  <div>
+                    <h1>Maya</h1>
+                    <h2>Pay via Maya e-wallet</h2>
+                  </div>
+                </div>
+
+                <div class="payment-content-right">
+                  <div class="payment-instant-tag">
+                    <h3>Instant</h3>
+                  </div>
+
+                  <div class="payment-toggle-circle"></div>
+                </div>
+              </div>
+
+              <!-- Debit / Credit -->
+              <div class="payment-box" data-payment-type="debit">
+                
+                <div class="payment-content-left">
+                  <div class="payment-symbol-holder" style="background-color: rgba(255, 255, 255, 0.479);">
+                    <p>VISA</p>
+                  </div>
+
+                  <div>
+                    <h1>Credit / Debit Card</h1>
+                    <h2>Visa, Mastercard accepted</h2>
+                  </div>
+                </div>
+
+                <div class="payment-content-right">
+                  <div class="payment-toggle-circle"></div>
+                </div>
+              </div>
+
+
+              <!-- Payment Information Box -->
+              <div class="payment-info-box">
+                
+                <div class="payment-content-left">
+                  <div>
+                    <h1>Payment Information</h1>
+                    <h2>Enter your registered mobile number</h2>
+                  </div>
+                </div>
+
+                <br>
+
+                <label class="input-label" for="mobile">MOBILE NUMBER</label>
+                <div class="mobile-number-wrapper">
+                  <div class="input-wrapper-flex1">
+                    <input class="text-input"
+                            type="text"
+                            name="mobile"
+                            placeholder="09XX XXX XXXX"
+                            maxlength="11" 
+                            inputmode="numeric"
+                            pattern="[0-9]*"
+                            required>
+                  </div>
+                </div>
+                <p class="note-text var2">A one-time PIN will be sent to this number to confirm payment.</p>
+
+                <div class="note-box">
+                  <p class="note-text" style="font-size: 13px;">Make sure your account has sufficient balance of at least <span style="color: rgb(50, 190, 255);" id="amount">P255</span> before proceeding.</p>
+                </div>
+
+                <div class="submit-button">
+                  <p>Send OTP →</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+
+      <!-- Vertical Divider -->
+      <div style="width: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 0px 0px 0px 15px;"></div>
+
+      <div class="rightside-wrapper" style="color: white;">
+        <p class="summary-header">Order Summary</p>
+
+        <div class="summary-row">
+          <p class="summary-row left">Game</p>
+          <p class="summary-row right" id="game-name"></p>
+        </div>
+
+        <div class="summary-row">
+          <p class="summary-row left">Package</p>
+          <p class="summary-row right package" id="package-base"></p>
+        </div>
+
+        <div class="summary-row">
+          <p class="summary-row left">Bonus</p>
+          <p class="summary-row right bonus" id="bonus-amount"></p>
+        </div>
+
+        <div class="summary-row">
+          <p class="summary-row left">Processing Fee</p>
+          <p class="summary-row right" id="processing-fee"></p>
+        </div>
+
+        <div class="summary-row">
+          <p class="summary-row left">Player ID</p>
+          <p class="summary-row right" id="uid"></p>
+        </div>
+
+        <!-- Horizontal Divider -->
+        <div style="height: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 20px 0px 20px 0px;"></div>
+        <div id="userinfo-formbox">
+          <div class="input-wrapper">
+            <label class="input-label" for="email">Email for reciept</label>
+            <input class="text-input"
+                    type="text"
+                    name="email"
+                    placeholder="e.g. username@domain.com"
+                    maxlength="100" 
+                    required
+                    id="email">
+          </div>
+        </div>
+        <p class="note-text" style="margin:10px 0px 10px 0px;">A confirmation receipt will be sent to this address after purchase.</p>
+
+        <!-- Horizontal Divider -->
+        <div style="height: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 20px 0px 20px 0px;"></div>
+        
+        <!-- Voucher Code input-->
+        <div class="voucher-row">
+          <div class="row-input" id="userinfo-formbox">
+            <div class="input-wrapper">
+              <label class="input-label" for="voucher-code">Voucher Code</label>
+              <input class="text-input"
+                      type="text"
+                      name="voucher-code"
+                      placeholder="e.g. XXXXXXXXXXXX"
+                      maxlength="12" 
+                      required
+                      id="voucher-code">
+            </div>
+          </div>
+
+          <button class="voucher-button">Apply</button>
+        </div>
+
+        <p class="notice-text success">Voucher Replaced</p>
+
+        <!-- If there are vouchers applied show it here-->
+        <div class="vouchers-container">
+          <div class="voucher-box">
+            <div class="voucher-info-row">
+
+                <!-- Information -->
+              <div class="voucher-info-left">
+                <p class="voucher-info amount">10% OFF VOUCHER</p>
+                <p class="voucher-info expiry">Expiration Date: June 6, 2025 12:00PM</p>
+              </div>
+              
+              <!-- Remaining Use -->
+              <div class="voucher-info-right">
+                <div style="width: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.432); margin: 0;"></div>
+                <p class="voucher-info remaining">x20</p>
+                <button class="remove-btn">x</button>
+              </div>
+
+            </div>   
+            
+          </div>
+        </div>
+
+        <!-- Horizontal Divider -->
+        <div style="height: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 20px 0px 20px 0px;"></div>
+
+        <!-- Total -->
+        <div class="total-display">
+          <p class="total-display-text title">TOTAL</p>
+          <p class="total-display-text amount">P1000.00</p>
+        </div>
+
+        
+
+      </div>
+
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer-wrapper">
+      <div class="footer-box" id="footer-section">
+
+          <!-- Name of Site -->
+          <h2 id="aura-games-title"
+              style="margin: 30px 0px 0px 0px; 
+              width:auto; 
+              height:auto;    
+              font-family:'Orbitron'; 
+              font-size:20px;color: 
+              rgb(255, 255, 255);">
+              Aura Games
+          </h2>
+        
+          <!-- Tagline and stuff -->
+          <div class="text-1" style="margin: 0px">
+            <p style="margin: 5px 0px 5px 0px;">Fast, secure game top-ups for your favorite titles</p>
+            <p style="margin: 5px 0px 5px 0px; color: rgba(255, 255, 255, 0.301); font-size: 13px;">Onlyschools1738@gmail.com</p>
+
+            <!-- Line -->
+            <div style="width: 100%; height: 0px; border-style: solid; border-width: 1px; border-color: rgba(255, 255, 255, 0.075); margin: 40px 0px 5px 0px;"></div>
+            
+            
+            <p style="margin: 10px 0px 5px 0px;">© 2026 Aura Games. All rights reserved</p>
+          </div>   
+      </div>
+    </div>
+  </body>
+
+  <html xmlns:sec="http://www.thymeleaf.org/extras/spring-security"></html>  
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <script th:src="@{/js/jquery-4.0.0.js}"></script>
+  <script th:src="@{/js/jquery.easing.js}"></script>
+  <script th:src="@{/js/game.js}"></script>
+  <script th:src="@{/js/navbar.js}"></script>
+</html>

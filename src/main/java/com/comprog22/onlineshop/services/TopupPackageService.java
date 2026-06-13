@@ -14,7 +14,7 @@ import com.comprog22.onlineshop.repository.TopupPackageRepo;
 
 @Service
 public class TopupPackageService {
- @Autowired
+    @Autowired
     private TopupPackageRepo topupPackageRepo;
 
     public TopupPackage create(TopupPackage product) {
@@ -23,6 +23,10 @@ public class TopupPackageService {
 
     public Optional<TopupPackage> findById(Long id) {
         return topupPackageRepo.findById(id);
+    }
+
+    public TopupPackage findPackageById(Long id) {
+        return topupPackageRepo.findById(id).orElseThrow();
     }
 
     public List<TopupPackage> getAll() {

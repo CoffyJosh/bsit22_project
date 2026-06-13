@@ -141,3 +141,13 @@ setInterval(() => {
     }, 200);
 
 }, 8000);
+
+
+// Home button on auth
+$(document).on('click', '.logo-image', function () {
+    window.location.href = "/";
+});
+
+$(document).on('click', '.logo-image', function () {
+    window.location.href = "/";
+});

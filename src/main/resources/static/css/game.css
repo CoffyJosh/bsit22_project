@@ -1,0 +1,760 @@
+body {
+  background:#1d1827;
+  background-attachment: fixed;
+
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ----------------- Inputs ----------------- */
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  margin:0;
+  padding:0;
+}
+
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+
+  width: 16px;
+  height: 16px;
+  opacity: 1;
+  pointer-events: none;
+}
+
+.input-label {
+  font-family: "DM Sans";
+  font-size: 15px;
+  font-weight: 400;
+  color: #8d8dbb;
+  margin-bottom: 5px;
+  display: block;
+  opacity: 0.8;
+
+  text-align: left;
+}
+
+.input-wrapper-flex1 {
+  position: relative;
+  margin:0;
+  padding:0;
+  flex: 1
+}
+
+.text-input,
+.password-input {
+  width: 100%;
+  padding: 10px 17px 10px 17px;
+  border-radius: 8px;
+  border: 1px solid #ffffff1e;
+  background: rgba(255, 255, 255, 0.04);
+  outline: none;
+  box-sizing: border-box;
+  color: white;
+}
+
+.text-input::placeholder,
+.password-input::placeholder{
+  left: 5px; 
+  color: #50506A;
+  height: 40px;
+  line-height: 40px;
+  font-family: "Inter";
+}
+
+.password-input {
+  letter-spacing: 2px;
+}
+
+.password-input::placeholder {
+  letter-spacing: normal;
+}
+
+
+
+/* ----------------- Wrappers Section ----------------- */
+.body-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+
+  width: 80%;
+  margin: 0 auto; /* 👈 this centers it horizontally */
+
+  padding: 120px 0px 250px 0px;
+}
+
+.leftside-wrapper {
+  width: 50%;
+  margin-right: 30px;
+}
+
+.rightside-wrapper {
+  width: 20%;
+  margin: 50px 0px 0px 30px;
+
+  align-self: flex-start;
+
+  position: sticky;
+  top: 80px;  
+
+  box-sizing: border-box;
+}
+
+
+
+
+/* ----------------- Banner Section ----------------- */
+.banner-box {
+  overflow: hidden;
+  position: relative;
+
+  border: 1px solid rgba(255, 255, 255, 0.068);
+  border-radius: 20px;
+  width: 100%;
+  height: 350px;
+
+  box-shadow: 0px 0px 5px rgba(90, 89, 0, 0.5);
+}
+
+.banner-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.8  ) 10%,
+    transparent
+  );
+  z-index: 1;
+}
+
+.banner-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.banner-box h1 {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+
+  margin: 0;
+  color: white;
+  z-index: 2;
+
+  font-family: "Rajdhani";
+  font-size: 60px;
+  font-weight: 50px;
+  text-shadow: 0px 0px 50px black;
+
+  max-width: 80%;
+  line-height: 1;
+  word-wrap: break-word;
+  
+}
+
+/* ----------------- Package Section ----------------- */
+.package-box {
+  margin-top: 30px;
+}
+
+.package-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.package-grid-item-placeholder {
+  width: 160px;
+  height: 200px;
+
+  border: 1px solid rgba(255, 255, 255, 0.082);
+  border-radius: 15px;
+
+  overflow: hidden;
+  position: relative;
+
+  background-color: all;
+}
+
+.package-grid-item-placeholder::after {
+  content: "";
+  position: absolute;
+
+  left: 0;
+  top: 100%;
+  width: 100%;
+
+  height: 50px; 
+  filter: blur(10px);
+
+  background: linear-gradient(
+    to top,
+    transparent,
+    rgba(212, 120, 255, 0.055),
+    transparent
+  );
+
+  animation: vertical-shimmer 1s linear infinite;
+}
+
+@keyframes vertical-shimmer {
+  0% { top: 150%;}
+  100% { top: -150%; }
+}
+
+.package-grid-item {
+  width: 160px;
+  height: 200px;
+
+  border: 1px solid rgba(255, 255, 255, 0.116);
+  border-radius: 15px;
+  background-color: rgba(60, 40, 63, 0.11);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+
+  transition: 0.1s all ease;
+
+  padding: 30px 0 0 0;
+}
+
+.package-grid-item:hover {
+  cursor: pointer;
+  box-shadow: 0 0 5px rgb(255, 255, 255);
+  transform: translateY(-5px);
+}
+
+.package-grid-item.selected {
+  box-shadow: 0 0 10px rgb(243, 255, 133);
+  transform: translateY(-5px);
+}
+
+.package-grid-item img {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 0 2px 0;
+}
+
+/* Amount */
+.package-grid-item h1 {
+  font-family: "Rajdhani";
+  font-size: 23px;
+  font-weight:50px;
+  color: white;
+
+  margin: 0;
+  padding: 0;
+}
+
+/* Currency Name */
+.package-grid-item h2 {
+  font-family: "DM Sans";
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.459);
+
+  margin: 0 0 15px 0;
+  padding: 0;
+}
+
+/* Price */
+.package-grid-item h3 {
+  font-family: "DM Sans";
+  font-size: 18px;
+  color: rgb(255, 255, 255);
+
+  margin: 0;
+  padding: 0;
+}
+
+/* Bonus */
+.package-grid-item h4 {
+  font-family: "DM Sans";
+  font-size: 10px;
+  color: rgb(127, 255, 127);
+
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/* ----------------- Account Info Section ----------------- */
+.account-info-box {
+  margin-top: 30px;
+}
+
+.payment-selection {  
+  align-self: stretch;
+  border-radius: 10px;
+  border: 1px solid #7c3aed70;
+  background-color: #ffffff0e;
+
+  height: auto;
+  width: 100%;
+
+  margin: 30px 0px 0px 0px;
+}
+
+
+.payment-selection-content {
+  margin: 30px 40px;
+}
+
+.payment-selection-content h1 {
+  font-family: "Rajdhani";
+  font-size: 20px;
+  font-weight: 50px;
+  color: white;
+
+  padding: 0px;
+  margin: 0px;
+}
+
+.payment-selection-content h2 {
+  font-family: "DM Sans";
+  font-size: 12px;
+  font-weight: 20px;
+  color: rgba(255, 255, 255, 0.322);
+
+  padding: 0px;
+  margin: 0px;
+}
+
+
+
+.payment-content-left, 
+.payment-content-right {
+  margin: 0;
+  padding: 0;
+  width: 50%;
+
+  display: flex;
+}
+
+.payment-content-right {
+  justify-content: end;
+}
+
+.payment-box,
+.paymen-box.selected {
+  border-radius: 10px;
+  font-family: "DM Sans";
+
+  height: fit-content;
+  width: 100%;
+  padding: 10px 20px;
+  margin: 10px 0px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  box-sizing: border-box;
+}
+
+
+.payment-box.selected {
+  border:1px solid #9D5CF5;
+  background-color: #7C3AED10;
+}
+
+.payment-box {
+  border:1px solid #ffffff2a;
+  background-color: #ffffff18;
+}
+
+.payment-box:hover {
+  cursor: pointer;
+}
+
+.payment-box h1,
+.payment-box h2,
+.payment-box h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.payment-box h1 {
+  font-size: 15px;
+  color:white;
+}
+
+.payment-box h2 {
+  font-size: 12px;
+  color:rgba(255, 255, 255, 0.26);
+}
+
+.payment-box h2 {
+  font-size: 12px;
+  color:rgba(255, 255, 255, 0.26);
+}
+
+.payment-box h3 {
+  font-size: 9px;
+  color: #34D399;
+}
+
+.payment-symbol-holder {
+  width: 60px;
+  height: 42px;
+  border-radius: 10px;
+
+  margin-right: 20px;
+
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-symbol-holder p {
+  font-weight: 500;
+  font-size: 15px;
+  color:white;
+}
+
+.payment-instant-tag {
+  width: fit-content;
+  height: fit-content;
+
+  border:1px solid #10B98130;
+  border-radius: 5px;
+  background-color: #10B98115;
+
+  padding: 2px 5px 2px 5px;
+}
+
+.note-box,
+.payment-info-box {
+  border:1px solid #007bff4b;
+  background-color: #007bff0e;
+
+  border-radius: 10px;
+  font-family: "DM Sans";
+
+  height: fit-content;
+  width: 100%;
+  padding: 10px 20px;
+  margin: 10px 0px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start; 
+  box-sizing: border-box;
+}
+
+.mobile-number-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-content: start;
+
+  width:100%;
+}
+
+.note-box {
+  border:1px solid #007bff42;
+  background-color: #007bff15;
+  padding: 12px 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-text  {
+  font-family: 'DM Sans'; 
+  font-size: 11px; 
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0;
+  margin: 0;
+}
+
+.note-text.var2 {
+  padding: 10px 0 10px 0;
+}
+
+.submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 50px;
+
+  font-family: 'Rajdhani';
+  font-weight: 600;
+  font-size: 20px;
+
+  border-radius: 10px;
+  background-color: #007DFF;
+  border: 1px solid rgba(255, 255, 255, 0);
+
+  transition: all 0.2s ease;
+}
+
+.submit-button:hover {
+  cursor: pointer;
+  border-color: rgba(255, 255, 255, 0.596);
+  background-color: #00aeff;
+}
+
+.submit-button:active {
+  cursor: pointer;
+  border-color: rgba(255, 255, 255, 0.74);
+  background-color: #00aeff8a;
+}
+
+
+/* ----------------- Summary Section ----------------- */
+.summary-header {
+  font-family: 'Rajdhani';
+  font-weight: 800;
+  font-size: 40px;
+  color:  white;
+
+  margin:0;
+  padding:0;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.summary-row.left,
+.summary-row.right {
+ padding: 10px 0 0 0;
+ margin: 0;
+
+ font-family: "DM Sans";
+ font-size: 18px;
+ font-weight: 200;
+}
+
+.summary-row.left {
+ justify-content: start;
+ font-weight: 200;
+ color: #FFFFFF45;
+}
+
+.summary-row.right {
+ justify-content: end;
+ font-family: 'Rajdhani';
+ font-weight: 450;
+}
+
+.summary-row.right.package {
+ color: #A78BFA;
+}
+
+.summary-row.right.bonus {
+ color: #34D399;
+}
+
+.voucher-row {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  gap: 5px;
+  box-sizing: border-box;
+}
+.voucher-button {
+  border-radius: 10px;
+  border: 1px solid rgba(162, 0, 255, 0.5);
+  background-color: rgba(124, 0, 124, 0.048);
+
+  width:fit-content;
+
+  margin:0px 0px 0px 10px;
+  padding: 8px 17px 8px 17px;
+
+  transition: all;
+
+  font-family: 'Rajdhani';
+  font-weight: 700;
+  font-size: 15px;
+  color: rgba(162, 0, 255, 0.5);
+}
+
+.voucher-button:hover {
+  cursor: pointer;
+  background-color: rgba(124, 0, 124, 0.5);
+  border-color: rgba(162, 0, 255, 0.8);
+}
+
+.voucher-button:active {
+  cursor: pointer;
+  background-color: rgba(124, 0, 124, 0.25);
+  border-color: rgba(162, 0, 255, 0.5);
+}
+
+.row-input {
+  flex: 1;
+}
+
+.notice-text {
+  width: 100%;
+  font-family: 'Rajdhani';
+  font-weight: 450;
+  font-size: 13px;
+
+  color: white;
+
+  text-align: center;
+}
+.notice-text.success {
+  color: rgb(100, 255, 134);
+}
+
+.notice-text.warning {
+  color: rgb(214, 255, 100);
+}
+
+.notice-text.error {
+  color: rgb(255, 100, 100);
+}
+
+.voucher-container {
+  width: 100%;
+  height: auto;
+}
+
+.voucher-box {
+  width:100%;
+  height: auto;
+  min-height: 50px;
+
+  padding: 10px 15px;
+  margin: 10px 0px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(43, 255, 0, 0.5);
+  background-color: rgba(43, 255, 0, 0.1);
+  box-sizing: border-box;
+
+  transition: all;
+
+  font-family: 'Rajdhani';
+  font-weight: 700;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.8);
+}
+.voucher-info-row {
+  display:flex;
+  flex-direction:row;
+  align-items: center;
+  justify-content: space-between;
+  flex:1;
+  gap: 10px;
+}
+.voucher-info-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;  
+}
+
+.voucher-info-left {
+  flex: 1;               
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.voucher-info {
+  padding: 0;
+  margin: 0;
+}
+
+.voucher-info.amount {
+  font-size: 20px;
+  
+}
+
+.voucher-info.remaining {
+  font-size: 20px;
+  font-style: 'DM Sans';
+}
+
+.voucher-info.expiry {
+  font-size: 11px;
+  color: rgba(214, 255, 100, 0.8);
+}
+
+.remove-btn {
+  border:1px solid rgba(255, 255, 255, 0.342);
+  border-radius: 4px;
+
+  background-color: rgba(255, 57, 57, 0.274);
+  font-family: 'Inter';
+  font-weight: 500;
+  font-size: 12px;
+  color: white;
+
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width:20px;
+  height:20px;
+
+  padding: 0;
+  margin: 0;
+}
+
+.remove-btn:hover{
+  cursor: pointer;
+  background-color: rgba(255, 57, 57, 0.6);
+}
+
+.remove-btn:active{
+  cursor: pointer;
+  background-color: rgba(102, 10, 10, 0.6);
+}
+
+
+.total-display {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  padding: 0 10px;
+  margin: 0;
+}
+
+.total-display-text.title {
+  font-size: 20px;
+  font-family: 'DM Sans';
+  color: rgba(255, 255, 255, 0.548);
+  padding: 0;
+  margin: 0;
+}
+
+.total-display-text.amount {
+  font-size: 30px;
+  font-family: 'Rajdhani';
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.836);
+  padding: 0;
+  margin: 0;
+}

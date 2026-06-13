@@ -10,14 +10,12 @@ import com.comprog22.onlineshop.entities.Order;
 import com.comprog22.onlineshop.entities.User;
 import com.comprog22.onlineshop.enums.OrderStatus;
 import com.comprog22.onlineshop.repository.OrderRepo;
-import com.comprog22.onlineshop.repository.UserRepo;
 
 @Service
 public class OrderService {
 
     @Autowired
     private OrderRepo orderRepo;
-    private UserRepo userRepo;
 
     // -----------------------------------
     // CRUD

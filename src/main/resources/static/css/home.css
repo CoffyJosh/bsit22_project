@@ -178,211 +178,6 @@ body {
 
 
 
-
-
-
-/* ----------------- Navbar ----------------- */
-.navbar {
-  position: fixed;
-  display: inline-flex;
-  align-items: center;
-
-  width: 100%;
-  height: 75px;
-  padding: 0px;
-
-  justify-content: center;
-  text-align: center;
-
-  background-color: #16161f65;
-
-  z-index: 100;
-
-  transition: background-color 0.3s ease;
-}
-
-.home-wrapper {
-  display: flex;
-  align-items: start;
-  width: fit-content;
-  height: auto;
-  margin-right: 50px;
-}
-
-.home-wrapper:hover{
-  cursor:pointer;
-}
-
-.input-wrapper {
-  position: relative;
-  width: auto;
-  margin:0;
-  padding:0;
-}
-
-.input-icon {
-  position: absolute;
-  left: 12px;
-  top: 30%;
-
-  width: 16px;
-  height: 16px;
-  opacity: 1;
-  pointer-events: none;
-}
-
-.search-input {
-  width: 325px;
-  padding: 12px 12px 12px 35px;
-  
-  border-radius: 50px;
-  border: 1px solid #ffffff1c;
-
-  background: #16161F;
-  outline: none;
-  box-sizing: border-box;
-  color: white;
-}
-
-.search-input::placeholder {
-  left: 5px; 
-  color: #5A5A7A;
-  height: 40px;
-  line-height: 40px;
-
-  font-family: "DM Sans";
-  font-size: 13px;
-
-}
-
-
-@property --color-1 {
-  syntax: '<color>';
-  initial-value: rgb(161, 20, 255);
-  inherits: false;
-}
-
-@property --color-2 {
-  syntax: '<color>';
-  initial-value: rgb(255, 0, 200);
-  inherits: false;
-}
-
-.button1 {
-  width: auto;
-  height: 40px;
-  padding: 0;
-  padding-left: 15px;
-  padding-right: 15px;
-
-  border-radius: 50px;
-  border-style: solid;
-  border-width: 1;
-  border-color: #ffffff00;
-  border: none;
-
-  outline: none;
-
-  font-family: "DM Sans";
-  font-size: 14px;
-  font-weight: 100px;
-  color: white;
-  letter-spacing: 0px;
-
-  box-sizing: border-box;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  --color-1: rgb(161, 20, 255);
-  --color-2: rgb(255, 0, 200);
-
-  background: linear-gradient(90deg,
-    var(--color-1) 0%,
-    var(--color-2) 100%
-  );
-
-
-  transition: 
-    --color-1 0.1s,
-    --color-2 0.1s,
-    border-color 0.1s;
-}
-
-.button1:hover{
-  --color-2: rgb(170, 44, 255);
-  --color-1: rgb(255, 52, 211);
-  border-color: #ffffff4b;
-  cursor: pointer;
-}
-
-.button1:active{
-  --color-2: rgba(171, 44, 255, 0.568);
-  --color-1: rgba(255, 52, 211, 0.507);
-  border-color: #ffffff6b;
-  cursor: pointer;
-}
-
-.button1:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.button2 {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: solid #ffffff2f;
-  border-width: 0.12rem;
-  background: transparent;
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition: all 0.1s ease;
-}
-
-.button2::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: solid #ffffff2f;
-  border-width: 0.12rem;
-  opacity: 0;
-  transition: 0.1s ease;
-}
-
-.button2::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: transparent;
-  transition: 0.1s ease;
-}
-
-.button2:hover {
-  border-color: transparent;
-}
-
-.button2:hover::before {
-  opacity: 1;
-}
-
-.button2:hover::after {
-  background: #ffffff2f;
-}
-
-.button2:active::after {
-  background: #ffffff10;
-}
-
-
 /* ----------------- Landing Page ----------------- */
 .landing-screen-wrapper {
   background-image: url("/images/landing_background.png");
@@ -416,8 +211,15 @@ body {
 }
 
 .button-shop {
-  width: 180px;
+  width: fit-content;
   font-size: 16px;
+  padding: 10px 60px 10px 60px;
+}
+
+.button-register {
+  font-size: 16px;
+  margin-left:350px; 
+  width: 300px;
 }
 
 .boxed-text {
@@ -478,13 +280,17 @@ body {
 
 /* ----------------- CTA Section ----------------- */
 .cta-wrapper {
-  background-image: url("/images/landing_background.png");
+  background-image: url("/images/cta_banner.svg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   
-  min-height: 35vh;
+  min-height: 250px;
   justify-content: center;
+
+  border-style: solid;
+  border-width: 1px 0px 1px 0px;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .cta-box {
@@ -501,12 +307,12 @@ body {
   width:auto;
   text-align: left;
 }
-
+ 
 
 
 /* ----------------- Footer Section ----------------- */
 .footer-wrapper {
-  background-color: #111118;
+  background-color: #09090e;
   min-height: 25vh;
   justify-content: center;
 }

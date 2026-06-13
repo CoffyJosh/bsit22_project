@@ -15,8 +15,8 @@
     <div class="container">
 
       <div class="left-container">
-        <div class="header">
-          <img th:src="@{/images/logo.png}" alt="aura_games_logo">
+        <div class="logo-container">
+          <img class="logo-image" th:src="@{/images/logo.png}" alt="aura_games_logo">
           <div>
             <h1 class="logo-name">AURA</h1>
             <h2 class="logo-subtitle">FAST & SECURE DIGITAL GAME TOP-UPS</h2>
@@ -35,6 +35,8 @@
     </div>
 
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script th:src="@{/js/jquery-4.0.0.js}"></script>
+    <script th:src="@{/js/jquery.easing.js}"></script>
     <script th:src="@{/js/auth.js}"></script>
 
   </body>

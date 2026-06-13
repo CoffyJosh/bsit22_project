@@ -3,20 +3,22 @@ package com.comprog22.onlineshop.services;
 import java.util.List;
 import java.util.Optional;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.comprog22.onlineshop.entities.Game;
-import com.comprog22.onlineshop.entities.GameImage;
 import com.comprog22.onlineshop.enums.GameStatus;
 import com.comprog22.onlineshop.repository.GameRepo;
-import com.comprog22.onlineshop.repository.GameImageRepo;
 
 @Service
 public class GameService {
- @Autowired
+
+    @Autowired
     private GameRepo gameRepo;
-    private GameImageRepo gameImageRepo;
 
     public Game create(Game game) {
         return gameRepo.save(game);
@@ -24,6 +26,14 @@ public class GameService {
 
     public Optional<Game> findById(Long id) {
         return gameRepo.findById(id);
+    }
+
+    public Game findGameById(Long id) {
+        return gameRepo.findById(id).orElseThrow();
+    }
+
+    public Game findGameByName(String name) {
+        return gameRepo.findByName(name).orElseThrow();
     }
 
     public List<Game> getAll() {
@@ -54,7 +64,30 @@ public class GameService {
         return gameRepo.findTop5ByOrderByCreatedAtDesc();
     }
 
-    public Optional<GameImage> getGameImage(Long gameId, String imageType, int sortOrder) {
-        return gameImageRepo.findByGame_IdAndTypeAndSortOrder(gameId, imageType, sortOrder);
+
+
+    // Image Finder
+    public String getGameImageDir(Long gameId, String imageType) {
+        String gameName = findGameById(gameId).getName().replace(":", "_");
+        Path imgPath = Path.of("src/main/resources/static/images/games", gameName);
+        Path imgFile = findImageResolve(imgPath, imageType);
+
+        if (imgFile == null) {
+            return null;
+        }
+
+        return "/images/games/" + gameName + "/" + imgFile.getFileName().toString();
+    }
+
+    private Path findImageResolve(Path path, String imageType) {
+        String[] ext = { "webp", "svg", "png", "jpg" };
+
+        for (String e : ext) {
+            Path imgFile = path.resolve(imageType + "." + e);
+            if (Files.exists(imgFile)) return imgFile;
+            
+        }
+
+        return null;
     }
 }

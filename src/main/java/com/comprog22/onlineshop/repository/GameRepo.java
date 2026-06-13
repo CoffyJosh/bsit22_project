@@ -15,4 +15,6 @@ public interface GameRepo extends JpaRepository<Game, Long> {
     
     List<Game> findAllByOrderByNameAsc();
     Optional<Game> findById(Long id);
+    
+    Optional<Game> findByName(String name);
 }

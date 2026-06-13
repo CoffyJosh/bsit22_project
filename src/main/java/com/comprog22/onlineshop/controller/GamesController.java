@@ -1,23 +1,29 @@
 package com.comprog22.onlineshop.controller;
 
-import com.comprog22.onlineshop.entities.Game;
-import com.comprog22.onlineshop.entities.GameImage;
-import com.comprog22.onlineshop.services.GameService;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
+import com.comprog22.onlineshop.entities.Game;
+import com.comprog22.onlineshop.entities.TopupPackage;
+import com.comprog22.onlineshop.services.GameService;
+import com.comprog22.onlineshop.services.TopupPackageService;
 
 @RestController
 @RequestMapping("/api/games")
 public class GamesController {
 
     private final GameService gameService;
+    private final TopupPackageService topupPackageService;
 
-    public GamesController(GameService gameService) {
+    public GamesController(GameService gameService, TopupPackageService topupPackageService) {
         this.gameService = gameService;
+        this.topupPackageService = topupPackageService;
     }
 
     @GetMapping("/popular")
@@ -30,15 +36,11 @@ public class GamesController {
         return ResponseEntity.ok(gameService.getAllByOrderAsc());
     }
 
-    @GetMapping("/{gameId}/files/image/{imageType}/{sortOrder}")
-    public ResponseEntity<String> getImageUrl(@PathVariable Long gameId, @PathVariable String imageType, @PathVariable int sortOrder, @RequestHeader(value = "Referer", required = false) String referer) {
-        if (referer == null || !referer.startsWith("http://localhost:8080/")) {
-            return ResponseEntity.status(403).build();
-        }
-        
+    @GetMapping("/{gameId}/image/{imageType}")
+    public ResponseEntity<String> getImageUrl(@PathVariable Long gameId, @PathVariable String imageType) { 
         try{
-            GameImage image = gameService.getGameImage(gameId, imageType, sortOrder).orElseThrow();
-            return ResponseEntity.ok(image.getUrl());
+            String imgDir = gameService.getGameImageDir(gameId, imageType);
+            return ResponseEntity.ok(imgDir);
 
         } catch(Exception e){
             return ResponseEntity.notFound().build();
@@ -46,11 +48,20 @@ public class GamesController {
     }
 
     @GetMapping("/{gameId}/info")
-    public ResponseEntity<Game> getGameInfo(@PathVariable Long gameId, @RequestHeader(value = "Referer", required = false) String referer){
-        if (referer == null || !referer.startsWith("http://localhost:8080/")) {
-            return ResponseEntity.status(403).build();
-        }
-        
+    public ResponseEntity<Game> getGameInfo(@PathVariable Long gameId){
         return ResponseEntity.ok(gameService.findById(gameId).orElseThrow());
+    }
+
+
+    // ---------- TOPUP PACKAGES --------------------------
+    @GetMapping("/{gameId}/packages")
+    public ResponseEntity<List<TopupPackage>> getGamePackages(@PathVariable Long gameId){
+        Game game = gameService.findGameById(gameId);
+        return ResponseEntity.ok(topupPackageService.getByGame(game));
+    }
+
+    @GetMapping("/package")
+    public ResponseEntity<TopupPackage> getGamePackage(@RequestParam Long id) {
+        return ResponseEntity.ok(topupPackageService.findPackageById(id));
     }
 }

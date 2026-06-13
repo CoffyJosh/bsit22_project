@@ -3,6 +3,7 @@ package com.comprog22.onlineshop.entities;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 
 import com.comprog22.onlineshop.enums.TopupPackageStatus;
 
@@ -49,4 +50,11 @@ public class TopupPackage {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+
+    @Formula("FLOOR(price / 100) * 10")
+    private Integer bonus;
+
+    @Formula("amount + FLOOR(price / 100) * 10")
+    private Double totalAmount;
 }

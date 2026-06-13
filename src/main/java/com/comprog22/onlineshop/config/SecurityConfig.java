@@ -26,6 +26,9 @@ public class SecurityConfig {
                     "/login",
                     "/register",
                     "/account-recovery",
+
+                    "/checkout/**",
+                    "/game/**",
                     
                     "/s/**",
                     "/css/**",

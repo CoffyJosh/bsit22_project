@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
-public class FormControlller {
+public class AuthPageController {
 
     @RequestMapping("/index")
     public String index() {
