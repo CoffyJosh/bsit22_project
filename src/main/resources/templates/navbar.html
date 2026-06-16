@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+  <th:block th:fragment="navbar">
+    <div class="navbar" id="navbar">
+      <div class ="home-wrapper" id="homeBtn">
+        <img th:src="@{/images/logo.png}" alt="aura-games-logo" style="width: 75px; height:75px;" id="aura-games-logo">
+        <h2  id="aura-games-title"
+            style="margin: 0px;
+            width:150px; 
+            height:75px; 
+            display:flex; 
+            align-items:center; 
+            justify-content:center; 
+            font-family:'Orbitron'; 
+            font-size:20px;color: 
+            rgb(255, 255, 255);"
+            >
+          Aura Games
+        </h2>
+      </div>
+
+      <div class="input-wrapper" id="homeBtn">
+        <img class="input-icon" th:src="@{/images/search_icon.png}">
+          <input class="search-input" 
+                  type="text"
+                  name="search"
+                  placeholder="Search games, categories, keys…"
+                  
+                  style="margin-right: 250px;">
+      </div>
+
+
+      <button class="button2" style="margin-right: 18px;">
+        <img th:src="@{/images/notif_icon.png}" alt="notif-icon" style="width: 20px; height: 20px;">
+      </button>
+
+      <button class="button1" style="display:flex; align-items:center; justify-content:center; ">
+
+        <div style="width:14px; height:9px; border:2.5px solid white;
+                    border-radius:25%; transform: translateY(-1px);
+                    margin-right: 7px;">
+        </div>
+
+        <!-- Logged out -->
+        <span sec:authorize="!isAuthenticated()" id="loginBtn">
+            LOGIN / SIGNUP
+        </span>
+
+        <!-- Logged in -->
+        <span sec:authorize="isAuthenticated()" id="profileBtn">
+          <p style="color: rgba(255, 255, 255, 0.507);">Loading Profile...</p>
+        </span>
+
+      </button>
+    </div>
+  </th:block>
+</body>
+</html>

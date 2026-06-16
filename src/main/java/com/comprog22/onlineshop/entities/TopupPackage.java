@@ -1,6 +1,7 @@
 package com.comprog22.onlineshop.entities;
 
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
@@ -40,7 +41,7 @@ public class TopupPackage {
     private Integer amount;
 
     @Column(name = "price", nullable = false)
-    private Double price;
+    private BigDecimal price;
 
     @Column(name = "region", nullable = true)
     private String region;
@@ -51,10 +52,9 @@ public class TopupPackage {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-
     @Formula("FLOOR(price / 100) * 10")
     private Integer bonus;
 
     @Formula("amount + FLOOR(price / 100) * 10")
-    private Double totalAmount;
+    private BigDecimal totalAmount;
 }

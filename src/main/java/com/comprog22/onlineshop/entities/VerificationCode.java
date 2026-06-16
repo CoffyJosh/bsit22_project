@@ -23,7 +23,7 @@ public class VerificationCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    private String recipient;
     private String code;
     private String purpose;
 

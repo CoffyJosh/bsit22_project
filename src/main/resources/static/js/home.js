@@ -19,33 +19,21 @@ async function getImageUrl(gameId, imageType) {
 }
 
 async function loadGamesIntoGrid(container, games) {
-  const fragment = $(document.createDocumentFragment());
+  // show placeholder first 
+    const placeholder = `<div class="grid-item-placeholder"></div>`;
+    container.html(placeholder.repeat(games.length));
 
-  // Show the placeholder first
-  const gameCount = games.length;
-  const placeholder = `<div class="grid-item-placeholder"></div>`;
-  for(let i = 0; i < gameCount; i++){
-    fragment.append(placeholder);
-  }
-
-  container.empty();
-  container.append(fragment);
-  fragment.empty();
-
-  // Load games
-  for (const game of games) {
-    const html = await displayGameCard(game);
-    fragment.append(html);
-  }
-
-  container.empty();
-  container.append(fragment);
+    const htmlList = await Promise.all(
+      games.map(game => createGameFragment(game))
+    );
+    
+    container.html(htmlList.join(""));
 }
 
-async function displayGameCard(game) {
+async function createGameFragment(game) {
   const isPC = game.platform === 'PC' || game.platform === 'BOTH';
   const isMobile = game.platform === 'MOBILE' || game.platform === 'BOTH';
-  const imgUrl = await getImageUrl(game.gameId, "thumbnail");
+  const imgUrl = await getImageUrl(game.id, "image");
 
   return `
     <div class="grid-item" data-game-id='${game.id}'>
@@ -79,28 +67,41 @@ async function getListOfGames(url){
   }
 }
 
+async function filterGamesWithPackages(games) {
+  const results = await Promise.all(
+    games.map(async (game) => {
+      try {
+        const packages = await $.ajax({
+          url: `/api/games/${game.id}/packages`,
+          method: "GET"
+        });
+
+        return packages && packages.length > 0 ? game : null;
+      } catch (err) {
+        console.error(`Failed to fetch packages for game ${game.id}`, err);
+        return null;
+      }
+    })
+  );
+
+  return results.filter(Boolean);
+}
+
 
 
 // Loading Stuff -----------------------------------
 // ---------------------------------------------------------
-async function loadProfileButton(){
-  $.get("/api/user/me", function(user) {
-      profileBtn.text(user.name);
-  });
-}
-
-async function loadPopularGames() {
-  const games = await getListOfGames("/api/games/popular");
-  loadGamesIntoGrid($('#popular-games-grid'), games);
-}
-
 async function loadAllGames() {
-  const games = await getListOfGames("/api/games/all");
-  loadGamesIntoGrid($('#all-games-grid'), games);
+  const popularGames = await getListOfGames("/api/games/popular");
+  const filteredPopularGames = await filterGamesWithPackages(popularGames);
+  loadGamesIntoGrid($('#popular-games-grid'), filteredPopularGames);
+
+  const allGames = await getListOfGames("/api/games/all");
+  const filteredGames = await filterGamesWithPackages(allGames);
+  loadGamesIntoGrid($('#all-games-grid'), filteredGames);
 }
 
 doc.ready(function (){
-  loadPopularGames();
   loadProfileButton();
   loadAllGames();
   registerEvents();

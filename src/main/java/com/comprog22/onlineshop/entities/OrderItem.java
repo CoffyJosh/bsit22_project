@@ -2,6 +2,8 @@ package com.comprog22.onlineshop.entities;
 
 import java.math.BigDecimal;
 
+import org.hibernate.annotations.Formula;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,12 +31,19 @@ public class OrderItem {
     @JoinColumn(name = "topup_package_id", nullable = false)
     private TopupPackage topupPackage;
 
-    @Column(nullable = false)
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "unit_price", nullable = false)
-    private BigDecimal unitPrice;
+    @Column(name = "price", nullable = false)
+    private BigDecimal price;
 
-    @Column(nullable = false)
+    @Formula("price * quantity")
     private BigDecimal subtotal;
+
+    @Column(name = "account_id", nullable = false) // Account ID user have entered
+    private String accountId;
+
+    @Column(name = "server", nullable = true) // Server user have entered
+    private String server;
 }
+

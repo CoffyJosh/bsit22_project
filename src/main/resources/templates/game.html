@@ -26,58 +26,7 @@
         th:attr="data-id=${game.id}, data-name=${game.name}">
     </div>
 
-    <!-- Navbar -->
-    <div class="navbar" id="navbar">
-      <div class ="home-wrapper" id="homeBtn">
-        <img th:src="@{/images/logo.png}" alt="aura-games-logo" style="width: 75px; height:75px;" id="aura-games-logo">
-        <h2  id="aura-games-title"
-            style="margin: 0px;
-            width:150px; 
-            height:75px; 
-            display:flex; 
-            align-items:center; 
-            justify-content:center; 
-            font-family:'Orbitron'; 
-            font-size:20px;color: 
-            rgb(255, 255, 255);"
-            >
-          Aura Games
-        </h2>
-      </div>
-
-      <div class="input-wrapper" id="homeBtn">
-        <img class="input-icon" th:src="@{/images/search_icon.png}">
-          <input class="search-input" 
-                  type="text"
-                  name="search"
-                  placeholder="Search games, categories, keys…"
-                  
-                  style="margin-right: 250px;">
-      </div>
-
-
-      <button class="button2" style="margin-right: 18px;">
-        <img th:src="@{/images/notif_icon.png}" alt="notif-icon" style="width: 20px; height: 20px;">
-      </button>
-
-      <button class="button1" style="display:flex; align-items:center; justify-content:center; ">
-
-        <div style="width:14px; height:9px; border:2.5px solid white;
-                    border-radius:25%; transform: translateY(-1px);
-                    margin-right: 7px;">
-        </div>
-
-        <!-- Logged out -->
-        <span sec:authorize="!isAuthenticated()" id="loginBtn">
-            LOGIN / SIGNUP
-        </span>
-
-        <!-- Logged in -->
-        <span sec:authorize="isAuthenticated()" id="profileBtn">
-        </span>
-
-      </button>
-    </div>
+    <div th:replace="~{navbar :: navbar}"></div> 
 
     <!-- Body Wrapper -->
     <div class="body-wrapper">
@@ -106,28 +55,34 @@
           <div style="width: 100%; height: 0; border-style: solid; border-width: 1px; border-color: rgba(255, 255, 255, 0.116); margin: 0px 0px 25px 0px; padding: 0;"></div>
           
           <!-- Change dynamically based on game's form fields-->
-          <div id="userinfo-formbox">
-            <div class="input-wrapper">
-              <label class="input-label" for="username">User ID</label>
+          <div id="userinfo-formbox" style="display:flex; gap:20px; align-items:flex-start;">
+
+            <!-- Username -->
+            <div class="input-wrapper" style="flex:2;">
+              <label class="input-label" for="username" id="user-id">User ID</label>
               <input class="text-input"
-                      type="text"
-                      name="username"
-                      placeholder="e.g. 123456789"
-                      maxlength="25" 
-                      required
-                      id="username">
+                    type="text"
+                    name="username"
+                    placeholder="e.g. 123456789"
+                    maxlength="25"
+                    required
+                    id="username">
             </div>
-            <br>
-            <div class="input-wrapper">
-              <label class="input-label" for="zone-id">Zone ID</label>
-              <input class="text-input"
-                      type="text"
-                      name="zone-id"
-                      placeholder="e.g. 1234"
-                      required>
+
+            <!-- Region -->
+            <div class="dropdown" id="gameDropdown" style="flex:1;">
+              <label class="input-label" for="region">Region</label>
+              <div class="dropdown-selected" id="region">Choose a region</div>
+
+              <div class="dropdown-options">
+                <div class="option" data-value="en">Southeast Asia</div>
+                <div class="option" data-value="ea">East Asia</div>
+                <div class="option" data-value="eu">Europe</div>
+                <div class="option" data-value="sea">America</div>
+              </div>
             </div>
           </div>
-         
+         <br><br>
           
           <div class="payment-selection">
             <div class="payment-selection-content">
@@ -136,10 +91,10 @@
               <br>
 
               <!-- GCASH -->
-              <div class="payment-box" data-payment-type="gcash" id="payment-option">
+              <div class="payment-box" data-payment-type="GCash" data-processing-fee="2">
                 
                 <div class="payment-content-left">
-                  <div class="payment-symbol-holder" style="background-color: rgba(255, 255, 255, 0.479);">
+                  <div class="payment-symbol-holder" style="background-color: rgba(50, 139, 255, 0.8);">
                     <p>G</p>
                   </div>
 
@@ -154,15 +109,15 @@
                     <h3>Instant</h3>
                   </div>
 
-                  <div class="payment-toggle-circle"></div>
+                  <div class="circle-toggle"></div>
                 </div>
               </div>
 
               <!-- Maya -->
-              <div class="payment-box" data-payment-type="maya">
+              <div class="payment-box" data-payment-type="Maya" data-processing-fee="2">
                 
                 <div class="payment-content-left">
-                  <div class="payment-symbol-holder" style="background-color: rgba(255, 255, 255, 0.479);">
+                  <div class="payment-symbol-holder" style="background-color: rgba(91, 255, 99, 0.8);">
                     <p>M</p>
                   </div>
 
@@ -177,26 +132,30 @@
                     <h3>Instant</h3>
                   </div>
 
-                  <div class="payment-toggle-circle"></div>
+                  <div class="circle-toggle"></div>
                 </div>
               </div>
 
-              <!-- Debit / Credit -->
-              <div class="payment-box" data-payment-type="debit">
+              <!-- Load -->
+              <div class="payment-box" data-payment-type="Smart Load" data-processing-fee="2">
                 
                 <div class="payment-content-left">
-                  <div class="payment-symbol-holder" style="background-color: rgba(255, 255, 255, 0.479);">
-                    <p>VISA</p>
+                  <div class="payment-symbol-holder" style="background-color: rgba(164, 255, 90, 0.8);">
+                    <p>Smart</p>
                   </div>
 
                   <div>
-                    <h1>Credit / Debit Card</h1>
-                    <h2>Visa, Mastercard accepted</h2>
+                    <h1>Smart Load</h1>
+                    <h2>Pay via Smart load</h2>
                   </div>
                 </div>
 
                 <div class="payment-content-right">
-                  <div class="payment-toggle-circle"></div>
+                  <div class="payment-instant-tag">
+                    <h3>Instant</h3>
+                  </div>
+
+                  <div class="circle-toggle"></div>
                 </div>
               </div>
 
@@ -213,7 +172,7 @@
 
                 <br>
 
-                <label class="input-label" for="mobile">MOBILE NUMBER</label>
+                <label class="input-label" for="mobile" id="mobile">MOBILE NUMBER</label>
                 <div class="mobile-number-wrapper">
                   <div class="input-wrapper-flex1">
                     <input class="text-input"
@@ -229,12 +188,14 @@
                 <p class="note-text var2">A one-time PIN will be sent to this number to confirm payment.</p>
 
                 <div class="note-box">
-                  <p class="note-text" style="font-size: 13px;">Make sure your account has sufficient balance of at least <span style="color: rgb(50, 190, 255);" id="amount">P255</span> before proceeding.</p>
+                  <p class="note-text" style="font-size: 13px;">Make sure your account has sufficient balance before proceeding.</p>
                 </div>
 
-                <div class="submit-button">
-                  <p>Send OTP →</p>
+                <div class="submit-button" id="send-otp">
+                  <p>CHECKOUT</p>
                 </div>
+                <p id="send-warning" class="notice-text error" style="min-height:18px; margin:5px 0;"></p>
+                
               </div>
 
             </div>
@@ -286,7 +247,8 @@
                     placeholder="e.g. username@domain.com"
                     maxlength="100" 
                     required
-                    id="email">
+                    id="email"
+                    th:value="${#authorization.expression('isAuthenticated()') ? #authentication.name : ''}">
           </div>
         </div>
         <p class="note-text" style="margin:10px 0px 10px 0px;">A confirmation receipt will be sent to this address after purchase.</p>
@@ -294,48 +256,40 @@
         <!-- Horizontal Divider -->
         <div style="height: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 20px 0px 20px 0px;"></div>
         
-        <!-- Voucher Code input-->
-        <div class="voucher-row">
-          <div class="row-input" id="userinfo-formbox">
-            <div class="input-wrapper">
-              <label class="input-label" for="voucher-code">Voucher Code</label>
-              <input class="text-input"
-                      type="text"
-                      name="voucher-code"
-                      placeholder="e.g. XXXXXXXXXXXX"
-                      maxlength="12" 
-                      required
-                      id="voucher-code">
+        <!-- Voucher Section -->
+        <div id="voucher-section" sec:authorize="isAuthenticated()" data-auth="true">
+          <!-- Voucher Code input-->
+          <div class="voucher-row">
+            <div class="row-input" id="userinfo-formbox">
+              <div class="input-wrapper">
+                <label class="input-label" for="voucher-code">Voucher Code</label>
+                <input class="text-input"
+                        type="text"
+                        name="voucher-code"
+                        placeholder="e.g. XXXXXXXXXXXX"
+                        maxlength="12" 
+                        required
+                        id="voucher-code">
+              </div>
             </div>
+
+            <button class="voucher-button">Apply</button>
           </div>
 
-          <button class="voucher-button">Apply</button>
-        </div>
-
-        <p class="notice-text success">Voucher Replaced</p>
-
-        <!-- If there are vouchers applied show it here-->
-        <div class="vouchers-container">
-          <div class="voucher-box">
-            <div class="voucher-info-row">
-
-                <!-- Information -->
-              <div class="voucher-info-left">
-                <p class="voucher-info amount">10% OFF VOUCHER</p>
-                <p class="voucher-info expiry">Expiration Date: June 6, 2025 12:00PM</p>
-              </div>
-              
-              <!-- Remaining Use -->
-              <div class="voucher-info-right">
-                <div style="width: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.432); margin: 0;"></div>
-                <p class="voucher-info remaining">x20</p>
-                <button class="remove-btn">x</button>
-              </div>
-
-            </div>   
-            
+          <!-- If there are vouchers applied show it here-->
+          <div class="voucher-container">
           </div>
         </div>
+
+        <!-- Guest Section, No voucher :( -->
+        <div id="voucher-section" sec:authorize="!isAuthenticated()" data-auth="false">
+          <p style="color: rgba(255, 255, 255, 0.747); font-size: 13px; font-family: 'Rajdhani'; font-weight: 500; text-align: center;">
+              Please log in to use voucher codes.
+          </p>
+        </div>
+        
+
+        <p class="notice-text success"></p>
 
         <!-- Horizontal Divider -->
         <div style="height: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 20px 0px 20px 0px;"></div>
@@ -343,11 +297,161 @@
         <!-- Total -->
         <div class="total-display">
           <p class="total-display-text title">TOTAL</p>
-          <p class="total-display-text amount">P1000.00</p>
+          <p class="total-display-text amount" id="total-price">P0.00</p>
         </div>
 
         
 
+      </div>
+      
+      <!-- Transaction Overlay -->
+      <div id="transaction-overlay" class="transaction-overlay" style="display: none;">
+          <div class="transaction-box" style="text-align:center; color:white; max-width:400px;">
+
+              <!-- OTP Section -->
+              <div class="otp-wrapper">
+                  <h2 style="font-family:'Rajdhani'; font-size:24px; margin-bottom:5px;">VERIFY YOUR NUMBER</h2>
+                  <p class="note-text" style="margin-bottom:20px;">Code sent to <span id="otp-target-display" style="color:#b56bff;"></span></p>
+
+                  <div id="otp-boxes" style="display:flex; gap:10px; justify-content:center; margin-bottom:15px;">
+                      <input class="otp-box text-input" maxlength="1" inputmode="numeric" style="width:45px; height:55px; text-align:center; font-size:22px; padding:0;">
+                      <input class="otp-box text-input" maxlength="1" inputmode="numeric" style="width:45px; height:55px; text-align:center; font-size:22px; padding:0;">
+                      <input class="otp-box text-input" maxlength="1" inputmode="numeric" style="width:45px; height:55px; text-align:center; font-size:22px; padding:0;">
+                      <input class="otp-box text-input" maxlength="1" inputmode="numeric" style="width:45px; height:55px; text-align:center; font-size:22px; padding:0;">
+                      <input class="otp-box text-input" maxlength="1" inputmode="numeric" style="width:45px; height:55px; text-align:center; font-size:22px; padding:0;">
+                      <input class="otp-box text-input" maxlength="1" inputmode="numeric" style="width:45px; height:55px; text-align:center; font-size:22px; padding:0;">
+                  </div>
+
+                  <p id="otp-warning" class="notice-text error" style="min-height:18px; margin-bottom:10px;"></p>
+
+                  <button id="otp-confirm-btn" class="submit-button" style="margin-bottom:15px;" disabled>CONFIRM →</button>
+
+                  <button id="otp-resend-btn" style="background:none; border:none; color:#b56bff; cursor:pointer; font-size:13px; font-family:'DM Sans';">RESEND CODE</button>
+                  <br><br>
+                  <button id="otp-cancel-btn" style="background:none; border:none; color:#555; cursor:pointer; font-size:12px; font-family:'DM Sans';">Cancel</button>
+              </div>
+
+              <!-- Processing Section -->
+              <div class="topup-wrapper">
+                  <div class="transaction-spinner">
+                      <div class="outer-spinner"></div>
+                      <div class="inner-spinner"></div>
+                      <div class="center-spinner"></div>
+                  </div>
+
+                  <a class="processing-header">Processing Payment</a>
+                  <a class="processing-subtitle">Please do not close this window — your transaction is being handled securely.</a>
+
+                  <div class="processing-box" id="pb1">
+                    <div class="processing-dot"></div>
+                    <span id="process-message">Verifying OTP</span>
+                  </div>
+
+                  <div class="processing-box" id="pb2">
+                    <div class="processing-dot"></div>
+                    <span id="process-message">Authorizing Payment</span>
+                  </div>
+
+                  <div class="processing-box" id="pb3"> 
+                    <div class="processing-dot"></div>
+                    <span id="process-message">Dispatching Currency</span>
+                  </div>
+
+              </div>
+
+              <!-- Reciept Section-->
+              <div class="reciept-wrapper">
+                
+                <div class="reciept-background"></div>
+                <div class="reciept-content">
+                  <div class="reciept-header">
+                    <p style="font-size: 20px; font-weight: 500; font-family: 'Rajdhani'; color: white; padding: 0; margin: 0;">
+                      AURA <span style="color: #7C3AED;">GAMES</span>
+                    </p>
+                  </div>
+                  <img th:src="@{/images/shield.svg}" style="width: 65px; height: 90px;">
+
+                  <p style="font-family: 'Rajdhani'; font-size: 35px; font-weight: 600; padding: 0; margin: 3px 0;">Purchase Complete</p>
+
+                  <p style="font-family: 'DM Sans'; font-size: 14px; font-weight: 200; color: rgba(255, 255, 255, 0.562); width: 60%; padding: 0; margin: 3px 0;">
+                    Your <span id="currency">currency</span> have been dispatched to your account. Check your inbox for the receipt.
+                  </p>
+
+                  <div class="reciept-container">
+
+                    <p style="font-family: Rajdhani; font-family: 400; font-size: 20px; color: rgba(255, 255, 255, 0.63); margin: 0 0 30px 0;">
+                      TRANSACTION DETAILS
+                    </p>
+
+                    <!-- GAME NAME -->
+                    <div class="reciept-row">
+                      <p>Game</p>
+                      <p id="reciept-game">Mobile Legends: Bang Bang</p>
+                    </div>
+                    <div style="height: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 20px 0px; padding: 0 15px;"></div>
+
+                    <!-- AMOUNT -->
+                    <div class="reciept-row">
+                      <p>Amount</p>
+                      <p id="reciept-amount" class="reciept-amount">10000 Morbillion</p>
+                    </div>
+                    <div style="height: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 20px 0px; padding: 0 15px;"></div>
+
+                    <!-- USER ID -->
+                    <div class="reciept-row">
+                      <p>User ID</p>
+                      <p id="reciept-player">MrX</p>
+                    </div>
+                    <div style="height: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 20px 0px; padding: 0 15px;"></div>
+
+                    <!-- USER ID -->
+                    <div class="reciept-row">
+                      <p>Email</p>
+                      <p id="reciept-email">user@domain.com</p>
+                    </div>
+                    <div style="height: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 20px 0px; padding: 0 15px;"></div>
+
+                    <!-- PAYMENT -->
+                    <div class="reciept-row">
+                      <p>Payment Method</p>
+                      <p id="reciept-payment">GCash</p>
+                    </div>
+                    <div style="height: 1px; align-self: stretch; background: rgba(255, 255, 255, 0.116); margin: 20px 0px; padding: 0 15px;"></div>
+
+                    <!-- PRICE TOTAL -->
+                    <div class="reciept-row">
+                      <p>Payment Amount</p>
+                      <p id="reciept-price" class="reciept-price">₱1000</p>
+                    </div>
+
+                  </div>
+
+                  <!-- Reference Box -->
+                  <div class="reference-container">
+
+                    <p style="font-family: 'Inter'; font-size: 11px; font-weight: 300; padding: 0; margin: 3px 0; color: rgba(255, 255, 255, 0.247);">
+                      Reference Code
+                    </p>
+
+                    <p style="font-family: 'Inter'; font-size: 20px; font-weight: 600; padding: 0; margin: 3px 0; color: rgba(255, 255, 255, 1); display: flex;">
+                      <span id="reference-code">GC-7B2KF9PA</span>
+                    </p>
+
+                    <div class="reference-buttons">
+                      <button class="copy-button">
+                        <div class="copy-icon"></div> 
+                        COPY
+                      </button>
+
+                      <button class="done-button" id="done-button"> 
+                        DONE
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+          </div>
       </div>
 
     </div>

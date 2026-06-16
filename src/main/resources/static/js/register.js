@@ -240,7 +240,7 @@ function initPage() {
         const conf = document.getElementById('confirmation-section');
 
         // check backend for remaining cooldown for this email
-        const cooldownRes = await fetch(`/api/auth/resend-cooldown?email=${email}&purpose=registration`);
+        const cooldownRes = await fetch(`/api/auth/resend-cooldown?recipient=${email}&purpose=registration`);
         const secondsRemaining = await cooldownRes.json();
 
         fadeTo(reg, conf);
@@ -338,14 +338,31 @@ function initPage() {
             return;
         }
 
-        const sendCodeRes = await fetch(`/api/auth/send-code?email=${email}&purpose=registration`, {
+        const sendCodeRes = await fetch(`/api/auth/send-code?recipient=${email}&purpose=registration`, {
             method: 'POST'
         });
 
         const sendCodeData = await sendCodeRes.text();
 
+        // 202 = active code already exists, show confirmation with remaining timer
+        if (sendCodeRes.status === 202) {
+            const secondsRemaining = Number(sendCodeData);
+            userData = { name, email, password };
+            warningText.textContent = "";
+            codeBoxes.forEach(box => box.value = '');
+            confirmWarningText.textContent = '';
+            updateConfirmState();
+            const reg = document.getElementById('registration-section');
+            const conf = document.getElementById('confirmation-section');
+            fadeTo(reg, conf);
+            if (secondsRemaining > 0) startResendTimer(secondsRemaining);
+            else setResendAvailable();
+            setSubmitLoading(false);
+            return;
+        }
+
         // HARD FAILURE
-        if (sendCodeData === "FAILED") {
+        if (!sendCodeRes.ok) {
             warningText.textContent = "* Failed to send verification code *";
             setSubmitLoading(false);
             return;
@@ -374,7 +391,7 @@ function initPage() {
         resendButton.style.cursor = 'not-allowed';
         resendButton.innerHTML = '<span class="spinner"></span>';
 
-        const resend = await fetch(`/api/auth/resend-code?email=${userData.email}&purpose=registration`, {
+        const resend = await fetch(`/api/auth/resend-code?recipient=${userData.email}&purpose=registration`, {
             method: 'POST'
         });
 
@@ -434,7 +451,7 @@ function initPage() {
             return;
         }
 
-        const verifyRes = await fetch(`/api/auth/verify-code?email=${userData.email}&code=${code}&purpose=registration`, { method: 'POST' });
+        const verifyRes = await fetch(`/api/auth/verify-code?recipient=${userData.email}&code=${code}&purpose=registration`, { method: 'POST' });
         const verifyData = (await verifyRes.text()).trim();
 
         console.log("STATUS:", verifyRes.status);
@@ -464,14 +481,14 @@ function initPage() {
                 return;
 
             case 400:
-                confirmWarningText.textContent = "* Invalid code 1*";
+                confirmWarningText.textContent = "* Invalid code *";
                 setConfirmLoading(false);
                 return;
         }
 
         // INVALID
         if (!verifyRes.ok) {
-            confirmWarningText.textContent = "* Invalid code 2*";
+            confirmWarningText.textContent = "* Invalid code *";
             setConfirmLoading(false);
             return;
         }
@@ -505,7 +522,7 @@ function initPage() {
             return;
         }
 
-        await fetch(`/api/auth/complete-verification?email=${userData.email}&purpose=registration`, {
+        await fetch(`/api/auth/complete-verification?recipient=${userData.email}&purpose=registration`, {
             method: 'POST'
         });
 

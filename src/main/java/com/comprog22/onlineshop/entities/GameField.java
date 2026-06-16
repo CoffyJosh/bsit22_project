@@ -31,7 +31,7 @@ public class GameField {
     private String fieldType; // TEXT, SELECT
 
     @Column(name = "required", nullable = false)
-    private boolean required;
+    private boolean required = true;
 
     @Column(name = "display_order", nullable = false)
     private int displayOrder;

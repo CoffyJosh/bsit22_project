@@ -50,22 +50,25 @@ public class AuthController {
     }
 
     @PostMapping("/send-code")
-    public ResponseEntity<String> sendCode(@RequestParam String email, @RequestParam String purpose) {
+    public ResponseEntity<?> sendCode(@RequestParam String recipient, @RequestParam String purpose) {
 
-        String result = verificationCodeService.sendCode(email, purpose);
+        String result = verificationCodeService.sendCode(recipient, purpose);
+
+        if (result.startsWith("ALREADY_SENT:")) {
+            String seconds = result.split(":")[1];
+            return ResponseEntity.status(202).body(seconds);
+        }
 
         return switch (result) {
             case "SENT" -> ResponseEntity.ok("Code sent");
-            case "COOLDOWN" -> ResponseEntity.status(429).body("Please wait before requesting a new code");
-            case "EMAIL_FAILED" -> ResponseEntity.status(500).body("Failed to send email");
+            case "SEND_FAILED" -> ResponseEntity.status(500).body("Failed to send code");
             default -> ResponseEntity.status(500).body("Something went wrong");
         };
     }
 
     @PostMapping("/resend-code")
-    public ResponseEntity<String> resendCode(@RequestParam String email, @RequestParam String purpose) {
-
-        String result = verificationCodeService.resendCode(email, purpose);
+    public ResponseEntity<String> resendCode(@RequestParam String recipient, @RequestParam String purpose) {
+        String result = verificationCodeService.resendCode(recipient, purpose);
 
         if (result.startsWith("COOLDOWN:")) {
             String seconds = result.split(":")[1];
@@ -74,15 +77,15 @@ public class AuthController {
 
         return switch (result) {
             case "SENT" -> ResponseEntity.ok("Code resent");
-            case "EMAIL_FAILED" -> ResponseEntity.status(500).body("Failed to send email");
+            case "SEND_FAILED" -> ResponseEntity.status(500).body("Failed to send code");
             default -> ResponseEntity.status(500).body("Something went wrong");
         };
     }
 
     @PostMapping("/verify-code")
-    public ResponseEntity<String> verifyCode(@RequestParam String email, @RequestParam String code, @RequestParam String purpose) {
+    public ResponseEntity<String> verifyCode(@RequestParam String recipient, @RequestParam String code, @RequestParam String purpose) {
 
-        String result = verificationCodeService.verifyCode(email, code, purpose);
+        String result = verificationCodeService.verifyCode(recipient, code, purpose);
 
         return switch (result) {
             case "VALID" -> ResponseEntity.ok("Valid");
@@ -94,16 +97,14 @@ public class AuthController {
     }
 
     @GetMapping("/resend-cooldown")
-    public ResponseEntity<Long> getResendCooldown(@RequestParam String email, @RequestParam String purpose) {
-        long seconds = verificationCodeService.getResendCooldown(email, purpose);
+    public ResponseEntity<Long> getResendCooldown(@RequestParam String recipient, @RequestParam String purpose) {
+        long seconds = verificationCodeService.getResendCooldown(recipient, purpose);
         return ResponseEntity.ok(seconds);
     }
 
     @PostMapping("/complete-verification")
-    public ResponseEntity<?> completeVerification(
-            @RequestParam String email,
-            @RequestParam String purpose) {
-        verificationCodeService.completeVerification(email, purpose);
+    public ResponseEntity<?> completeVerification(@RequestParam String recipient, @RequestParam String purpose) {
+        verificationCodeService.completeVerification(recipient, purpose);
         return ResponseEntity.ok().build();
     }
 }

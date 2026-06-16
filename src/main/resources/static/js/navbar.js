@@ -1,4 +1,9 @@
 $(document).ready(function (){
+  addElementFunctions();
+  loadProfileButton();
+})
+
+function addElementFunctions(){
   const loginBtn = $('#loginBtn');
   const profileBtn = $('#profileBtn');
   const homeBtn = $('#homeBtn');
@@ -23,4 +28,11 @@ $(document).ready(function (){
         navBar.css('background-color', '#16161f65');
     }
   });
-})
+
+}
+async function loadProfileButton(){
+  const profileBtn = $('#profileBtn');
+  $.get("/api/user/me", function(user) {
+      profileBtn.text(user.name);
+  });
+}

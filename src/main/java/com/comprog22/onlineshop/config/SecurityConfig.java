@@ -29,6 +29,7 @@ public class SecurityConfig {
 
                     "/checkout/**",
                     "/game/**",
+                    "/package/**",
                     
                     "/s/**",
                     "/css/**",

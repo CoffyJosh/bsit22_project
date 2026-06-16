@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.Data;
 
 @Entity
@@ -25,6 +26,9 @@ import lombok.Data;
 @Table(name = "vouchers")
 public class Voucher {
 
+    @Version
+    private Integer version;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

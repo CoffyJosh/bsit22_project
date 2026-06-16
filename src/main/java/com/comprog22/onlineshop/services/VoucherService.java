@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.comprog22.onlineshop.entities.Voucher;
 import com.comprog22.onlineshop.enums.Status;
@@ -14,8 +15,11 @@ import com.comprog22.onlineshop.repository.VoucherRepo;
 @Service
 public class VoucherService {
 
-    @Autowired
     private VoucherRepo voucherRepo;
+
+    public VoucherService(VoucherRepo voucherRepo){
+        this.voucherRepo = voucherRepo;
+    }
 
     public Voucher create(Voucher voucher) {
         return voucherRepo.save(voucher);
@@ -23,6 +27,10 @@ public class VoucherService {
 
     public Optional<Voucher> findByCode(String code) {
         return voucherRepo.findByCode(code);
+    }
+
+    public Voucher findVoucherByCode(String code) {
+        return voucherRepo.findByCode(code).orElseThrow();
     }
 
     public List<Voucher> getAll() {
@@ -38,19 +46,36 @@ public class VoucherService {
                 && v.getExpirationDate().isAfter(LocalDateTime.now());
     }
 
+    @Transactional
     public Voucher getValidVoucher(String code) {
-        Voucher v = voucherRepo.findByCode(code)
+        Voucher v = voucherRepo.findByCodeWithLock(code)
                 .orElseThrow(() -> new RuntimeException("Voucher not found"));
 
-        if (!isValid(v)) {
-            throw new RuntimeException("Voucher is invalid or expired");
+        if (v.getStatus() != Status.ACTIVE) {
+            throw new RuntimeException("Voucher inactive");
         }
+
+        if (v.getUsedCount() >= v.getUsageLimit()) {
+            throw new RuntimeException("Voucher fully used");
+        }
+
+        if (v.getExpirationDate().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Voucher expired");
+        }
+
+        v.setUsedCount(v.getUsedCount() + 1);
+        voucherRepo.save(v);
 
         return v;
     }
 
     public Voucher incrementUsage(Voucher v) {
         v.setUsedCount(v.getUsedCount() + 1);
+        return voucherRepo.save(v);
+    }
+
+    public Voucher decrementUsage(Voucher v) {
+        v.setUsedCount(Math.max(0, v.getUsedCount() - 1));
         return voucherRepo.save(v);
     }
 
