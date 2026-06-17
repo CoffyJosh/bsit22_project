@@ -1,7 +1,5 @@
 package com.comprog22.onlineshop.controller;
 
-import java.math.BigDecimal;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,10 +29,7 @@ public class PaymentController {
         Order order = orderService.findById(request.getOrderId())
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        Payment payment = paymentService.createPayment(
-                order,
-                request.getPaymentMethod(),
-                request.getAmount());
+        Payment payment = paymentService.createPayment(order, request.getPaymentMethod(), request.getAmount());
 
         return ResponseEntity.ok(payment);
     }

@@ -64,4 +64,5 @@ public class Voucher {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+    
 }

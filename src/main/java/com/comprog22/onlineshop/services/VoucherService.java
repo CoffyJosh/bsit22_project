@@ -62,18 +62,18 @@ public class VoucherService {
         if (v.getExpirationDate().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Voucher expired");
         }
-
-        v.setUsedCount(v.getUsedCount() + 1);
-        voucherRepo.save(v);
-
         return v;
     }
 
+    @Transactional
     public Voucher incrementUsage(Voucher v) {
+        System.out.println("\n\n\n FROM: " + (v.getUsedCount()));
         v.setUsedCount(v.getUsedCount() + 1);
+        System.out.println("TO:  " + (v.getUsedCount()) +" \n\n\n");
         return voucherRepo.save(v);
     }
 
+    @Transactional
     public Voucher decrementUsage(Voucher v) {
         v.setUsedCount(Math.max(0, v.getUsedCount() - 1));
         return voucherRepo.save(v);

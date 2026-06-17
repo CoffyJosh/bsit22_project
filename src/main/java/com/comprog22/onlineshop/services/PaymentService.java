@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,11 +43,18 @@ public class PaymentService {
         payment.setPaidAt(LocalDateTime.now());
 
         if (order.getVoucher() != null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            boolean isLoggedIn = auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
+
+            if (!isLoggedIn) {
+                orderService.updateStatus(order.getId(), OrderStatus.FAILED);
+                throw new RuntimeException("Must be logged in to use a voucher.");
+            }
+
             voucherService.incrementUsage(order.getVoucher());
         }
 
         orderService.updateStatus(order.getId(), OrderStatus.COMPLETED);
-
         return paymentRepo.save(payment);
     }
 

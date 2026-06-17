@@ -6,7 +6,7 @@ let currencyName = null;
 
 let selectedPackageId = null;
 let paymentMethod = null;
-let voucher = null;
+let selectedVoucher = null;
 let selectedRegion = null;
 
 let selectedPackagePrice = 0;
@@ -231,11 +231,11 @@ function calculateTotal() {
   let finalPrice = selectedPackagePrice;
 
   // Apply voucher
-  if (voucher) {
-    if (voucher.type === "PERCENT") {
-      finalPrice = finalPrice * (1 - voucher.discountValue / 100);
-    } else if (voucher.type === "FIXED") {
-      finalPrice = finalPrice - voucher.discountValue;
+  if (selectedVoucher) {
+    if (selectedVoucher.type === "PERCENT") {
+      finalPrice = finalPrice * (1 - selectedVoucher.discountValue / 100);
+    } else if (selectedVoucher.type === "FIXED") {
+      finalPrice = finalPrice - selectedVoucher.discountValue;
     }
   }
 
@@ -258,19 +258,19 @@ function addVoucher(newVoucher) {
   // Remove existing voucher display if any
   $(".voucher-box").remove();
 
-  voucher = newVoucher;
+  selectedVoucher = newVoucher;
 
-  const $fragment = $(createVoucherFragment(voucher));
-  $fragment.find(".remove-btn").on("click", function () {
-    voucher = null;
-    $(".notice-text").text("");
-    $fragment.remove();
+  const $fragment = $(createVoucherFragment(selectedVoucher));
+    $fragment.find(".remove-btn").on("click", function () {
+      selectedVoucher = null;
+      $(".notice-text").text("");
+      calculateTotal();
+      $fragment.remove(); 
+    });
+
+    $(".voucher-container").append($fragment);
     calculateTotal();
-  });
-
-  $(".voucher-container").append($fragment);
-  calculateTotal();
-}
+  }
 
 
 // ==================== EVENTS ====================
@@ -330,9 +330,9 @@ async function applyVoucher() {
 
     $input.val("");
 
-    const alreadyApplied = voucher && voucher.id === fetchedVoucher.id;
-    if (alreadyApplied) {
-      $noticeText.addClass("warning").text("This voucher is already applied.");
+    const result = isVoucherValid(fetchedVoucher);
+    if (!result.ok) {
+      $noticeText.addClass("warning").text(result.msg);
       return;
     }
 
@@ -468,6 +468,27 @@ function isFieldFilled(selector) {
 
     const value = $el.val();
     return value !== null && value !== undefined && value.trim() !== '';
+}
+
+function isVoucherValid(voucher) {
+  if (!voucher) return { ok: false, msg: "Invalid voucher." };
+
+  const now = new Date();
+  const expiry = new Date(voucher.expiration_date);
+
+  if (voucher.status !== "ACTIVE") {
+    return { ok: false, msg: "Voucher is inactive." };
+  }
+
+  if (expiry < now) {
+    return { ok: false, msg: "Voucher has expired." };
+  }
+
+  if (voucher.usedCount >= voucher.usageLimit) {
+    return { ok: false, msg: "Voucher has already been fully used." };
+  }
+
+  return { ok: true, msg: "Voucher applied." };
 }
 
 
@@ -737,17 +758,18 @@ async function handleFakeAssTransactionScreen() {
     parent.removeClass("processing").addClass("failed");
     dot.removeClass("processing").addClass("failed");
 
-    await sleep(99999999);
+    await sleep(3000);
     window.location.href=`/game?id=${gameId}`; // refresh page
 
     return;
   }
 
+  
   $('.transaction-spinner')
     .children('.inner-spinner, .outer-spinner, .center-spinner')
     .addClass('done');
 
-
+  await sleep(3000);
   showReciept();
 }
 
@@ -794,8 +816,9 @@ async function processTransaction(){
       data: JSON.stringify({
         packageId: selectedPackageId,
         quantity: 1,
-        voucherCode: voucher ? voucher.code : null,
-        accountId: playerName
+        voucherCode: selectedVoucher ? selectedVoucher.code : null,
+        accountId: playerName,
+        server: selectedRegion
       })
     });
 

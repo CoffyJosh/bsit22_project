@@ -54,6 +54,7 @@ public class OrderService {
             voucher = voucherService.getValidVoucher(request.getVoucherCode());
         }
 
+
         // Compute pricing
         BigDecimal quantity = BigDecimal.valueOf(request.getQuantity());
         BigDecimal total = pkg.getPrice().multiply(quantity);
@@ -92,6 +93,7 @@ public class OrderService {
         item.setQuantity(request.getQuantity());
         item.setPrice(pkg.getPrice());
         item.setAccountId(request.getAccountId());
+        item.setServer(request.getServer());
 
         orderItemRepo.save(item);
 

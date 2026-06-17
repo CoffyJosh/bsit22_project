@@ -4,10 +4,9 @@ import lombok.Data;
 
 @Data
 public class CreateOrderRequest {
-
     private Long packageId;
     private Integer quantity;
     private String voucherCode;
     private String accountId;
-    private Long userId;
+    private String server;
 }
