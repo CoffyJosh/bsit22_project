@@ -25,7 +25,7 @@ public class SecurityConfig {
                     
                     "/login",
                     "/register",
-                    "/account-recovery",
+                    "/account-recovery/**",
 
                     "/checkout/**",
                     "/game/**",

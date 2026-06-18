@@ -11,6 +11,28 @@ function loadScript(src, callback) {
     document.body.appendChild(script);
 }
 
+function initPageByUrl() {
+
+    const url = window.location.pathname;
+
+    if (url.includes("/register")) {
+
+        loadScript("/js/register.js", () => {
+            if (typeof initPage === 'function') initPage();
+        });
+
+    } else if (url.includes("/login")) {
+
+        if (typeof initPage === 'function') initPage();
+
+    } else if (url.includes("/account-recovery")) {
+
+        loadScript("/js/account-recovery.js", () => {
+            if (typeof initPage === 'function') initPage();
+        });
+    }
+}
+
 
 // ----------------------------
 // PAGE SWAPPING
@@ -60,8 +82,10 @@ document.addEventListener("htmx:beforeSwap", function(e) {
                 });
             } else if (url.includes("/login")){
                 if (typeof initPage === 'function') initPage();
-            } else if (url.includes("/account-recovery")){
-                if (typeof initPage === 'function') initPage();
+            } else if (url.includes("/account-recovery")) {
+                loadScript("/js/account-recovery.js", () => {
+                    if (typeof initPage === 'function') initPage();
+                });
             }
         }, 50);
     }, 300);
@@ -97,7 +121,9 @@ window.addEventListener('popstate', function(e) {
                     } else if (currentUrl.includes("/login")){
                         if (typeof initPage === 'function') initPage();
                     } else if (currentUrl.includes("/account-recovery")){
-                        if (typeof initPage === 'function') initPage();
+                        loadScript("/js/account-recovery.js", () => {
+                            if (typeof initPage === 'function') initPage();
+                        });
                     }
                 }, 50);
             }
@@ -109,7 +135,10 @@ window.addEventListener('popstate', function(e) {
 // PAGE TITLE ON LOAD
 // ----------------------------
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', updatePageTitle);
+    document.addEventListener('DOMContentLoaded', function() {
+        updatePageTitle();
+        initPageByUrl();
+    });
 } else {
     // Already loaded (if script runs after DOM is ready)
     setTimeout(updatePageTitle, 0);

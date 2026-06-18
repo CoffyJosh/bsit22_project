@@ -5,11 +5,13 @@ import org.springframework.stereotype.Service;
 
 import com.comprog22.onlineshop.model.EmailMessage;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class NotificationService {
 
-    @Autowired
-    private EmailService emailService;
+    private final EmailService emailService;
 
     // Future: inject SmsService here
     // @Autowired

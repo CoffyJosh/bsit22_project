@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.comprog22.onlineshop.enums.UserStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
@@ -54,5 +57,5 @@ public class UserController {
             @PathVariable Long id,
             @RequestParam UserStatus status) {
         return userService.updateStatus(id, status);
-    }
+    } 
 }

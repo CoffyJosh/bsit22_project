@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 import com.comprog22.onlineshop.entities.VerificationCode;
 import com.comprog22.onlineshop.repository.VerificationCodeRepo;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class VerificationCodeService {
 
-    @Autowired
-    private VerificationCodeRepo verificationCodeRepository;
-
-    @Autowired
-    private NotificationService notificationService; 
+    private final VerificationCodeRepo verificationCodeRepository;
+    private final NotificationService notificationService; 
 
     public String sendCode(String recipient, String purpose) {
 

@@ -18,7 +18,10 @@ import com.comprog22.onlineshop.enums.OrderStatus;
 import com.comprog22.onlineshop.enums.PaymentStatus;
 import com.comprog22.onlineshop.repository.PaymentRepo;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class PaymentService {
     private final PaymentRepo paymentRepo;
     private final OrderService orderService;
@@ -26,11 +29,6 @@ public class PaymentService {
 
     private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    public PaymentService(PaymentRepo paymentRepo, OrderService orderService, VoucherService voucherService) {
-        this.paymentRepo = paymentRepo;
-        this.orderService = orderService;
-        this.voucherService = voucherService;
-    }
 
     @Transactional
     public Payment createPayment(Order order, String paymentMethod, BigDecimal amount) {

@@ -9,11 +9,13 @@ import com.comprog22.onlineshop.entities.Order;
 import com.comprog22.onlineshop.entities.OrderItem;
 import com.comprog22.onlineshop.repository.OrderItemRepo;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class OrderItemService {
 
-    @Autowired
-    private OrderItemRepo orderItemRepo;
+    private final OrderItemRepo orderItemRepo;
 
     public OrderItem create(OrderItem item) {
         return orderItemRepo.save(item);

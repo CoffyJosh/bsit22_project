@@ -10,18 +10,16 @@ import com.comprog22.onlineshop.entities.User;
 import com.comprog22.onlineshop.enums.UserStatus;
 import com.comprog22.onlineshop.repository.UserRepo;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
 
-    public Optional<User> getUserInfoByEmail(String email){
-        return userRepo.findByEmail(email);
-    }
-
-    public Optional<User> getUserInfoByID(Long id) {
-        return userRepo.findById(id);
+    public User save(User user) {
+        return userRepo.save(user);
     }
 
     public Optional<User> findById(Long id) {

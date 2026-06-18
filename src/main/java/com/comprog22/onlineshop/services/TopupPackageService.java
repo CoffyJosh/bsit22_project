@@ -12,10 +12,13 @@ import com.comprog22.onlineshop.enums.TopupPackageStatus;
 
 import com.comprog22.onlineshop.repository.TopupPackageRepo;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class TopupPackageService {
-    @Autowired
-    private TopupPackageRepo topupPackageRepo;
+
+    private final TopupPackageRepo topupPackageRepo;
 
     public TopupPackage create(TopupPackage product) {
         return topupPackageRepo.save(product);

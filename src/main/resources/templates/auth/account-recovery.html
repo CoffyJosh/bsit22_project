@@ -1,83 +1,86 @@
 <div th:fragment="content" data-page-title="AURA GAMES | Account Recovery">
-    <form>
 
-        <!-- EMAIL SECTION -->
-        <div id="email-section" class="fade" style="padding: 25px 30px 25px 30px;">
-            <h1 class="title"><span style="color:#9090A8;">ACCOUNT RECOVERY</span></h1>
-            <br>
-            <br>
+    <!-- STATE 1: EMAIL FORM -->
+    <div th:if="${emailSent == null}">
+
+        <h1 class="title">
+            <span style="color:#9090A8;">ACCOUNT RECOVERY</span>
+        </h1>
+
+        <br><br>
+
+        <form id="recovery-form">
+
             <div class="input-wrapper">
                 <label class="input-label">EMAIL ADDRESS</label>
-                <img class="input-icon" th:src="@{/images/email_icon.png}">
-                <input class="text-input" type="email" name="email"
-                       placeholder="username@domain.com" required>
+                <img class="input-icon" src="/images/email_icon.png">
+
+                <input class="text-input"
+                       type="email"
+                       id="email"
+                       name="email"
+                       placeholder="username@domain.com"
+                       required>
             </div>
-            <br>
 
             <p class="warning-text" id="emailWarningText"></p>
 
-            <div style="display: flex; flex-direction: column;">
-                <button class="confirm-button" id="send-code-btn" type="button" style="margin:0 0 15px 0;">SEND CODE</button>
-                <button class="back-button" type="button" onclick="window.history.back()">← BACK</button>
+            <div style="display:flex; flex-direction:column;">
+
+                <button class="confirm-button"
+                        id="send-link-btn"
+                        type="button">
+                    SEND LINK
+                </button>
+
+                <br>
+
+                <button class="back-button"
+                        type="button"
+                        onclick="window.history.back()"
+                        style="color: rgba(255, 255, 255, 0.5); font-size: 8px;">
+                    RETURN
+                </button>
+
             </div>
 
-        </div>
+        </form>
+
+    </div>
 
 
-        <!-- CONFIRMATION SECTION -->
-        <div id="confirmation-section" class="fade hidden" style="display:none;">
-            <h1 class="title">
-                <span style="color:#8A3FFC;">V</span><span style="color:#E0218A;">ERIFY</span>
-            </h1>
-            <div style="font-family:Orbitron;font-size:9px;color:#ffffff85;letter-spacing:2px;">
-                <p>We've sent a 6-digit code to your email.</p>
-            </div>
+    <!-- STATE 2: EMAIL SENT -->
+    <div th:if="${emailSent != null}"
+         style="width: 250px; height: 250px;
+                display:flex;
+                flex-direction:column;
+                justify-content:center;
+                align-items:center;
+                text-align:center;">
 
-            <p class="warning-text" id="confirmWarningText"></p>
+        <h1 class="title">
+            <span style="color:#8A3FFC;">E</span><span style="color:#E0218A;">MAIL SENT</span>
+        </h1>
 
-            <div id="code-boxes" style="display:flex;gap:10px;justify-content:center;">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-            </div>
+        <br>
 
-            <button class="confirm-button" id="confirm-btn" type="button">CONFIRM →</button>
+        <p style="font-family: Orbitron;
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: white;">
+            We've sent a secure recovery link to your email inbox.
+        </p>
 
-            <div class="resend-row">
-                <span style="font-family:Orbitron;font-size:9px;color:#ffffff55;letter-spacing:1.5px;">
-                    Didn't get the email?
-                </span>
-                <span id="resend-btn" class="resend-link">Resend</span>
-            </div>
+        <br>
 
-            <button class="back-button" id="back-to-email-btn" type="button">← BACK</button>
-        </div>
+        <button class="back-button"
+                type="button"
+                hx-get="/login"
+                hx-target="#auth-form-content"
+                style="color: rgba(255, 255, 255, 0.5); font-size: 8px;">
+            ← BACK TO LOGIN
+        </button>
 
+    </div>
 
-        <!-- PASSWORD SECTION -->
-        <div id="password-section" class="fade hidden" style="display:flex; flex-direction: column;">
-            <h1 class="title"><span style="color:#9090A8;">NEW PASSWORD</span></h1>
-            <br>
-            <br>
-            <p class="warning-text" id="passwordWarningText"></p>
-            <br>
-            <div class="input-wrapper">
-                <label class="input-label">NEW PASSWORD</label>
-                <img class="input-icon" th:src="@{/images/password_icon.png}">
-                <input class="password-input" type="password" name="password"
-                       placeholder="••••••••••••" required>
-            </div>
-            <br>
-            <br>
-            <button class="confirm-button" id="update-btn" type="button">UPDATE</button>
-        </div>
-
-    </form>
-
-    <script th:src="@{/js/jquery-4.0.0.js}"></script>
-    <script th:src="@{/js/jquery.easing.js}"></script>
-    <script th:src="@{/js/account-recovery.js}"></script>
 </div>

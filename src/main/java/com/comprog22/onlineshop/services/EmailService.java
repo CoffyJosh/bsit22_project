@@ -21,12 +21,15 @@ public class EmailService {
     private static final String PASS = "utoi gket anyg mwtx";
 
     public void sendMail(EmailMessage emailMessage) throws Exception {
+        System.out.println("Sending email...");
         Message msg = new MimeMessage(getEmailSession());
         msg.setFrom(new InternetAddress(EMAIL));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailMessage.getRecipient()));
         msg.setSubject(emailMessage.getSubject());
         msg.setContent(emailMessage.getBody(), "text/html; charset=UTF-8");
         Transport.send(msg);
+        System.out.println("Email sent.");
+
     }
 
     private Session getEmailSession(){

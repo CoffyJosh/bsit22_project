@@ -12,14 +12,13 @@ import com.comprog22.onlineshop.entities.Voucher;
 import com.comprog22.onlineshop.enums.Status;
 import com.comprog22.onlineshop.repository.VoucherRepo;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class VoucherService {
 
-    private VoucherRepo voucherRepo;
-
-    public VoucherService(VoucherRepo voucherRepo){
-        this.voucherRepo = voucherRepo;
-    }
+    private final VoucherRepo voucherRepo;
 
     public Voucher create(Voucher voucher) {
         return voucherRepo.save(voucher);

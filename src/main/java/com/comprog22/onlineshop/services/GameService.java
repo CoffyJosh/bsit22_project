@@ -14,11 +14,13 @@ import com.comprog22.onlineshop.entities.Game;
 import com.comprog22.onlineshop.enums.GameStatus;
 import com.comprog22.onlineshop.repository.GameRepo;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class GameService {
 
-    @Autowired
-    private GameRepo gameRepo;
+    private final GameRepo gameRepo;
 
     public Game create(Game game) {
         return gameRepo.save(game);

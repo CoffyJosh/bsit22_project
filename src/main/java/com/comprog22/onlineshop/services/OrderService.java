@@ -23,7 +23,10 @@ import com.comprog22.onlineshop.repository.OrderItemRepo;
 import com.comprog22.onlineshop.repository.OrderRepo;
 import com.comprog22.onlineshop.utils.Mathf;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class OrderService {
 
     private final OrderRepo orderRepo;
@@ -31,15 +34,6 @@ public class OrderService {
     private final TopupPackageService topupPackageService;
     private final VoucherService voucherService;
     private final UserService userService;
-
-
-    public OrderService(OrderItemRepo orderItemRepo, OrderRepo orderRepo, TopupPackageService topupPackageService, VoucherService voucherService, UserService userService) {
-        this.orderItemRepo = orderItemRepo;
-        this.orderRepo = orderRepo;
-        this.topupPackageService = topupPackageService;
-        this.voucherService = voucherService;
-        this.userService = userService;
-    }
 
     @Transactional
     public Order createOrder(CreateOrderRequest request) {
