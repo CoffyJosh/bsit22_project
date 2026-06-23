@@ -15,19 +15,17 @@ import com.comprog22.onlineshop.services.AuthService;
 import com.comprog22.onlineshop.services.UserService;
 import com.comprog22.onlineshop.services.VerificationCodeService;
 
+import lombok.RequiredArgsConstructor;
+
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private VerificationCodeService verificationCodeService;
+    private final AuthService authService;
+    private final UserService userService;
+    private final VerificationCodeService verificationCodeService;
 
     @PostMapping(value = "/register", consumes = "application/json")
     public User register(@RequestBody User user) {
@@ -39,7 +37,6 @@ public class AuthController {
     public boolean checkUsername(@RequestParam String name) {
         return userService.existsByName(name);
     }
-
 
     @GetMapping("/check-email")
     @ResponseBody

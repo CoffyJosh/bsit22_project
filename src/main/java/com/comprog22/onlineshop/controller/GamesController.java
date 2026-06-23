@@ -1,7 +1,11 @@
 package com.comprog22.onlineshop.controller;
 
+import java.io.IOException;
 import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,20 +15,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.comprog22.onlineshop.entities.Game;
 import com.comprog22.onlineshop.entities.TopupPackage;
+import com.comprog22.onlineshop.services.GameImageService;
 import com.comprog22.onlineshop.services.GameService;
 import com.comprog22.onlineshop.services.TopupPackageService;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/games")
 public class GamesController {
 
     private final GameService gameService;
+    private final GameImageService gameImageService;
     private final TopupPackageService topupPackageService;
 
-    public GamesController(GameService gameService, TopupPackageService topupPackageService) {
-        this.gameService = gameService;
-        this.topupPackageService = topupPackageService;
-    }
 
     @GetMapping("/popular")
     public ResponseEntity<List<Game>> getPopularGames() {
@@ -37,13 +45,23 @@ public class GamesController {
     }
 
     @GetMapping("/{gameId}/image/{imageType}")
-    public ResponseEntity<String> getImageUrl(@PathVariable Long gameId, @PathVariable String imageType) { 
-        try{
-            String imgDir = gameService.getGameImageDir(gameId, imageType);
-            return ResponseEntity.ok(imgDir);
+    public ResponseEntity<Resource> getImage(@PathVariable Long gameId, @PathVariable String imageType) {
+        Path imgPath = gameImageService.resolveImagePath(gameId, imageType);
 
-        } catch(Exception e){
+        if (imgPath == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        try {
+            Resource resource = new FileSystemResource(imgPath);
+            String contentType = Files.probeContentType(imgPath);
+
+            return ResponseEntity.ok()
+                    .contentType(contentType != null ? MediaType.parseMediaType(contentType) : MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().build();
         }
     }
 

@@ -5,17 +5,8 @@ const doc = $(document);
 
 // Helper Methods ------------------------------------------
 // ---------------------------------------------------------
-async function getImageUrl(gameId, imageType) {
-  try {
-    // Get game's thumbnail
-    return await $.ajax({
-      url: `/api/games/${gameId}/image/${imageType}`,
-      method: "GET",
-    })
-  } catch (err){
-    console.error(`Failed to load ${imageType}: `, err);
-    return '/images/thumbnail_placeholder.jpg';
-  }
+function getImageUrl(gameId, imageType) {
+  return `/api/games/${gameId}/image/${imageType}`;
 }
 
 async function loadGamesIntoGrid(container, games) {
@@ -30,10 +21,10 @@ async function loadGamesIntoGrid(container, games) {
     container.html(htmlList.join(""));
 }
 
-async function createGameFragment(game) {
+function createGameFragment(game) {
   const isPC = game.platform === 'PC' || game.platform === 'BOTH';
   const isMobile = game.platform === 'MOBILE' || game.platform === 'BOTH';
-  const imgUrl = await getImageUrl(game.id, "image");
+  const imgUrl = getImageUrl(game.id, "image");
 
   return `
     <div class="grid-item" data-game-id='${game.id}'>

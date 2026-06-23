@@ -1,13 +1,10 @@
 package com.comprog22.onlineshop.services;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.Files;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.comprog22.onlineshop.entities.Game;
@@ -69,16 +66,18 @@ public class GameService {
 
 
     // Image Finder
+    private static final String RESOURCE_BASE = "src/main/resources/static/images/games";
+
     public String getGameImageDir(Long gameId, String imageType) {
         String gameName = findGameById(gameId).getName().replace(":", "_");
-        Path imgPath = Path.of("src/main/resources/static/images/games", gameName);
-        Path imgFile = findImageResolve(imgPath, imageType);
+        Path resourcePath = Path.of(RESOURCE_BASE, gameName);
+        Path imgFile = findImageResolve(resourcePath, imageType);
 
-        if (imgFile == null) {
-            return null;
+        if (imgFile != null) {
+            return "/images/games/" + gameName + "/" + imgFile.getFileName().toString();
         }
 
-        return "/images/games/" + gameName + "/" + imgFile.getFileName().toString();
+        return null;
     }
 
     private Path findImageResolve(Path path, String imageType) {

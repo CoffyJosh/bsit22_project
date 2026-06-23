@@ -10,15 +10,14 @@ import com.comprog22.onlineshop.dto.CreateOrderRequest;
 import com.comprog22.onlineshop.entities.Order;
 import com.comprog22.onlineshop.services.OrderService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/orders")
 public class OrderController {
 
     private final OrderService orderService;
-
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
 
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody CreateOrderRequest request) {

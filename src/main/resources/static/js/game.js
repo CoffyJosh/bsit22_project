@@ -43,8 +43,8 @@ function getData(){
   gameName = $("#game-data").data("name");
 }
 
-async function getGameInformation(){
-  const bannerDir = await getImageUrl(gameId, "banner")
+function getGameInformation(){
+  const bannerDir = getImageUrl(gameId, "banner");
   const bannerImg = $("#banner-image");
   bannerImg.attr("src", bannerDir);
 
@@ -130,18 +130,8 @@ function updateToDefaultValues(){
   totalPrice = 0;
 }
 
-async function getImageUrl(gameId, imageType) {
-  try {
-    return await $.ajax({
-      url: `/api/games/${gameId}/image/${imageType}`,
-      method: "GET",
-    });
-  } catch (err){
-    console.error("AJAX FAILED");
-    console.error("Status:", err.status);
-    console.error("Response:", err.responseText);
-    console.error("Full error:", err);
-  }
+function getImageUrl(gameId, imageType) {
+  return `/api/games/${gameId}/image/${imageType}`;
 }
 
 async function createPackageFragment(pkg){
@@ -154,7 +144,7 @@ async function createPackageFragment(pkg){
   const gameId = pkg.game.id;
   const topupId = pkg.id;
 
-  const img = await getImageUrl(gameId, "currency");
+  const img = getImageUrl(gameId, "currency");
   currencyName = name;
 
   return `

@@ -12,17 +12,16 @@ import com.comprog22.onlineshop.entities.Payment;
 import com.comprog22.onlineshop.services.OrderService;
 import com.comprog22.onlineshop.services.PaymentService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/payments")
 public class PaymentController {
 
     private final PaymentService paymentService;
     private final OrderService orderService;
 
-    public PaymentController(PaymentService paymentService, OrderService orderService) {
-        this.paymentService = paymentService;
-        this.orderService = orderService;
-    }
 
     @PostMapping
     public ResponseEntity<Payment> createPayment(@RequestBody CreatePaymentRequest request) {

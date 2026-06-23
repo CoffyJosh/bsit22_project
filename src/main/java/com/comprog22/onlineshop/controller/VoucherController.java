@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comprog22.onlineshop.entities.Voucher;
 import com.comprog22.onlineshop.services.VoucherService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/voucher")
 public class VoucherController {
+    
     private final VoucherService voucherService;
-
-    public VoucherController(VoucherService voucherService) {
-        this.voucherService = voucherService;
-    }
 
     @GetMapping()
     public ResponseEntity<Voucher> getVoucher(@RequestParam("code") String code) {

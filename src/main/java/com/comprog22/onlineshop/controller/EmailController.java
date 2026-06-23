@@ -8,14 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comprog22.onlineshop.model.EmailMessage;
 import com.comprog22.onlineshop.services.EmailService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/mail")
 public class EmailController {
     private final EmailService emailService;
-
-    public EmailController(EmailService emailService){
-        this.emailService = emailService;
-    }
 
     @PostMapping("/sendMsg")
     public String sendEmail(@RequestBody EmailMessage m) {

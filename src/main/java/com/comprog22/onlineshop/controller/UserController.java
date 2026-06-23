@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.comprog22.onlineshop.entities.User;
 import com.comprog22.onlineshop.services.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.comprog22.onlineshop.enums.UserStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/me")
     public User me(@AuthenticationPrincipal UserDetails userDetails) {

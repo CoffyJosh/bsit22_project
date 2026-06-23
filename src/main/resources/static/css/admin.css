@@ -1,0 +1,300 @@
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #0D0D11;
+
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+/* ============== SIDE BAR ====================*/
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0; 
+
+  width: 17%;
+  height: 100vh;
+
+  margin: 0;
+  padding: 0;
+
+  background-color: rgba(0, 0, 0, 0.267);
+}
+
+.sidebar-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  padding: 10px 15px;
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.116);
+
+  border-color: transparent;
+  background-color: transparent;
+
+  position: relative;
+}
+
+.sidebar-button:hover {
+  background-color: #7a5eea15;
+  cursor: pointer;
+}
+
+.sidebar-button.active {
+  border-color: transparent;
+  background-color: #7a5eea1f;
+  cursor: default;
+}
+
+.sidebar-button.active::before {
+  display: block;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: #9B80F5;
+}
+
+.sidebar-icon {
+  width: 30px; 
+  height: 30px; 
+  margin: 0 20px 0 15px;
+
+  background-color: white; /* default/inactive color */
+
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+/* one line per icon — just points to its image */
+.icon-dashboard     { 
+  -webkit-mask-image: url('/images/dashboard-icon.svg');     
+  mask-image: url('/images/dashboard-icon.svg'); 
+}
+.icon-products { 
+  -webkit-mask-image: url('/images/product-icon.svg'); 
+  mask-image: url('/images/product-icon.svg'); 
+}
+.icon-orders  { 
+  -webkit-mask-image: url('/images/orders-icon.svg');  
+  mask-image: url('/images/orders-icon.svg'); 
+}
+
+/* turn it purple when its parent button is active */
+.sidebar-button.active .sidebar-icon {
+  background-color: #9B80F5;
+}
+
+.sidebar-button p {
+  padding: 0;
+  margin: 0;
+
+  font-family: 'Inter';
+  font-size: 17px;
+  font-weight: 400;
+
+  color:white;
+}
+
+
+/* ============== PAGES CONTAINER ====================*/
+.page-container {
+  flex: 1;       
+  box-sizing: border-box;
+  height: 100vh;
+  overflow-y: auto; 
+}
+
+.page-header {
+  flex: 1; 
+
+  top: 0;
+  width: 100%;
+  box-sizing: border-box;
+  position: sticky;
+  z-index: 10;
+
+  font-family: 'Orbitron';
+  font-size: 20px;
+  font-weight: 200;
+
+  color: white;
+
+  border: 1px solid transparent;
+  border-image: linear-gradient(to right, rgba(255, 0, 119, 0.527), rgba(140, 0, 255, 0.527), rgba(25, 0, 255, 0.527)) 1;
+  border-image-width: 0 0 2px 0;
+  background-color: rgba(0, 0, 0, 0.199);
+
+  margin: 0;
+  padding: 30px 0 10px 40px;
+
+  letter-spacing: 2px;
+}
+
+.stat-box {
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.219);
+  font-family: 'DM Sans';
+  font-weight: 300;
+  font-size: 30px;
+  color: white;
+  padding: 20px 20px;
+  
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-box[style*="box-1"] {
+  border: 1px solid #FF0077;
+  box-shadow: 0 0 15px rgba(255, 0, 119, 0.2);
+}
+.stat-box[style*="box-1"] .stat-name {
+  color: #FF0077 !important;
+  font-weight: 600;
+}
+
+.stat-box[style*="box-2"] {
+  border: 1px solid #8C00FF;
+  box-shadow: 0 0 15px rgba(140, 0, 255, 0.2);
+}
+.stat-box[style*="box-2"] .stat-name {
+  color: #8C00FF !important;
+  font-weight: 600;
+}
+
+.stat-box[style*="box-3"] {
+  border: 1px solid #1900FF;
+  box-shadow: 0 0 15px rgba(25, 0, 255, 0.2);
+}
+.stat-box[style*="box-3"] .stat-name {
+  color: #1900FF !important;
+  font-weight: 600;
+}
+
+.stat-box:hover:not(.filter-disabled) {
+  transform: translateY(-3px);
+  filter: brightness(1.2);
+}
+
+.stat-box.filter-disabled {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: none !important;
+  background-color: rgba(255, 255, 255, 0.01) !important;
+  transform: none !important;
+}
+
+.stat-box.filter-disabled:hover {
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  cursor: pointer;
+}
+
+.stat-box.filter-disabled .stat-name {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-weight: 300 !important;
+}
+
+.stat-box.filter-disabled .stat-value {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.stat-grid {
+  display: grid;
+  margin: 50px 50px;
+  padding: 0;
+
+  grid-template-columns: 300px 300px 300px 450px;
+  grid-template-rows: 150px 600px;
+  gap: 2em;
+
+  grid-template-areas:
+    "box-1 box-2 box-3 box-5"
+    "box-4 box-4 box-4 box-5";
+}
+
+.stat-name {
+  color: #ffffff60; 
+  font-size: 15px; 
+  margin: 10px 0;
+}
+
+.stat-value {
+  color: #ffffff; 
+  font-size: 35px; 
+  font-weight: 400; 
+  margin: 5px 0;
+}
+
+/* ============== LINE CHART COMPONENT ====================*/
+.line-chart {
+  /* Fits beautifully inside whatever grid area slot you drop it into */
+  width: 100%;
+  height: 100%; 
+  padding: 25px;
+
+  /* Matches your exact dashboard box style */
+  border: 1px solid rgba(255, 255, 255, 0.212);
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.219);
+
+  font-family: 'DM Sans';
+  color: white;
+  
+  box-sizing: border-box;
+}
+
+.apexcharts-menu {
+  background: #181926 !important; 
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+
+.apexcharts-menu-item {
+  color: #bcbcbc !important; 
+  background: #181926 !important; 
+  padding: 8px 16px !important;
+}
+
+
+.apexcharts-menu-item:hover {
+  background: #25273c !important;
+  color: #ffffff !important;
+}
+
+.apexcharts-toolbar {
+  background: #000000 !important; 
+  border: 1px solid rgba(255, 255, 255, 0.15) !important; 
+  border-radius: 20px !important; 
+  padding: 4px 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important; 
+  top: 10px !important; 
+  right: 15px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important; 
+}
+
+.apexcharts-toolbar svg {
+  fill: #ffffff;
+  width: 16px !important;
+  height: 16px !important;
+  transition: transform 0.15s ease, fill 0.15s ease !important;
+}
+
+.apexcharts-toolbar svg:hover {
+  fill: #FF0077 !important; 
+  transform: scale(1.15) !important; 
+}

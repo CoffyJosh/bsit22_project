@@ -3,8 +3,18 @@ package com.comprog22.onlineshop.services;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.comprog22.onlineshop.dto.CreateOrderRequest;
+import com.comprog22.onlineshop.dto.DashboardMetricsDto;
 import com.comprog22.onlineshop.entities.Order;
 import com.comprog22.onlineshop.entities.OrderItem;
 import com.comprog22.onlineshop.entities.TopupPackage;
@@ -92,6 +103,66 @@ public class OrderService {
         orderItemRepo.save(item);
 
         return order;
+    }
+  
+    public List<DashboardMetricsDto> getRecentMonthlyMetrics(LocalDate startDateParam, LocalDate endDateParam) {
+        LocalDateTime startDateTime = startDateParam.atStartOfDay(); 
+        LocalDateTime endDateTime = endDateParam.atTime(LocalTime.MAX);
+        List<Order> completedOrders = orderRepo.findByCreatedAtBetweenAndStatus(startDateTime, endDateTime, OrderStatus.COMPLETED);
+
+        // Initialize a TreeMap to guarantee chronological tracking across years
+        Map<String, List<Order>> groupedByMonth = new TreeMap<>();
+
+        // Pre-populate the map with empty arrays for every month between YOUR date ranges
+        LocalDateTime currentCursor = startDateTime.withDayOfMonth(1);
+        while (!currentCursor.isAfter(endDateTime)) {
+            String sortableKey = String.format("%d-%02d", currentCursor.getYear(), currentCursor.getMonthValue());
+            groupedByMonth.put(sortableKey, new ArrayList<>()); // Fills map with empty bucket lines
+            currentCursor = currentCursor.plusMonths(1);
+        }
+
+        // Append database entities into their matching pre-populated sortable buckets
+        for (Order order : completedOrders) {
+            int year = order.getCreatedAt().getYear();
+            int month = order.getCreatedAt().getMonthValue();
+            String sortableKey = String.format("%d-%02d", year, month);
+
+            if (groupedByMonth.containsKey(sortableKey)) {
+                groupedByMonth.get(sortableKey).add(order);
+            }
+        }
+
+        // Extract metrics and map safely to Lombok DTOs without dropping empty months
+        List<DashboardMetricsDto> metricsList = new ArrayList<>();
+        DateTimeFormatter uiFormatter = DateTimeFormatter.ofPattern("MMM yyyy", Locale.ENGLISH);
+
+        for (Map.Entry<String, List<Order>> entry : groupedByMonth.entrySet()) {
+            String sortableKey = entry.getKey(); // e.g., "2025-09"
+            List<Order> ordersInMonth = entry.getValue();
+
+            java.time.YearMonth yearMonth = java.time.YearMonth.parse(sortableKey);
+            String monthLabel = yearMonth.format(uiFormatter); // Becomes "Sep 2025"
+
+            long count = ordersInMonth.size();
+
+            BigDecimal earnings = ordersInMonth.stream()
+                    .map(Order::getFinalAmount) // <-- Check this field name!
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            BigDecimal totalRevenue = ordersInMonth.stream()
+                    .map(Order::getTotalAmount) // <-- Check this field name!
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            DashboardMetricsDto metric = new DashboardMetricsDto();
+            metric.setMonthLabel(monthLabel);
+            metric.setTransactionCount(count);
+            metric.setEarnings(earnings);
+            metric.setTotalRevenue(totalRevenue);
+
+            metricsList.add(metric);
+        }
+
+        return metricsList;
     }
 
     public Optional<Order> findById(Long id) {
