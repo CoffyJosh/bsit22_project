@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Sort;
 
 import com.comprog22.onlineshop.dto.GameDetailDTO;
 import com.comprog22.onlineshop.dto.GameListItemDTO;
+import com.comprog22.onlineshop.dto.GameUpdateRequest;
 import com.comprog22.onlineshop.entities.Game;
 import com.comprog22.onlineshop.entities.TopupPackage;
 import com.comprog22.onlineshop.enums.GameStatus;
@@ -84,7 +86,6 @@ public class GamesController {
         return ResponseEntity.ok(gameService.getGameDetail(gameId));
     }
 
-
     // ---------- TOPUP PACKAGES --------------------------
     @GetMapping("/{gameId}/packages")
     public ResponseEntity<List<TopupPackage>> getGamePackages(@PathVariable Long gameId){
@@ -144,18 +145,8 @@ public class GamesController {
     }
 
     // ----------- Update --------------
-    @PostMapping("/update/{gameId}")
-    public ResponseEntity<Void> updateGame(
-            @PathVariable Long gameId,
-            @RequestParam String name,
-            @RequestParam String packageName,
-            @RequestParam String status,
-            @RequestParam(required = false) MultipartFile icon,
-            @RequestParam(required = false) MultipartFile thumbnail,
-            @RequestParam(required = false) MultipartFile banner,
-            @RequestParam(required = false) MultipartFile packageImage
-    ) throws IOException {
-        gameService.updateGame(gameId, name, packageName, status, icon, thumbnail, banner, packageImage);
+    @PostMapping("/update/{gameId}")public ResponseEntity<Void> updateGame(@PathVariable Long gameId,@ModelAttribute GameUpdateRequest request) throws IOException {
+        gameService.updateGame(gameId, request);
         return ResponseEntity.ok().build();
     }
 }

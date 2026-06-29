@@ -17,8 +17,8 @@ public class GameDetailDTO {
     private String status;
     private LocalDateTime createdAt;
 
+    private String productCode;
     private Long providerId;
-    private Long providerProductId;
 
     private boolean hasIcon;
     private boolean hasThumbnail;

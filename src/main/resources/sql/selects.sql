@@ -7,6 +7,8 @@ SELECT * FROM vouchers;
 SELECT * FROM orders;
 SELECT * FROM order_items;
 SELECT * FROM payments;
+SELECT * FROM providers;
+SELECT * FROM provider_products;
 
 SELECT * FROM token;
 SELECT * FROM verification_code;

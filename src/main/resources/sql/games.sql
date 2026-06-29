@@ -1,4 +1,4 @@
-SE topupservicesystem;
+USE topupservicesystem;
  
 -- ==================== DROP ====================
 DROP TABLE IF EXISTS games;
@@ -10,30 +10,30 @@ ALTER TABLE games AUTO_INCREMENT = 1;
 SET SQL_SAFE_UPDATES = 1;
  
 -- ==================== INSERT ====================
-INSERT INTO games (name, package_name, platform, status, provider_product_id, created_at) VALUES
-('Valorant', 'Valorant Points', 'PC', 'ACTIVE', 1, NOW()),
-('Mobile Legends: Bang Bang', 'Diamonds', 'MOBILE', 'ACTIVE', 2, NOW()),
-('Genshin Impact', 'Genesis Crystals', 'BOTH', 'ACTIVE', 3, NOW()),
-('League of Legends', 'Riot Points', 'PC', 'ACTIVE', 4, NOW()),
-('Honor of Kings', 'Tokens', 'MOBILE', 'ACTIVE', 5, NOW()),
-('Free Fire', 'Diamonds', 'MOBILE', 'ACTIVE', 6, NOW()),
-('Marvel Rivals', 'Lattice', 'PC', 'ACTIVE', 7, NOW()),
-('Arena Breakout: Infinite', 'Bonds', 'PC', 'ACTIVE', 8, NOW()),
-('Rainbow Six: Mobile', 'Credits', 'MOBILE', 'ACTIVE', 9, NOW()),
-('Crossfire Legends', 'CF Points', 'MOBILE', 'ACTIVE', 10, NOW()),
-('2XKO', 'KO Points', 'PC', 'ACTIVE', 11, NOW()),
-('Farlight 84', 'Diamonds', 'BOTH', 'ACTIVE', 12, NOW()),
-('Magic Chess: Go Go', 'Diamonds', 'MOBILE', 'ACTIVE', 13, NOW()),
-('Where Winds Meet', 'Echo Beads', 'BOTH', 'ACTIVE', 14, NOW()),
-('Dragonest M: Classic', 'Diamonds', 'MOBILE', 'ACTIVE', 15, NOW()),
-('Teamfight Tactics', 'Riot Points', 'BOTH', 'ACTIVE', 16, NOW()),
-('League of Legends: Wild Rift', 'Wild Cores', 'MOBILE', 'ACTIVE', 17, NOW()),
-('Blood Strike', 'Gold', 'MOBILE', 'ACTIVE', 18, NOW()),
-('Call of Duty: Mobile', 'CP', 'MOBILE', 'ACTIVE', 19, NOW()),
-('Crossfire', 'ZP', 'PC', 'ACTIVE', 20, NOW()),
-('Honkai: Star Rail', 'Stellar Jade', 'BOTH', 'ACTIVE', 21, NOW()),
-('PUBG Mobile', 'UC', 'MOBILE', 'ACTIVE', 22, NOW()),
-('Clash of Clans', 'Gems', 'MOBILE', 'ACTIVE', 23, NOW());
+INSERT INTO games (name, package_name, platform, status, product_code, provider_id, created_at) VALUES
+('Valorant', 'Valorant Points', 'PC', 'ACTIVE', 'VAL-VP', 1, NOW()),
+('Mobile Legends: Bang Bang', 'Diamonds', 'MOBILE', 'ACTIVE', 'MLBB-DIA', 2, NOW()),
+('Genshin Impact', 'Genesis Crystals', 'BOTH', 'ACTIVE', 'GI-GC', 3, NOW()),
+('League of Legends', 'Riot Points', 'PC', 'ACTIVE', 'LOL-RP', 1, NOW()),
+('Honor of Kings', 'Tokens', 'MOBILE', 'ACTIVE', 'HOK-TOK', 2, NOW()),
+('Free Fire', 'Diamonds', 'MOBILE', 'ACTIVE', 'FF-DIA', 4, NOW()),
+('Marvel Rivals', 'Lattice', 'PC', 'ACTIVE', 'MR-LAT', 1, NOW()),
+('Arena Breakout: Infinite', 'Bonds', 'PC', 'ACTIVE', 'ABI-BOND', 1, NOW()),
+('Rainbow Six: Mobile', 'Credits', 'MOBILE', 'ACTIVE', 'R6M-CRED', 4, NOW()),
+('Crossfire Legends', 'CF Points', 'MOBILE', 'ACTIVE', 'CFL-CFP', 4, NOW()),
+('2XKO', 'KO Points', 'PC', 'ACTIVE', '2XKO-KOP', 1, NOW()),
+('Farlight 84', 'Diamonds', 'BOTH', 'ACTIVE', 'FL84-DIA', 3, NOW()),
+('Magic Chess: Go Go', 'Diamonds', 'MOBILE', 'ACTIVE', 'MCGG-DIA', 2, NOW()),
+('Where Winds Meet', 'Echo Beads', 'BOTH', 'ACTIVE', 'WWM-ECHO', 3, NOW()),
+('Dragonest M: Classic', 'Diamonds', 'MOBILE', 'ACTIVE', 'DNM-DIA', 2, NOW()),
+('Teamfight Tactics', 'Riot Points', 'BOTH', 'ACTIVE', 'TFT-RP', 1, NOW()),
+('League of Legends: Wild Rift', 'Wild Cores', 'MOBILE', 'ACTIVE', 'WR-WC', 2, NOW()),
+('Blood Strike', 'Gold', 'MOBILE', 'ACTIVE', 'BS-GOLD', 4, NOW()),
+('Call of Duty: Mobile', 'CP', 'MOBILE', 'ACTIVE', 'CODM-CP', 4, NOW()),
+('Crossfire', 'ZP', 'PC', 'ACTIVE', 'CF-ZP', 4, NOW()),
+('Honkai: Star Rail', 'Stellar Jade', 'BOTH', 'ACTIVE', 'HSR-SJ', 3, NOW()),
+('PUBG Mobile', 'UC', 'MOBILE', 'ACTIVE', 'PUBGM-UC', 4, NOW()),
+('Clash of Clans', 'Gems', 'MOBILE', 'ACTIVE', 'COC-GEMS', 4, NOW());
 
 -- Explicitly requested corrections and completions
 UPDATE games SET package_name = 'Valorant Points' WHERE id = 1;   -- Valorant
@@ -60,35 +60,53 @@ UPDATE games SET package_name = 'Stellar Jade' WHERE id = 21;     -- Honkai Star
 UPDATE games SET package_name = 'UC' WHERE id = 22;               -- PUBG Mobile
 UPDATE games SET package_name = 'Gems' WHERE id = 23;             -- Clash of Clans
 
-PDATE games SET provider_product_id = 1  WHERE name = 'Valorant';
-UPDATE games SET provider_product_id = 2  WHERE name = 'Mobile Legends: Bang Bang';
-UPDATE games SET provider_product_id = 3  WHERE name = 'Genshin Impact';
-UPDATE games SET provider_product_id = 4  WHERE name = 'League of Legends';
-UPDATE games SET provider_product_id = 5  WHERE name = 'Honor of Kings';
-UPDATE games SET provider_product_id = 6  WHERE name = 'Free Fire';
-UPDATE games SET provider_product_id = 7  WHERE name = 'Marvel Rivals';
-UPDATE games SET provider_product_id = 8  WHERE name = 'Arena Breakout: Infinite';
-UPDATE games SET provider_product_id = 9  WHERE name = 'Rainbow Six: Mobile';
-UPDATE games SET provider_product_id = 10 WHERE name = 'Crossfire Legends';
-UPDATE games SET provider_product_id = 11 WHERE name = '2XKO';
-UPDATE games SET provider_product_id = 12 WHERE name = 'Farlight 84';
-UPDATE games SET provider_product_id = 13 WHERE name = 'Magic Chess: Go Go';
-UPDATE games SET provider_product_id = 14 WHERE name = 'Where Winds Meet';
-UPDATE games SET provider_product_id = 15 WHERE name = 'Dragonest M: Classic';
-UPDATE games SET provider_product_id = 16 WHERE name = 'Teamfight Tactics';
-UPDATE games SET provider_product_id = 17 WHERE name = 'League of Legends: Wild Rift';
-UPDATE games SET provider_product_id = 18 WHERE name = 'Blood Strike';
-UPDATE games SET provider_product_id = 19 WHERE name = 'Call of Duty: Mobile';
-UPDATE games SET provider_product_id = 20 WHERE name = 'Crossfire';
-UPDATE games SET provider_product_id = 21 WHERE name = 'Honkai: Star Rail';
-UPDATE games SET provider_product_id = 22 WHERE name = 'PUBG Mobile';
-UPDATE games SET provider_product_id = 23 WHERE name = 'Clash of Clans';
- 
--- ==================== OPTIONAL: ENFORCE NOT NULL AFTER BACKFILL ====================
--- Once you've confirmed every game row got a valid provider_product_id
--- (no leftover 0s or NULLs — check with the SELECT below first), you can
--- tighten the column if you want it required going forward:
---
--- SELECT id, name, provider_product_id FROM games WHERE provider_product_id IS NULL;
---
--- ALTER TABLE games MODIFY provider_product_id BIGINT NOT NULL;
+-- ADDING CODE 
+UPDATE games SET product_code = 'VAL-VP'     WHERE id = 1;  -- Valorant
+UPDATE games SET product_code = 'MLBB-DIA'   WHERE id = 2;  -- Mobile Legends: Bang Bang
+UPDATE games SET product_code = 'GI-GC'      WHERE id = 3;  -- Genshin Impact
+UPDATE games SET product_code = 'LOL-RP'     WHERE id = 4;  -- League of Legends
+UPDATE games SET product_code = 'HOK-TOK'    WHERE id = 5;  -- Honor of Kings
+UPDATE games SET product_code = 'FF-DIA'     WHERE id = 6;  -- Free Fire
+UPDATE games SET product_code = 'MR-LAT'     WHERE id = 7;  -- Marvel Rivals
+UPDATE games SET product_code = 'ABI-BOND'   WHERE id = 8;  -- Arena Breakout: Infinite
+UPDATE games SET product_code = 'R6M-CRED'   WHERE id = 9;  -- Rainbow Six: Mobile
+UPDATE games SET product_code = 'CFL-CFP'    WHERE id = 10; -- Crossfire Legends
+UPDATE games SET product_code = '2XKO-KOP'   WHERE id = 11; -- 2XKO
+UPDATE games SET product_code = 'FL84-DIA'   WHERE id = 12; -- Farlight 84
+UPDATE games SET product_code = 'MCGG-DIA'   WHERE id = 13; -- Magic Chess: Go Go
+UPDATE games SET product_code = 'WWM-ECHO'   WHERE id = 14; -- Where Winds Meet
+UPDATE games SET product_code = 'DNM-DIA'    WHERE id = 15; -- Dragonest M: Classic
+UPDATE games SET product_code = 'TFT-RP'     WHERE id = 16; -- Teamfight Tactics
+UPDATE games SET product_code = 'WR-WC'      WHERE id = 17; -- League of Legends: Wild Rift
+UPDATE games SET product_code = 'BS-GOLD'    WHERE id = 18; -- Blood Strike
+UPDATE games SET product_code = 'CODM-CP'    WHERE id = 19; -- Call of Duty: Mobile
+UPDATE games SET product_code = 'CF-ZP'      WHERE id = 20; -- Crossfire
+UPDATE games SET product_code = 'HSR-SJ'     WHERE id = 21; -- Honkai: Star Rail
+UPDATE games SET product_code = 'PUBGM-UC'   WHERE id = 22; -- PUBG Mobile
+UPDATE games SET product_code = 'COC-GEMS'   WHERE id = 23; -- Clash of Clans
+
+
+-- ADDING PROVIDERS
+UPDATE games SET provider_id = 3 WHERE id = 1;  -- Valorant (VAL-VP -> Xsolla)
+UPDATE games SET provider_id = 2 WHERE id = 2;  -- Mobile Legends: Bang Bang (MLBB-DIA -> Razer Gold)
+UPDATE games SET provider_id = 1 WHERE id = 3;  -- Genshin Impact (GI-GC -> MOL Global)
+UPDATE games SET provider_id = 4 WHERE id = 4;  -- League of Legends (LOL-RP -> Coda Payments)
+UPDATE games SET provider_id = 3 WHERE id = 5;  -- Honor of Kings (HOK-TOK -> Xsolla)
+UPDATE games SET provider_id = 1 WHERE id = 6;  -- Free Fire (FF-DIA -> MOL Global)
+UPDATE games SET provider_id = 2 WHERE id = 7;  -- Marvel Rivals (MR-LAT -> Razer Gold)
+UPDATE games SET provider_id = 4 WHERE id = 8;  -- Arena Breakout: Infinite (ABI-BOND -> Coda Payments)
+UPDATE games SET provider_id = 3 WHERE id = 9;  -- Rainbow Six: Mobile (R6M-CRED -> Xsolla)
+UPDATE games SET provider_id = 2 WHERE id = 10; -- Crossfire Legends (CFL-CFP -> Razer Gold)
+UPDATE games SET provider_id = 1 WHERE id = 11; -- 2XKO (2XKO-KOP -> MOL Global)
+UPDATE games SET provider_id = 3 WHERE id = 12; -- Farlight 84 (FL84-DIA -> Xsolla)
+UPDATE games SET provider_id = 2 WHERE id = 13; -- Magic Chess: Go Go (MCGG-DIA -> Razer Gold)
+UPDATE games SET provider_id = 4 WHERE id = 14; -- Where Winds Meet (WWM-ECHO -> Coda Payments)
+UPDATE games SET provider_id = 1 WHERE id = 15; -- Dragonest M: Classic (DNM-DIA -> MOL Global)
+UPDATE games SET provider_id = 4 WHERE id = 16; -- Teamfight Tactics (TFT-RP -> Coda Payments)
+UPDATE games SET provider_id = 2 WHERE id = 17; -- League of Legends: Wild Rift (WR-WC -> Razer Gold)
+UPDATE games SET provider_id = 3 WHERE id = 18; -- Blood Strike (BS-GOLD -> Xsolla)
+UPDATE games SET provider_id = 4 WHERE id = 19; -- Call of Duty: Mobile (CODM-CP -> Coda Payments)
+UPDATE games SET provider_id = 1 WHERE id = 20; -- Crossfire (CF-ZP -> MOL Global)
+UPDATE games SET provider_id = 2 WHERE id = 21; -- Honkai: Star Rail (HSR-SJ -> Razer Gold)
+UPDATE games SET provider_id = 3 WHERE id = 22; -- PUBG Mobile (PUBGM-UC -> Xsolla)
+UPDATE games SET provider_id = 4 WHERE id = 23; -- Clash of Clans (COC-GEMS -> Coda Payments)

@@ -21,6 +21,8 @@ $(document).ready(function () {
   fetchProviders();
   showPlaceholder('empty');
 
+
+
   $('#nextPageBtn').on('click', goToNextProductPage);
   $('#prevPageBtn').on('click', goToPrevProductPage);
 
@@ -60,16 +62,35 @@ $(document).ready(function () {
     fetchProductDetails(selectedProduct);
   });
 
-  // Change detection — text inputs (provider-name/merchant-id/api-key/secret-key removed)
-  $(document).on('input', '#input-game-name, #input-package-name', updateSaveButtonState);
+  // Change detection — text inputs
+  $(document).on('input', '#input-game-name, #input-package-name, #input-product-code', updateSaveButtonState);
 
-  // Change detection — dropdowns
-  $(document).on('change', '#provider-select', function () {
-    const providerId = $(this).val();
-    populateProductDropdown(providerId, null); // null = no pre-selection, user is changing it
+  // Custom provider dropdown — open/close
+  $(document).on('click', '.custom-dropdown .dropdown-selected', function () {
+    const $dropdown = $(this).closest('.custom-dropdown');
+    $('.custom-dropdown').not($dropdown).removeClass('open');
+    $dropdown.toggleClass('open');
+  });
+
+  // Close dropdown when clicking outside
+  $(document).on('click', function (e) {
+    if (!$(e.target).closest('.custom-dropdown').length) {
+      $('.custom-dropdown').removeClass('open');
+    }
+  });
+
+  // Selecting a provider option
+  $(document).on('click', '#provider-options .dropdown-option', function () {
+    const id = $(this).data('id');
+    const text = $(this).text();
+
+    $('#providerFilterDropdown')
+      .attr('data-selected-id', id)
+      .find('.dropdown-selected-text').text(text);
+
+    $('#providerFilterDropdown').removeClass('open');
     updateSaveButtonState();
   });
-  $(document).on('change', '#provider-product-select', updateSaveButtonState);
 
   // Change detection — status toggle
   $(document).on('change', 'input[name="game-status"]', updateSaveButtonState);
@@ -112,6 +133,8 @@ $(document).ready(function () {
     formData.append('name', $('#input-game-name').val());
     formData.append('packageName', $('#input-package-name').val());
     formData.append('status', $('input[name="game-status"]:checked').val());
+    formData.append('providerId', $('#providerFilterDropdown').attr('data-selected-id') || '');
+    formData.append('productCode', $('#input-product-code').val() || '');
 
     const iconFile = $('.image-upload-input[data-image-type="icon"]')[0].files[0];
     const thumbFile = $('.image-upload-input[data-image-type="thumbnail"]')[0].files[0];
@@ -119,7 +142,7 @@ $(document).ready(function () {
     const packageFile = $('.image-upload-input[data-image-type="package"]')[0].files[0];
 
     if (iconFile) formData.append('icon', iconFile);
-    if (thumbFile) formData.append('image', thumbFile);
+    if (thumbFile) formData.append('thumbnail', thumbFile);
     if (bannerFile) formData.append('banner', bannerFile);
     if (packageFile) formData.append('packageImage', packageFile);
 
@@ -130,12 +153,12 @@ $(document).ready(function () {
       processData: false,
       contentType: false,
       success: function () {
-        fetchProductDetails(selectedProduct); // reload to resync originalGameData
-        fetchProducts(); // refresh list (name/status may have changed)
+        fetchProductDetails(selectedProduct);
+        fetchProducts();
       },
       error: function (xhr) {
         console.error(xhr);
-        $btn.prop('disabled', false); // re-enable so they can retry
+        $btn.prop('disabled', false);
       }
     });
   });
@@ -146,7 +169,6 @@ $(document).ready(function () {
 // Helper Methods
 // =========================
 function showPlaceholder(state) {
-  // state: 'empty' | 'loading'
   const $ph = $('#detail-placeholder');
 
   if (state === 'empty') {
@@ -179,7 +201,7 @@ function setupImageSlot(type, hasImage, imageUrl) {
   if (hasImage) {
     $box.addClass('active');
     $box.css({
-      'background-image': `url('${imageUrl}')`,
+      'background-image': `url('${imageUrl}?t=${Date.now()}')`,
       'background-size': 'cover',
       'background-position': 'center'
     });
@@ -239,7 +261,7 @@ async function createProductItem(game) {
 
   $item.data('game-id', game.id);
   $item.find('.product-item-avatar img')
-    .attr('src', `/api/games/${game.id}/image/icon`)
+    .attr('src', `/api/games/${game.id}/image/icon?t=${Date.now()}`)
     .on('error', function () {
       $(this).off('error').attr('src', '/images/icon_placeholder.png');
     });
@@ -249,6 +271,34 @@ async function createProductItem(game) {
 
   setProductStatus($item, game.status);
   return $item;
+}
+
+function updateProductListItem(game) {
+  const $item = $('.product-item').filter(function () {
+    return $(this).data('game-id') === game.id;
+  });
+
+  if ($item.length === 0) return;
+
+  $item.find('.product-item-title').text(game.name);
+  $item.find('.product-item-subtitle').text(game.packageName);
+  setProductStatus($item, game.status);
+
+  if (imageChanged.banner) {
+    $item.css({
+      'background-image': `
+        linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+        url('/api/games/${game.id}/image/banner?t=${Date.now()}')
+      `,
+      'background-size': 'cover',
+      'background-position': 'center',
+    });
+  }
+
+  if (imageChanged.icon) {
+    $item.find('.product-item-avatar img')
+      .attr('src', `/api/games/${game.id}/image/icon?t=${Date.now()}`);
+  }
 }
 
 
@@ -292,41 +342,22 @@ function fetchProducts() {
 
 
 // =========================
-// Providers / Provider Products dropdown
+// Providers dropdown (Provider only — product is now a plain text code)
 // =========================
 
 function fetchProviders() {
   $.ajax({
-    url: '/api/providers',
+    url: '/api/provider/get-all',
     method: 'GET',
     success: function (providers) {
       providersCache = providers;
-      const $select = $('#provider-select');
-      $select.empty().append('<option value="">-- Select Provider --</option>');
+      const $options = $('#provider-options');
+      $options.empty();
       providers.forEach(p => {
-        $select.append(`<option value="${p.id}">${p.name}</option>`);
+        $options.append(`<div class="dropdown-option" data-id="${p.providerId}">${p.providerName}</div>`);
       });
-    },
-    error: function (xhr) { console.error(xhr); }
-  });
-}
 
-function populateProductDropdown(providerId, preselectProductId) {
-  const $select = $('#provider-product-select');
-  $select.empty().append('<option value="">-- Select Product --</option>');
-
-  if (!providerId) return;
-
-  $.ajax({
-    url: `/api/providers/${providerId}/products`,
-    method: 'GET',
-    success: function (products) {
-      products.forEach(p => {
-        $select.append(`<option value="${p.id}">${p.productName}</option>`);
-      });
-      if (preselectProductId) {
-        $select.val(preselectProductId);
-      }
+      console.log(providersCache);
     },
     error: function (xhr) { console.error(xhr); }
   });
@@ -349,7 +380,7 @@ function fetchProductDetails(gameId) {
       populateProductDetails(game);
     },
     error: function (xhr) {
-      if (xhr.statusText === 'abort') return; // expected, not a real error
+      if (xhr.statusText === 'abort') return;
       console.error(xhr);
     },
     complete: function () {
@@ -360,12 +391,14 @@ function fetchProductDetails(gameId) {
 
 function populateProductDetails(game) {
   showDetailContent();
+  updateProductListItem(game);
   imageChanged = { icon: false, thumbnail: false, banner: false, package: false };
+
   originalGameData = {
     name: game.name,
     packageName: game.packageName,
     providerId: game.providerId || '',
-    providerProductId: game.providerProductId || '',
+    productCode: game.productCode || '',
     status: game.status
   };
 
@@ -373,23 +406,26 @@ function populateProductDetails(game) {
   $('#game-name').text(game.name);
   $('#package-name').text('Package: ' + game.packageName);
   $('.product-info-avatar img')
-    .attr('src', `/api/games/${game.id}/image/icon`)
+    .attr('src', `/api/games/${game.id}/image/icon?t=${Date.now()}`)
     .off('error')
     .on('error', function () { $(this).attr('src', '/images/icon_placeholder.png'); });
 
   // 4-column header stats
-  $('#stat-total-sales').text(game.totalSales ?? 0);
-  $('#stat-revenue').text(formatCurrency(game.revenue));
-  $('#stat-packages').text(game.packagesCount ?? 0);
-  $('#stat-date-created').text(formatProductDate(game.createdAt));
+  $('#total-sales').find('.info-value').text(game.totalSales ?? 0);
+  $('#revenue-info').find('.info-value').text(formatCurrency(game.revenue));
+  $('#package-info').find('.info-value').text(game.packagesCount ?? 0);
+  $('#creation-info').find('.info-value').text(formatProductDate(game.createdAt));
 
   // Text inputs
   $('#input-game-name').val(game.name);
   $('#input-package-name').val(game.packageName);
+  $('#input-product-code').val(game.productCode || '');
 
-  // Provider dropdown — select provider, then load+preselect its product
-  $('#provider-select').val(game.providerId || '');
-  populateProductDropdown(game.providerId, game.providerProductId);
+  // Provider dropdown — set selected via data attribute
+  const provider = providersCache.find(p => p.providerId === game.providerId);
+  $('#providerFilterDropdown')
+    .attr('data-selected-id', game.providerId || '')
+    .find('.dropdown-selected-text').text(provider ? provider.providerName : 'Select Provider');
 
   // Status toggle
   $('input[name="game-status"]').prop('checked', false);
@@ -415,8 +451,8 @@ function hasUnsavedChanges() {
   const current = {
     name: $('#input-game-name').val(),
     packageName: $('#input-package-name').val(),
-    providerId: $('#provider-select').val() || '',
-    providerProductId: $('#provider-product-select').val() || '',
+    providerId: $('#providerFilterDropdown').attr('data-selected-id') || '',
+    productCode: $('#input-product-code').val() || '',
     status: $('input[name="game-status"]:checked').val()
   };
 

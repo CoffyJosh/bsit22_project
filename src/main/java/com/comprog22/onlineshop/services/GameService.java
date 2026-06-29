@@ -9,23 +9,21 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.comprog22.onlineshop.dto.GameDetailDTO;
 import com.comprog22.onlineshop.dto.GameListItemDTO;
+import com.comprog22.onlineshop.dto.GameUpdateRequest;
 import com.comprog22.onlineshop.entities.Game;
-import com.comprog22.onlineshop.entities.ProviderProduct;
+import com.comprog22.onlineshop.entities.Provider;
 import com.comprog22.onlineshop.enums.GameStatus;
 
 import com.comprog22.onlineshop.repository.GameRepo;
 import com.comprog22.onlineshop.repository.OrderItemRepo;
 import com.comprog22.onlineshop.repository.OrderRepo;
 import com.comprog22.onlineshop.repository.TopupPackageRepo;
+import com.comprog22.onlineshop.repository.ProviderRepo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,6 +37,8 @@ public class GameService {
     private final OrderItemRepo orderItemRepo;
     private final OrderRepo orderRepo;
     private final TopupPackageRepo topupPackageRepo;
+
+    private final ProviderRepo providerRepo;
 
     public Game create(Game game) {
         return gameRepo.save(game);
@@ -107,18 +107,16 @@ public class GameService {
         Game game = findById(gameId)
                 .orElseThrow(() -> new NoSuchElementException("Game not found: " + gameId));
 
-        ProviderProduct pp = game.getProviderProduct();
-
         GameDetailDTO dto = new GameDetailDTO();
         dto.setId(game.getId());
         dto.setName(game.getName());
         dto.setPackageName(game.getPackageName());
         dto.setStatus(game.getStatus().name());
         dto.setCreatedAt(game.getCreatedAt());
+        dto.setProductCode(game.getProductCode());
 
-        if (pp != null) {
-            dto.setProviderProductId(pp.getId());
-            dto.setProviderId(pp.getProvider().getId());
+        if (game.getProvider() != null) {
+            dto.setProviderId(game.getProvider().getId());
         }
 
         dto.setHasIcon(gameImageService.resolveImagePath(gameId, "icon") != null);
@@ -135,29 +133,35 @@ public class GameService {
 
 
     // ---------- UPDATE ----------
-    public void updateGame(Long gameId, String name, String packageName, String status,
-            MultipartFile icon, MultipartFile thumbnail,
-            MultipartFile banner, MultipartFile packageImage) throws IOException {
+    public void updateGame(Long gameId, GameUpdateRequest request) throws IOException {
+        Game game = findById(gameId).orElseThrow(() -> new NoSuchElementException("Game not found: " + gameId));
 
-        Game game = findById(gameId)
-                .orElseThrow(() -> new NoSuchElementException("Game not found: " + gameId));
+        game.setName(request.getName());
+        game.setPackageName(request.getPackageName());
+        game.setStatus(GameStatus.valueOf(request.getStatus()));
+        game.setProductCode(request.getProductCode());
 
-        game.setName(name);
-        game.setPackageName(packageName);
-        game.setStatus(GameStatus.valueOf(status));
+        if (request.getProviderId() != null) {
+            Provider provider = providerRepo.findById(request.getProviderId())
+                    .orElseThrow(() -> new NoSuchElementException("Provider not found: " + request.getProviderId()));
+            game.setProvider(provider);
+        } else {
+            game.setProvider(null);
+        }
+
         gameRepo.save(game);
 
-        if (icon != null && !icon.isEmpty()) {
-            gameImageService.saveGameImage(gameId, "icon", icon);
+        if (request.getIcon() != null && !request.getIcon().isEmpty()) {
+            gameImageService.saveGameImage(gameId, "icon", request.getIcon());
         }
-        if (thumbnail != null && !thumbnail.isEmpty()) {
-            gameImageService.saveGameImage(gameId, "thumbnail", thumbnail);
+        if (request.getThumbnail() != null && !request.getThumbnail().isEmpty()) {
+            gameImageService.saveGameImage(gameId, "thumbnail", request.getThumbnail());
         }
-        if (banner != null && !banner.isEmpty()) {
-            gameImageService.saveGameImage(gameId, "banner", banner);
+        if (request.getBanner() != null && !request.getBanner().isEmpty()) {
+            gameImageService.saveGameImage(gameId, "banner", request.getBanner());
         }
-        if (packageImage != null && !packageImage.isEmpty()) {
-            gameImageService.saveGameImage(gameId, "package", packageImage);
+        if (request.getPackageImage() != null && !request.getPackageImage().isEmpty()) {
+            gameImageService.saveGameImage(gameId, "package", request.getPackageImage());
         }
     }
 

@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+
 @Entity
 @Data
 @Table(name = "games")
@@ -36,6 +37,13 @@ public class Game {
     @Column(name = "package_name", nullable = false)
     private String packageName;
 
+    @Column(name = "product_code", nullable = true)
+    private String productCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "provider_id", nullable = true)
+    private Provider provider;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private GameStatus status;
@@ -43,8 +51,4 @@ public class Game {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "provider_product_id", nullable = true)
-    private ProviderProduct providerProduct;
 }

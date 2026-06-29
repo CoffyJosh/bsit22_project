@@ -64,7 +64,7 @@
               <img src="">
             </div>
 
-            <div class="info-column" style="margin:15px 80px 15px 0;" id="game-info">
+            <div class="info-column" style="margin:15px 15px 15px 0; width: 185px;" id="game-info">
               <p class="game-name" id="game-name">VALORANT</p>
               <p class="package-name" id="package-name"> Package: Valorat Points</p>
             </div>
@@ -75,33 +75,28 @@
               <p class="info-value">2,156</p>
             </div>
 
-            <div class="stat-separator" id="revenue-info"></div>
-            <div class="info-column">
+            <div class="stat-separator"></div>
+            <div class="info-column" id="revenue-info">
               <p class="info-name">Revenue</p>
               <p class="info-value">326,450.00</p>
             </div>
 
-            <div class="stat-separator" id="package-info"></div>
-            <div class="info-column">
+            <div class="stat-separator"></div>
+            <div class="info-column" id="package-info">
               <p class="info-name">Packages</p>
               <p class="info-value">4</p>
             </div>
             
-            <div class="stat-separator" id="creation-info"></div>
-            <div class="info-column">
+            <div class="stat-separator"></div>
+            <div class="info-column" id="creation-info">
               <p class="info-name">Created</p>
               <p class="info-value">May 20, 2026 12:00PM</p>
             </div>
           </div>
 
-          <div class="game-tabs">
-            <button class="tab-button selected">Information</button>
-            <button class="tab-button">Packages</button>
-          </div>
-
         </div>
 
-        <!-- Switchable tab (info <-> packages) -->
+        <!-- Settings Page -->
         <div class="information-page">
 
           <div class="information-box">
@@ -112,7 +107,7 @@
                 <label class="input-label">Game Name</label>
                 <input class="text-input" type="text" id="input-game-name" name="name" placeholder="Enter game name" required>
             </div>
-
+            <br>
             <!-- Package Name -->
             <div class="input-wrapper">
                 <label class="input-label">Package Name</label>
@@ -122,36 +117,23 @@
             <br><br>
             <h1>CONFIGURATION</h1>
             <div class="config-grid">
-              <div class="dropdown-wrapper">
-                <p class="dropdown-label">Provider</p>
-                <div class="custom-dropdown filter-dropdown" id="providerFilterDropdown">
-
-                  <div class="dropdown-selected">
-                    <span class="dropdown-selected-text"></span>
-                    <span class="dropdown-arrow"></span>
-                  </div>
-
-                  <div class="dropdown-options" id="games-filter">
-                  </div>
-
-                </div>
+              
+              <div class="input-wrapper">
+                <label class="input-label">Product Code</label>
+                <input class="text-input" type="text" id="input-product-code" placeholder="Enter product code" required>
               </div>
 
-              <div class="dropdown-wrapper">
-                <p class="dropdown-label">Games</p>
-                <div class="custom-dropdown filter-dropdown" id="gameFilterDropdown">
-
-                  <div class="dropdown-selected">
-                    <span class="dropdown-selected-text"></span>
-                    <span class="dropdown-arrow"></span>
-                  </div>
-
-                  <div class="dropdown-options" id="games-filter">
-  
-                  </div>
-
+            <div class="form-dropdown-wrapper">
+              <p class="form-dropdown-label">Provider</p>
+              <div class="custom-dropdown form-dropdown filter-dropdown" id="providerFilterDropdown">
+                <div class="dropdown-selected">
+                  <span class="dropdown-selected-text">All Providers</span>
+                  <span class="dropdown-arrow"></span>
                 </div>
+                <div class="dropdown-options" id="provider-options"></div>
               </div>
+            </div>
+              
             </div>
 
             <h1>IMAGES</h1>
@@ -223,12 +205,6 @@
 
           </div>
         </div>
-
-        <!-- Game Information tab -->
-        <div class="products-tab">
-
-        </div>
-
 
       </div>
     </div>
