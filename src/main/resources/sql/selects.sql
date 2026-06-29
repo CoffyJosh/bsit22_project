@@ -22,6 +22,10 @@ DELETE FROM token;
 ALTER TABLE token AUTO_INCREMENT = 1;
 SET SQL_SAFE_UPDATES = 1;
 
+SELECT * FROM orders 
+ORDER BY id DESC 
+LIMIT 500;
+
 SELECT MIN(id), MAX(id), COUNT(*) FROM users;
 SELECT MIN(id), MAX(id), COUNT(*) FROM topup_packages;
 SELECT MIN(id), MAX(id), COUNT(*) FROM vouchers;
@@ -33,6 +37,8 @@ GROUP BY order_id
 HAVING COUNT(*) > 1;
 
 SELECT COUNT(*) FROM orders;
+
+SELECT * FROM games WHERE status = 'DEPRECATED';
 
 SHOW CREATE TABLE games;
 UPDATE games SET provider_id = NULL WHERE provider_id = 0;
