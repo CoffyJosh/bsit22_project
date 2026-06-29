@@ -18,7 +18,7 @@ function addElementFunctions(){
   })
 
   profileBtn.click(function (){
-    alert("You have been diddled by the Diddler!");
+    window.location.href = "/user";
   })
 
   $(window).on('scroll', function() {

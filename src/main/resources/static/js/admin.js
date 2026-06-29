@@ -19,4 +19,13 @@ $(document).ready(function () {
     }
   });
 
+  $('#logout-btn').click(function (e) {
+    e.preventDefault();
+    
+    $('<form>', {
+      "action": "/logout",
+      "method": "POST"
+    }).appendTo('body').submit();
+  });
+
 });

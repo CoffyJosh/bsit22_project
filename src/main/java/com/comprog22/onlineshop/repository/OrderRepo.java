@@ -77,6 +77,37 @@ public interface OrderRepo extends JpaRepository<Order, Long> {
             """)
     Page<Order> findByStatusAndGameId(@Param("status") OrderStatus status, @Param("gameId") Long gameId, Pageable pageable);
 
+    @Query("""
+            SELECT o FROM Order o
+            WHERE o.user.id = :userId
+            AND o.status = 'COMPLETED'
+            """)
+    Page<Order> findCompletedByUserId(@Param("userId") Long userId, Pageable pageable);
+
+    @Query("""
+            SELECT o FROM Order o
+            WHERE o.user.id = :userId
+            AND o.status = 'COMPLETED'
+            AND EXISTS (
+                SELECT 1 FROM OrderItem oi
+                WHERE oi.order = o
+                AND oi.topupPackage.game.id = :gameId
+            )
+            """)
+    Page<Order> findCompletedByUserIdAndGameId(@Param("userId") Long userId, @Param("gameId") Long gameId, Pageable pageable);
+
+    
+    @Query("""
+            SELECT
+                COUNT(o),
+                COALESCE(SUM(o.finalAmount), 0),
+                SUM(CASE WHEN o.voucher IS NOT NULL THEN 1 ELSE 0 END)
+            FROM Order o
+            WHERE o.user.id = :userId
+            AND o.status = 'COMPLETED'
+            """)
+    List<Object[]> getUserOrderStats(@Param("userId") Long userId);
+
     @Query("SELECT COALESCE(SUM(o.finalAmount), 0) FROM Order o WHERE o.id IN (SELECT DISTINCT oi.order.id FROM OrderItem oi WHERE oi.topupPackage.game.id = :gameId)")
     BigDecimal sumRevenueByGameId(@Param("gameId") Long gameId);
 }

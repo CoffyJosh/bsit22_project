@@ -118,6 +118,10 @@ html::-webkit-scrollbar-thumb:hover {
   -webkit-mask-image: url('/images/orders-icon.svg');  
   mask-image: url('/images/orders-icon.svg'); 
 }
+.icon-logout  { 
+  -webkit-mask-image: url('/images/logout-icon.svg');  
+  mask-image: url('/images/logout-icon.svg'); 
+}
 
 /* turn it purple when its parent button is active */
 .sidebar-button.active .sidebar-icon {

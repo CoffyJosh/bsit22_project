@@ -28,6 +28,7 @@ import com.comprog22.onlineshop.dto.CreateOrderRequest;
 import com.comprog22.onlineshop.dto.DashboardMetricsDto;
 import com.comprog22.onlineshop.dto.OrderDetailsDTO;
 import com.comprog22.onlineshop.dto.OrderListItemDTO;
+import com.comprog22.onlineshop.dto.UserOrderStatsDTO;
 import com.comprog22.onlineshop.entities.Game;
 import com.comprog22.onlineshop.entities.Order;
 import com.comprog22.onlineshop.entities.OrderItem;
@@ -90,7 +91,6 @@ public class OrderService {
         // Create ORDER
         Order order = new Order();
         order.setUser(user);
-        order.setEmail(request.getEmail());
         order.setVoucher(voucher); // set on order
         order.setTrackingCode(generateTrackingCode());
         order.setTotalAmount(total);
@@ -239,6 +239,15 @@ public class OrderService {
     }
 
 
+    public Page<OrderListItemDTO> getMyCompletedOrders(Long userId, Pageable pageable) {
+        return orderRepo.findCompletedByUserId(userId, pageable).map(this::toDto);
+    }
+
+    public Page<OrderListItemDTO> getMyCompletedOrdersByGame(Long userId, Long gameId, Pageable pageable) {
+        return orderRepo.findCompletedByUserIdAndGameId(userId, gameId, pageable).map(this::toDto);
+    }
+
+
 
     // Generic ahh stuff
     public Optional<Order> findById(Long id) {
@@ -266,7 +275,7 @@ public class OrderService {
     }
 
 
-    // Others
+    // DTO STUFF
     public Optional<OrderDetailsDTO> getOrderDetailsByOrderId(Long id) {
         Order order = findById(id).orElseThrow();
         Payment payment = paymentRepo.findByOrder(order).orElseThrow();
@@ -310,6 +319,16 @@ public class OrderService {
         dto.setAccountId(item.getAccountId());
 
         return Optional.of(dto);
+    }
+
+    public UserOrderStatsDTO getUserOrderStats(Long userId) {
+        Object[] row = orderRepo.getUserOrderStats(userId).get(0);
+
+        Long count = ((Number) row[0]).longValue();
+        BigDecimal total = (BigDecimal) row[1];
+        Long vouchers = row[2] != null ? ((Number) row[2]).longValue() : 0L;
+
+        return new UserOrderStatsDTO(count, total, vouchers);
     }
 
 
