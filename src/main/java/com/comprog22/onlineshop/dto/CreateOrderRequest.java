@@ -9,4 +9,5 @@ public class CreateOrderRequest {
     private String voucherCode;
     private String accountId;
     private String server;
+    private String email;
 }

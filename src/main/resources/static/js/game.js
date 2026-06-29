@@ -740,27 +740,34 @@ async function handleFakeAssTransactionScreen() {
 
   await setStep("pb1", 2000, "OTP Verified");
   await setStep("pb2", 4000, `Authorizing ${paymentMethod}`);
-  const success = await processTransaction();
 
-  if (!success) {
+  const packageData = await processTransaction();
+  if (!packageData) {
     const parent = $('#pb3');
     const dot = parent.find(".processing-dot");
     parent.removeClass("processing").addClass("failed");
     dot.removeClass("processing").addClass("failed");
 
-    await sleep(3000);
-    window.location.href=`/game?id=${gameId}`; // refresh page
-
+    await sleep(2000);
+    window.location.href = `/game?id=${gameId}`; 
     return;
   }
 
+  const parent = $('#pb3');
+  const dot = parent.find(".processing-dot");
+  const currentAction = parent.find("#process-message");
   
+  parent.removeClass("processing").addClass("done");
+  dot.removeClass("processing").addClass("done");
+  currentAction.text(`${packageName} Dispatched!`);
+
+  // Step 5: Stop the global spinners
   $('.transaction-spinner')
     .children('.inner-spinner, .outer-spinner, .center-spinner')
     .addClass('done');
 
-  await sleep(3000);
-  showReciept();
+  await sleep(2000);
+  showReciept(packageData);
 }
 
 async function setStep(id, delay, endMsg) {
@@ -792,11 +799,12 @@ async function processTransaction(){
   const parent = $('#pb3');
   const dot = parent.find(".processing-dot");
   const currentAction = parent.find("#process-message");
+  
   parent.addClass("processing");
   dot.addClass("processing");
   currentAction.text(`Dispatching ${packageName}`);
 
-  await sleep(4000);
+  await sleep(2000);
 
   try {
     const order = await $.ajax({
@@ -808,7 +816,8 @@ async function processTransaction(){
         quantity: 1,
         voucherCode: selectedVoucher ? selectedVoucher.code : null,
         accountId: playerName,
-        server: selectedRegion
+        server: selectedRegion,
+        email: recieptEmail
       })
     });
 
@@ -825,48 +834,180 @@ async function processTransaction(){
 
     referenceCode = payment.transactionReference;
 
+    // Fetch the critical package details
+    const packageData = await $.ajax({
+      url: `/api/games/package`,
+      method: "GET",
+      data: { id: selectedPackageId }
+    });
+
+    // Fire email payload silently in background
+    const emailPayload = {
+      gameName: packageData.game.name,
+      totalAmount: `${packageData.amount + packageData.bonus} ${packageData.game.packageName}`,
+      playerName: playerName,
+      receiptEmail: recieptEmail,
+      paymentMethod: paymentMethod,
+      totalPrice: totalPrice.toFixed(2),
+      referenceCode: referenceCode,
+      packageName: packageData.game.packageName
+    };
+    console.log(emailPayload);
+    await sleep (9999);
+    const completeHtmlBody = generateReceiptEmail(emailPayload);
+
+    $.ajax({
+      url: '/mail/sendMsg',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        recipient: recieptEmail,
+        subject: `Aura Games - Purchase Complete [${referenceCode}]`,
+        body: completeHtmlBody
+      })
+    }).catch(e => console.error("Background email failed:", e));
+
+    // Simply return the data object to the waiting orchestrator function
+    return packageData;
+
   } catch (err) {
-    console.error("Transaction failed:");
-    console.error("Status:", err.status);
-    console.error("Response:", err.responseText);
-    console.error("Full error:", err);
-    currentAction.text("Transaction failed. Please try again.");
-    parent.removeClass("processing");
-    dot.removeClass("processing");
-    return false;
+    console.error("Backend process failed:", err);
+    return null;
   }
-
-  parent.removeClass("processing").addClass("done");
-  dot.removeClass("processing").addClass("done");
-  currentAction.text(`${packageName} Dispatched!`);
-
-  return true;
 }
 
-async function showReciept(){
+// Accept packageData directly to eliminate the duplicate API call
+function showReciept(packageData){
   $('.topup-wrapper').hide();
   $('.transaction-box').addClass('reciept');
   $('.reciept-wrapper').css('display', 'flex');
 
-  const nameDisplay = $('#reciept-game');
-  const amountDisplay = $('#reciept-amount');
-  const playerDisplay = $('#reciept-player');
-  const emailDisplay = $('#reciept-email');
-  const paymentDisplay = $('#reciept-payment');
-  const priceDisplay = $('#reciept-price');
-  const referenceCodeDisplay = $('#reference-code');
+  $('#reciept-game').text(`${packageData.game.name}`);
+  $('#reciept-amount').text(`${packageData.amount + packageData.bonus} ${packageData.game.packageName}`);
+  $('#reciept-player').text(`${playerName}`);
+  $('#reciept-email').text(`${recieptEmail}`);
+  $('#reciept-payment').text(`${paymentMethod}`);
+  $('#reciept-price').text(`₱${totalPrice.toFixed(2)}`);
+  $('#reference-code').text(`${referenceCode}`);
+}
 
-  const packageData = await $.ajax({
-    url: `/api/games/package`,
-    method: "GET",
-    data: {id: selectedPackageId}
-  })
+function generateReceiptEmail(data) {
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Games - Purchase Complete</title>
+  <style>
+    body, table, td, p, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse !important; }
+    body { height: 100% !important; width: 100% !important; background-color: #13101a; margin: 0 !important; padding: 0 !important; }
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@300;600&family=Rajdhani:wght@500;600;700&display=swap');
+  </style>
+</head>
+<body style="background-color: #13101a; font-family: 'DM Sans', Arial, sans-serif; margin: 0; padding: 0;">
 
-  nameDisplay.text(`${packageData.game.name}`);
-  amountDisplay.text(`${packageData.amount + packageData.bonus} ${packageData.currencyName}`);
-  playerDisplay.text(`${playerName}`);
-  emailDisplay.text(`${recieptEmail}`);
-  paymentDisplay.text(`${paymentMethod}`);
-  priceDisplay.text(`₱${totalPrice.toFixed(2)}`);
-  referenceCodeDisplay.text(`${referenceCode}`);
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #13101a; table-layout: fixed;">
+    <tr>
+      <td align="center" style="padding: 50px 15px;">
+        
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 480px; background-color: #111111; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; overflow: hidden; border-collapse: separate;">
+          <tr>
+            <td style="background-image: radial-gradient(circle at 50% 0%, rgba(0, 102, 51, 0.4) 0%, rgba(17, 17, 17, 0) 75%); background-color: #111111; border-radius: 16px; padding-bottom: 35px;">
+
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-bottom: 1px solid rgba(255, 255, 255, 0.055); background-color: rgba(0, 0, 0, 0.45);">
+                <tr>
+                  <td align="center" style="padding: 18px 0;">
+                    <p style="font-size: 22px; font-weight: 600; font-family: 'Rajdhani', Arial, sans-serif; color: #ffffff; letter-spacing: 1px; margin: 0;">
+                      AURA <span style="color: #7C3AED;">GAMES</span>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="text-align: center;">
+                <tr>
+                  <td align="center" style="padding: 40px 30px 0 30px;">
+                    <h1 style="font-family: 'Rajdhani', Arial, sans-serif; font-size: 38px; font-weight: 700; color: #ffffff; margin: 0 0 12px 0; padding: 0; letter-spacing: 0.5px; text-transform: uppercase;">
+                      Purchase Complete
+                    </h1>
+                    <p style="font-family: 'DM Sans', Arial, sans-serif; font-size: 15px; font-weight: 400; color: rgba(255, 255, 255, 0.6); width: 85%; margin: 0 auto; padding: 0; line-height: 1.5;">
+                      Your <span style="color: #ffffff; font-weight: 500;">${data.packageName}</span> have been dispatched to your account. Check your inbox for the receipt.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <table border="0" cellpadding="0" cellspacing="0" width="90%" style="background-color: rgba(255, 255, 255, 0.015); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; margin: 40px auto 0 auto; padding: 25px 25px;">
+                <tr>
+                  <td>
+                    <p style="font-family: 'Rajdhani', Arial, sans-serif; font-weight: 600; font-size: 16px; color: rgba(255, 255, 255, 0.4); margin: 0 0 25px 0; text-align: center; letter-spacing: 2px; text-transform: uppercase;">
+                      Transaction Details
+                    </p>
+
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      <tr>
+                        <td style="font-family: 'DM Sans', Arial, sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); padding: 6px 0;">Game</td>
+                        <td align="right" style="font-family: 'DM Sans', Arial, sans-serif; font-size: 14px; color: #ffffff; font-weight: 500; padding: 6px 0;">${data.gameName}</td>
+                      </tr>
+                      <tr><td colspan="2" style="height: 1px; background: rgba(255, 255, 255, 0.08); margin: 12px 0; display: block;"></td></tr>
+                      
+                      <tr>
+                        <td style="font-family: 'DM Sans', Arial, sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); padding: 6px 0;">Amount</td>
+                        <td align="right" style="font-family: 'Rajdhani', Arial, sans-serif; font-size: 16px; font-weight: 600; color: #A78BFA; padding: 6px 0;">${data.totalAmount}</td>
+                      </tr>
+                      <tr><td colspan="2" style="height: 1px; background: rgba(255, 255, 255, 0.08); margin: 12px 0; display: block;"></td></tr>
+                      
+                      <tr>
+                        <td style="font-family: 'DM Sans', Arial, sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); padding: 6px 0;">User ID</td>
+                        <td align="right" style="font-family: 'DM Sans', Arial, sans-serif; font-size: 14px; color: #ffffff; padding: 6px 0;">${data.playerName}</td>
+                      </tr>
+                      <tr><td colspan="2" style="height: 1px; background: rgba(255, 255, 255, 0.08); margin: 12px 0; display: block;"></td></tr>
+                      
+                      <tr>
+                        <td style="font-family: 'DM Sans', Arial, sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); padding: 6px 0;">Email</td>
+                        <td align="right" style="font-family: 'DM Sans', Arial, sans-serif; font-size: 14px; color: #ffffff; padding: 6px 0;">${data.receiptEmail}</td>
+                      </tr>
+                      <tr><td colspan="2" style="height: 1px; background: rgba(255, 255, 255, 0.08); margin: 12px 0; display: block;"></td></tr>
+                      
+                      <tr>
+                        <td style="font-family: 'DM Sans', Arial, sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); padding: 6px 0;">Payment Method</td>
+                        <td align="right" style="font-family: 'DM Sans', Arial, sans-serif; font-size: 14px; color: #ffffff; padding: 6px 0;">${data.paymentMethod}</td>
+                      </tr>
+                      <tr><td colspan="2" style="height: 1px; background: rgba(255, 255, 255, 0.08); margin: 12px 0; display: block;"></td></tr>
+                      
+                      <tr>
+                        <td style="font-family: 'DM Sans', Arial, sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.5); padding: 18px 0 0 0; vertical-align: middle;">Payment Amount</td>
+                        <td align="right" style="font-family: 'Rajdhani', Arial, sans-serif; font-size: 34px; font-weight: 700; color: #ffffff; padding: 18px 0 0 0;">₱${data.totalPrice}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <table border="0" cellpadding="0" cellspacing="0" width="90%" style="background-color: rgba(255, 255, 255, 0.015); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; margin: 24px auto 0 auto; padding: 22px; text-align: center;">
+                <tr>
+                  <td>
+                    <p style="font-family: 'Inter', Arial, sans-serif; font-size: 11px; font-weight: 400; padding: 0; margin: 0 0 6px 0; color: rgba(255, 255, 255, 0.3); text-transform: uppercase; letter-spacing: 1.5px;">
+                      Reference Code
+                    </p>
+                    <p style="font-family: 'Inter', Arial, sans-serif; font-size: 24px; font-weight: 700; padding: 0; margin: 0 0 24px 0; color: #ffffff; letter-spacing: 0.5px;">
+                      ${data.referenceCode}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
+  `;
 }

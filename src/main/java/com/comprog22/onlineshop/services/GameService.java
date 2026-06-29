@@ -171,6 +171,41 @@ public class GameService {
         gameRepo.save(game);
     }
 
+    // -------- CREATE ----------------
+    public Game createGame(GameUpdateRequest request) throws IOException {
+        Game game = new Game();
+
+        game.setName(request.getName());
+        game.setPackageName(request.getPackageName());
+        game.setStatus(GameStatus.valueOf(request.getStatus()));
+        game.setProductCode(request.getProductCode());
+
+        if (request.getProviderId() != null) {
+            Provider provider = providerRepo.findById(request.getProviderId())
+                    .orElseThrow(() -> new NoSuchElementException("Provider not found: " + request.getProviderId()));
+            game.setProvider(provider);
+        } else {
+            game.setProvider(null);
+        }
+
+        Game saved = gameRepo.save(game);
+
+        if (request.getIcon() != null && !request.getIcon().isEmpty()) {
+            gameImageService.saveGameImage(saved.getId(), "icon", request.getIcon());
+        }
+        if (request.getThumbnail() != null && !request.getThumbnail().isEmpty()) {
+            gameImageService.saveGameImage(saved.getId(), "thumbnail", request.getThumbnail());
+        }
+        if (request.getBanner() != null && !request.getBanner().isEmpty()) {
+            gameImageService.saveGameImage(saved.getId(), "banner", request.getBanner());
+        }
+        if (request.getPackageImage() != null && !request.getPackageImage().isEmpty()) {
+            gameImageService.saveGameImage(saved.getId(), "package", request.getPackageImage());
+        }
+
+        return saved;
+    }
+
 
     // ---------- Mapper ----------
     private GameListItemDTO toDto(Game game) {

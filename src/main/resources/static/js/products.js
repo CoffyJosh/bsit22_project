@@ -16,6 +16,8 @@ let originalGameData = null;
 let imageChanged = {};
 let providersCache = [];
 
+let isCreateMode = false;
+
 $(document).ready(function () {
   fetchProducts();
   fetchProviders();
@@ -52,6 +54,10 @@ $(document).ready(function () {
   });
 
   $(document).on('click', '.product-item', function () {
+    isCreateMode = false;
+    $('#product-header-stats').show();
+    $('#btn-delete').show();
+
     $('.product-item').removeClass('selected');
     $(this).addClass('selected');
     selectedProduct = $(this).data('game-id');
@@ -144,21 +150,47 @@ $(document).ready(function () {
     if (bannerFile) formData.append('banner', bannerFile);
     if (packageFile) formData.append('packageImage', packageFile);
 
-    $.ajax({
-      url: `/api/games/update/${selectedProduct}`,
-      method: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function () {
-        fetchProductDetails(selectedProduct);
-        fetchProducts();
-      },
-      error: function (xhr) {
-        console.error(xhr);
-        $btn.prop('disabled', false);
-      }
-    });
+    if (isCreateMode) {
+      $.ajax({
+        url: '/api/games/create',
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (createdGame) {
+          isCreateMode = false;
+          $('#product-header-stats').show();
+          $('#btn-delete').show();
+
+          productPage = 0;
+          fetchProducts();
+
+          // Jump straight into edit view of the newly created game
+          selectedProduct = createdGame.id;
+          fetchProductDetails(selectedProduct);
+        },
+        error: function (xhr) {
+          console.error(xhr);
+          $btn.prop('disabled', false);
+        }
+      });
+    } else {
+      $.ajax({
+        url: `/api/games/update/${selectedProduct}`,
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function () {
+          fetchProductDetails(selectedProduct);
+          fetchProducts();
+        },
+        error: function (xhr) {
+          console.error(xhr);
+          $btn.prop('disabled', false);
+        }
+      });
+    }
   });
 
 
@@ -192,6 +224,44 @@ $(document).ready(function () {
         $('#delete-confirm-overlay').hide();
       }
     });
+  });
+
+  // Add game 
+  $(document).on('click', '#add-game', function () {
+    $('.product-item').removeClass('selected');
+    selectedProduct = null;
+    isCreateMode = true;
+
+    showDetailContent();
+    $('#product-header-stats').hide();
+    $('#btn-delete').hide();
+
+    // Reset form
+    $('#input-game-name').val('');
+    $('#input-package-name').val('');
+    $('#input-product-code').val('');
+
+    $('#providerFilterDropdown')
+      .attr('data-selected-id', '')
+      .find('.dropdown-selected-text').text('Select Provider');
+
+    // Default status: ACTIVE
+    $('input[name="game-status"]').prop('checked', false);
+    $('input[name="game-status"][value="ACTIVE"]').prop('checked', true);
+
+    // Clear image slots back to empty "+"
+    ['icon', 'thumbnail', 'banner', 'package'].forEach(type => {
+      $(`.image-upload-box[data-image-type="${type}"]`)
+        .css('background-image', '')
+        .removeClass('active updated')
+        .text('+');
+      $(`.image-upload-input[data-image-type="${type}"]`).val('');
+    });
+
+    imageChanged = { icon: false, thumbnail: false, banner: false, package: false };
+    originalGameData = null; // not used in create mode validation
+
+    updateSaveButtonState();
   });
 });
 
@@ -357,7 +427,7 @@ function fetchProducts() {
             .filter(game => game.status !== 'DEPRECATED')
             .map(game => createProductItem(game))
         );
-        
+
         $items.forEach($item => $container.append($item));
       }
 
@@ -502,7 +572,28 @@ function hasUnsavedChanges() {
 }
 
 function updateSaveButtonState() {
-  $('#btn-save').prop('disabled', !hasUnsavedChanges());
+  if (isCreateMode) {
+    $('#btn-save').prop('disabled', !hasAllRequiredFieldsForCreate());
+  } else {
+    $('#btn-save').prop('disabled', !hasUnsavedChanges());
+  }
+}
+
+function hasAllRequiredFieldsForCreate() {
+  const name = $('#input-game-name').val().trim();
+  const packageName = $('#input-package-name').val().trim();
+  const productCode = $('#input-product-code').val().trim();
+  const providerId = $('#providerFilterDropdown').attr('data-selected-id') || '';
+
+  const fieldsFilled = name && packageName && productCode && providerId;
+
+  const allImagesUploaded =
+    $('.image-upload-input[data-image-type="icon"]')[0].files[0] &&
+    $('.image-upload-input[data-image-type="thumbnail"]')[0].files[0] &&
+    $('.image-upload-input[data-image-type="banner"]')[0].files[0] &&
+    $('.image-upload-input[data-image-type="package"]')[0].files[0];
+
+  return Boolean(fieldsFilled && allImagesUploaded);
 }
 
 

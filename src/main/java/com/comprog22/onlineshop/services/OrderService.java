@@ -90,6 +90,7 @@ public class OrderService {
         // Create ORDER
         Order order = new Order();
         order.setUser(user);
+        order.setEmail(request.getEmail());
         order.setVoucher(voucher); // set on order
         order.setTrackingCode(generateTrackingCode());
         order.setTotalAmount(total);

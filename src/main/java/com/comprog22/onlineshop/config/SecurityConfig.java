@@ -24,6 +24,7 @@ public class SecurityConfig {
                     "/api/**",
                     "/browse/**",
                     "/index",
+                    "/mail/**",
                     
                     "/login",
                     "/register",

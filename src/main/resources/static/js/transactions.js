@@ -417,7 +417,7 @@ async function fetchOrderDetails(orderId) {
 
             <div class="customer-info-text">
               <p style="color: rgba(255, 255, 255, 0.5); margin: 0 0 5px 0;">Email Address</p>
-              <p style="color: rgb(255, 255, 255); margin: 0 0 5px 0; font-size: 14px;">${details.email}</p>
+              <p style="color: rgb(255, 255, 255); margin: 0 0 5px 0; font-size: 14px;">${details.email ?? 'Guest'}</p>
             </div>
 
             <div class="customer-info-text">

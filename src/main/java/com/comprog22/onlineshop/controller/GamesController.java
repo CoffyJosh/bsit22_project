@@ -156,4 +156,11 @@ public class GamesController {
         gameService.deprecateGame(gameId);
         return ResponseEntity.ok().build();
     }
+
+    // ----------- Create --------------
+    @PostMapping("/create")
+    public ResponseEntity<Game> createGame(@ModelAttribute GameUpdateRequest request) throws IOException {
+        Game created = gameService.createGame(request);
+        return ResponseEntity.ok(created);
+    }
 }
