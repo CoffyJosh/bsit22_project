@@ -852,3 +852,100 @@
   background-color: transparent;
   color: rgba(255, 255, 255, 0.3);
 }
+
+
+/* -------------- DELETING ------------------ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+.modal-box {
+  width: 420px;
+  max-width: 90%;
+
+  padding: 25px;
+  box-sizing: border-box;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  background-color: #141414;
+  box-shadow: 0 0 30px rgba(153, 0, 255, 0.2);
+}
+
+.modal-title {
+  font-family: 'Orbitron';
+  font-size: 18px;
+  font-weight: 400;
+  color: white;
+  margin: 0 0 15px 0;
+}
+
+.modal-text {
+  font-family: 'DM Sans';
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin: 0 0 25px 0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-modal-cancel,
+.btn-modal-confirm {
+  height: 38px;
+  padding: 0 20px;
+
+  border-radius: 8px;
+  background-color: transparent;
+
+  font-family: 'Rajdhani';
+  font-weight: 500;
+  font-size: 14px;
+
+  cursor: pointer;
+  transition: background-color 0.1s ease, color 0.1s ease;
+  box-sizing: border-box;
+}
+
+.btn-modal-cancel {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-modal-cancel:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.btn-modal-confirm {
+  border: 1px solid rgba(153, 0, 255, 0.5);
+  color: rgba(180, 100, 255, 0.9);
+}
+
+.btn-modal-confirm:hover {
+  background-color: rgba(153, 0, 255, 0.3);
+  color: white;
+}
+
+.btn-modal-danger {
+  border-color: rgba(255, 0, 0, 0.5);
+  color: rgba(255, 60, 60, 0.9);
+}
+
+.btn-modal-danger:hover {
+  background-color: rgba(255, 0, 0, 0.4);
+  color: white;
+}

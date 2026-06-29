@@ -149,4 +149,11 @@ public class GamesController {
         gameService.updateGame(gameId, request);
         return ResponseEntity.ok().build();
     }
+
+    // ----------- Delete --------------
+    @PostMapping("/{gameId}/delete")
+    public ResponseEntity<Void> deleteGame(@PathVariable Long gameId) {
+        gameService.deprecateGame(gameId);
+        return ResponseEntity.ok().build();
+    }
 }

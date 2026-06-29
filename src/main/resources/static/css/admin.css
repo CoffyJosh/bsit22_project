@@ -275,6 +275,11 @@ html::-webkit-scrollbar-thumb:hover {
   color: #fff;
 }
 
+.dropdown-option.deprecated {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
 .dropdown-label {
   font-family: 'DM Sans';
   font-weight: 500;

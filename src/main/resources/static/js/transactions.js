@@ -205,10 +205,8 @@ function fetchGameDropdown() {
   $.ajax({
     url: '/api/games/all',
     method: 'GET',
-
     success: function (games) {
       const $container = $('#games-filter');
-
       $container.empty();
 
       $container.append(`
@@ -217,15 +215,22 @@ function fetchGameDropdown() {
         </div>
       `);
 
-      games.forEach(g => {
+      const sortedGames = [...games].sort((a, b) => {
+        const aDeprecated = a.status === 'DEPRECATED';
+        const bDeprecated = b.status === 'DEPRECATED';
+        if (aDeprecated === bDeprecated) return 0;
+        return aDeprecated ? 1 : -1;
+      });
+
+      sortedGames.forEach(g => {
+        const isDeprecated = g.status === 'DEPRECATED';
         $container.append(`
-          <div class="dropdown-option" data-value="${g.id}">
+          <div class="dropdown-option ${isDeprecated ? 'deprecated' : ''}" data-value="${g.id}">
             ${g.name}
           </div>
         `);
       });
     },
-
     error: function (xhr) {
       console.error(xhr);
     }

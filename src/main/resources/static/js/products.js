@@ -21,8 +21,6 @@ $(document).ready(function () {
   fetchProviders();
   showPlaceholder('empty');
 
-
-
   $('#nextPageBtn').on('click', goToNextProductPage);
   $('#prevPageBtn').on('click', goToPrevProductPage);
 
@@ -159,6 +157,39 @@ $(document).ready(function () {
       error: function (xhr) {
         console.error(xhr);
         $btn.prop('disabled', false);
+      }
+    });
+  });
+
+
+  // Deleting Game
+  $(document).on('click', '#btn-delete', function () {
+    $('#delete-overlay').css('display', 'flex');
+  });
+
+  $(document).on('click', '#delete-step1-cancel', function () {
+    $('#delete-overlay').hide();
+  });
+
+  $(document).on('click', '#delete-step1-continue', function () {
+    $('#delete-overlay').hide();
+    $('#delete-confirm-overlay').css('display', 'flex');
+  });
+
+  $(document).on('click', '#delete-step2-cancel', function () {
+    $('#delete-confirm-overlay').hide();
+  });
+
+  $(document).on('click', '#delete-step2-confirm', function () {
+    $.ajax({
+      url: `/api/games/${selectedProduct}/delete`,
+      method: 'POST',
+      success: function () {
+        location.reload();
+      },
+      error: function (xhr) {
+        console.error(xhr);
+        $('#delete-confirm-overlay').hide();
       }
     });
   });
@@ -321,7 +352,12 @@ function fetchProducts() {
       $container.empty();
 
       if (response.content && response.content.length > 0) {
-        const $items = await Promise.all(response.content.map(game => createProductItem(game)));
+        const $items = await Promise.all(
+          response.content
+            .filter(game => game.status !== 'DEPRECATED')
+            .map(game => createProductItem(game))
+        );
+        
         $items.forEach($item => $container.append($item));
       }
 

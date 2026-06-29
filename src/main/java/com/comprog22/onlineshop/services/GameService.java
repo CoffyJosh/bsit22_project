@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.comprog22.onlineshop.dto.GameDetailDTO;
 import com.comprog22.onlineshop.dto.GameListItemDTO;
@@ -18,12 +17,11 @@ import com.comprog22.onlineshop.dto.GameUpdateRequest;
 import com.comprog22.onlineshop.entities.Game;
 import com.comprog22.onlineshop.entities.Provider;
 import com.comprog22.onlineshop.enums.GameStatus;
-
 import com.comprog22.onlineshop.repository.GameRepo;
 import com.comprog22.onlineshop.repository.OrderItemRepo;
 import com.comprog22.onlineshop.repository.OrderRepo;
-import com.comprog22.onlineshop.repository.TopupPackageRepo;
 import com.comprog22.onlineshop.repository.ProviderRepo;
+import com.comprog22.onlineshop.repository.TopupPackageRepo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -165,6 +163,13 @@ public class GameService {
         }
     }
 
+
+    // ------- DELETE -----------------
+    public void deprecateGame(Long gameId) {
+        Game game = findById(gameId).orElseThrow(() -> new NoSuchElementException("Game not found: " + gameId));
+        game.setStatus(GameStatus.DEPRECATED);
+        gameRepo.save(game);
+    }
 
 
     // ---------- Mapper ----------
