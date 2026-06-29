@@ -67,7 +67,7 @@ async function filterGamesWithPackages(games) {
           method: "GET"
         });
 
-        return packages && packages.length > 0 ? game : null;
+        return packages && packages.length > 0 && game.status === 'ACTIVE' ? game : null;
       } catch (err) {
         console.error(`Failed to fetch packages for game ${game.id}`, err);
         return null;

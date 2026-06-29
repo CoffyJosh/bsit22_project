@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="content">
+  <div class="stat-grid">
+    <div class="stat-box" style="grid-area: box-1">
+      <p class="stat-name">TRANSACTIONS</p>
+      <p class="stat-value">-------</p>
+    </div>
+
+    <div class="stat-box" style="grid-area: box-2">
+      <p class="stat-name">EARNINGS</p>
+      <p class="stat-value">-------</p>
+    </div>
+
+    <div class="stat-box" style="grid-area: box-3">
+      <p class="stat-name">TOTAL REVENUE</p>
+      <p class="stat-value">-------</p>
+    </div>
+
+    <div class="line-chart" style="grid-area: box-4">
+
+      <div class="dashboard-controls" style="display: flex; gap: 15px; align-items: center; margin-bottom: 25px;">
+        <div class="control-group">
+          <label style="color: #9FA2B4; margin-right: 8px; font-size: 14px;">From:</label>
+          <input type="date" id="dash-start-date" style="background: #181926; color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 6px;">
+        </div>
+
+        <div class="control-group">
+          <label style="color: #9FA2B4; margin-right: 8px; font-size: 14px;">To:</label>
+          <input type="date" id="dash-end-date" style="background: #181926; color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 6px;">
+        </div>
+
+        <button id="btn-update-dashboard" style="background: #8C00FF; color: #fff; border: none; padding: 7px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;">
+          Filter Analytics
+        </button>
+      </div>
+
+      <div style="width: 100%;">
+        <div id="line-chart-render"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SCRIPT -->
+  <script th:src="@{/js/dashboard.js}"></script>
+</th:block>
+
+</body>
+</html>

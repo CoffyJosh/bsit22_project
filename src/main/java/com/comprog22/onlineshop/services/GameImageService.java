@@ -1,13 +1,12 @@
 package com.comprog22.onlineshop.services;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Service
 public class GameImageService {
@@ -22,6 +21,14 @@ public class GameImageService {
     public void saveGameImage(Long gameId, String imageType, MultipartFile file) throws IOException {
         Path gameDir = Path.of(uploadDir, gameId.toString());
         Files.createDirectories(gameDir);
+
+        // Delete any existing file for this imageType across all known extensions,
+        // so a new upload doesn't get shadowed by a stale file in a higher-priority
+        // format
+        String[] exts = { "webp", "svg", "png", "jpg" };
+        for (String e : exts) {
+            Files.deleteIfExists(gameDir.resolve(imageType + "." + e));
+        }
 
         String ext = file.getOriginalFilename()
                 .substring(file.getOriginalFilename().lastIndexOf('.') + 1);

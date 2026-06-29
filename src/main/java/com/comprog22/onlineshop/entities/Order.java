@@ -36,6 +36,9 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = true)  // Guest can also make an order without logging in
     private User user; 
 
+    @Column(name = "email", nullable = true)
+    private String email;
+
     @ManyToOne
     @JoinColumn(name = "voucher_id")
     private Voucher voucher;

@@ -6,7 +6,35 @@ body {
   display: flex;
   height: 100vh;
   overflow: hidden;
+
+  z-index: 9999 !important; 
 }
+
+html {
+  scrollbar-width: auto; 
+  scrollbar-color: rgba(255, 255, 255, 0.534) rgba(140, 0, 255, 0.116);
+}
+
+html::-webkit-scrollbar {
+  width: 4vw; 
+}
+
+html::-webkit-scrollbar-track {
+  background-color: rgba(140, 0, 255, 0.116); 
+  border-radius: 10px; 
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px; 
+  border: 2px solid transparent; 
+  background-clip: padding-box; 
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.6); 
+}
+
 
 
 /* ============== SIDE BAR ====================*/
@@ -68,7 +96,7 @@ body {
   height: 30px; 
   margin: 0 20px 0 15px;
 
-  background-color: white; /* default/inactive color */
+  background-color: white;
 
   -webkit-mask-size: contain;
   mask-size: contain;
@@ -78,7 +106,6 @@ body {
   mask-position: center;
 }
 
-/* one line per icon — just points to its image */
 .icon-dashboard     { 
   -webkit-mask-image: url('/images/dashboard-icon.svg');     
   mask-image: url('/images/dashboard-icon.svg'); 
@@ -111,20 +138,24 @@ body {
 
 /* ============== PAGES CONTAINER ====================*/
 .page-container {
-  flex: 1;       
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   height: 100vh;
-  overflow-y: auto; 
+  box-sizing: border-box;
+  overflow-y: auto;
+
+  outline: 2px solid rgba(255, 0, 0, 0) !important;
 }
 
 .page-header {
-  flex: 1; 
+  flex: 0 0 auto;
 
   top: 0;
   width: 100%;
   box-sizing: border-box;
   position: sticky;
-  z-index: 10;
+  z-index: 100 !important; 
 
   font-family: 'Orbitron';
   font-size: 20px;
@@ -143,158 +174,234 @@ body {
   letter-spacing: 2px;
 }
 
-.stat-box {
-  border-radius: 20px;
-  background-color: rgba(0, 0, 0, 0.219);
+
+
+/* ========= CUSTOM DROP DOWN ============*/
+.dropdown-wrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.custom-dropdown {
+  position: relative;
+  width: 200px;
+  height: 30px;
+
+  font-family: 'DM Sans';
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.dropdown-selected span, 
+.dropdown-selected p,
+.dropdown-selected div:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 8px; /* Keeps a small gap before the arrow icon */
+}
+
+
+.dropdown-selected {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 14px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #fff;
+  min-width: 0; 
+}
+
+.dropdown-arrow {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #888;
+  border-bottom: 2px solid #888;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.custom-dropdown.open .dropdown-arrow {
+  transform: rotate(-135deg);
+}
+
+.dropdown-options {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: max-height 0.2s ease, opacity 0.2s ease;
+  z-index: 50;
+
+    /* FORCE TRUNCATION AND ADD ELLIPSIS (...) */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-dropdown.open .dropdown-options {
+  max-height: 400px;
+  opacity: 1;
+  overflow-y: auto;
+  pointer-events: auto;
+}
+
+.dropdown-option {
+  padding: 5px 14px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.dropdown-option:hover {
+  background: #2a2a2a;
+}
+
+.dropdown-option.selected {
+  background: #333;
+  color: #fff;
+}
+
+.dropdown-label {
+  font-family: 'DM Sans';
+  font-weight: 500;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.50);
+}
+
+
+/* ========= CUSTOM PAGE NAVIGATOR ============*/
+.pagenav-button {
+  width:100px;
+  height: 30px;
+
+  background-color: rgba(0, 0, 0, 0.3);
+  color: rgba(247, 6, 255, 0.699);
+
+  border: 1px solid currentColor;
+  border-radius: 5px;
+
+  box-sizing: border-box;
+
+  transition: all 0.1s ease;
+}
+
+.pagenav-button:hover {
+  cursor: pointer;
+  background-color:rgba(59, 0, 65, 0.418);
+  color: rgba(247, 6, 255, 0.8);
+  box-shadow: 0 0 10px rgba(140, 0, 255, 0.4);
+}
+
+.pagenav-button:active {
+  cursor: pointer;
+  background-color:rgba(140, 0, 255, 0.2);
+  color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 10px rgba(204, 0, 255, 0.384);
+}
+
+.pagenav-button:disabled {
+  cursor: default !important;
+  background-color:rgba(0, 0, 0, 0.2) !important;
+  color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: none !important;
+}
+
+.pagenav-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
   font-family: 'DM Sans';
   font-weight: 300;
-  font-size: 30px;
+  font-size: 12px;
   color: white;
-  padding: 20px 20px;
-  
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
 
-.stat-box[style*="box-1"] {
-  border: 1px solid #FF0077;
-  box-shadow: 0 0 15px rgba(255, 0, 119, 0.2);
-}
-.stat-box[style*="box-1"] .stat-name {
-  color: #FF0077 !important;
-  font-weight: 600;
-}
-
-.stat-box[style*="box-2"] {
-  border: 1px solid #8C00FF;
-  box-shadow: 0 0 15px rgba(140, 0, 255, 0.2);
-}
-.stat-box[style*="box-2"] .stat-name {
-  color: #8C00FF !important;
-  font-weight: 600;
-}
-
-.stat-box[style*="box-3"] {
-  border: 1px solid #1900FF;
-  box-shadow: 0 0 15px rgba(25, 0, 255, 0.2);
-}
-.stat-box[style*="box-3"] .stat-name {
-  color: #1900FF !important;
-  font-weight: 600;
-}
-
-.stat-box:hover:not(.filter-disabled) {
-  transform: translateY(-3px);
-  filter: brightness(1.2);
-}
-
-.stat-box.filter-disabled {
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: none !important;
-  background-color: rgba(255, 255, 255, 0.01) !important;
-  transform: none !important;
-}
-
-.stat-box.filter-disabled:hover {
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  background-color: rgba(255, 255, 255, 0.03) !important;
-  cursor: pointer;
-}
-
-.stat-box.filter-disabled .stat-name {
-  color: rgba(255, 255, 255, 0.5) !important;
-  font-weight: 300 !important;
-}
-
-.stat-box.filter-disabled .stat-value {
-  color: rgba(255, 255, 255, 0.3) !important;
-}
-
-.stat-grid {
-  display: grid;
-  margin: 50px 50px;
-  padding: 0;
-
-  grid-template-columns: 300px 300px 300px 450px;
-  grid-template-rows: 150px 600px;
-  gap: 2em;
-
-  grid-template-areas:
-    "box-1 box-2 box-3 box-5"
-    "box-4 box-4 box-4 box-5";
-}
-
-.stat-name {
-  color: #ffffff60; 
-  font-size: 15px; 
-  margin: 10px 0;
-}
-
-.stat-value {
-  color: #ffffff; 
-  font-size: 35px; 
-  font-weight: 400; 
-  margin: 5px 0;
-}
-
-/* ============== LINE CHART COMPONENT ====================*/
-.line-chart {
-  /* Fits beautifully inside whatever grid area slot you drop it into */
-  width: 100%;
-  height: 100%; 
-  padding: 25px;
-
-  /* Matches your exact dashboard box style */
-  border: 1px solid rgba(255, 255, 255, 0.212);
-  border-radius: 20px;
-  background-color: rgba(0, 0, 0, 0.219);
-
-  font-family: 'DM Sans';
-  color: white;
+  min-height: 50px;
   
   box-sizing: border-box;
+
+  padding: 0 50px;
 }
 
-.apexcharts-menu {
-  background: #181926 !important; 
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+.pagenav-display {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.pagenav-display input {
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  width: 30px;
+  height: 30px;
+
+  box-sizing: border-box;
+  overflow: hidden;
+
+  background-color: rgba(0, 0, 0, 0.308);
+
+  color: white;
+  text-align: center;
 }
 
 
-.apexcharts-menu-item {
-  color: #bcbcbc !important; 
-  background: #181926 !important; 
-  padding: 8px 16px !important;
+/* ================ INPUTS ==================== */
+.input-wrapper {
+  position: relative;
+  width: auto;
+  margin:0;
+  padding:0;
 }
 
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 30%;
 
-.apexcharts-menu-item:hover {
-  background: #25273c !important;
-  color: #ffffff !important;
+  width: 16px;
+  height: 16px;
+  opacity: 1;
+  pointer-events: none;
 }
 
-.apexcharts-toolbar {
-  background: #000000 !important; 
-  border: 1px solid rgba(255, 255, 255, 0.15) !important; 
-  border-radius: 20px !important; 
-  padding: 4px 8px !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 6px !important; 
-  top: 10px !important; 
-  right: 15px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important; 
+.search-input {
+  width: 325px;
+  padding: 12px 12px 12px 40px;
+  
+  border-radius: 50px;
+  border: 1px solid #ffffff1c;
+
+  background: #16161F;
+  outline: none;
+  box-sizing: border-box;
+  color: white;
 }
 
-.apexcharts-toolbar svg {
-  fill: #ffffff;
-  width: 16px !important;
-  height: 16px !important;
-  transition: transform 0.15s ease, fill 0.15s ease !important;
-}
+.search-input::placeholder {
+  left: 5px; 
+  color: #5A5A7A;
+  height: 40px;
+  line-height: 40px;
 
-.apexcharts-toolbar svg:hover {
-  fill: #FF0077 !important; 
-  transform: scale(1.15) !important; 
+  font-family: "DM Sans";
+  font-size: 13px;
 }

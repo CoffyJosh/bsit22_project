@@ -1,0 +1,733 @@
+/* ========== PRODUCTS =============== */
+.product-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ============= FOR ALL ================= */
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  margin:0;
+  padding:0;
+}
+
+.input-label {
+  font-family: "DM Sans";
+  font-size: 12px;
+  font-weight: 400;
+  color: #ffffff;
+  margin-bottom: 5px;
+  display: block;
+  opacity: 0.8;
+
+  text-align: left;
+}
+
+.password-input,
+.text-input {
+  width: 100%;
+  padding: 10px 12px 10px 10px;
+  border-radius: 5px;
+  border: 1px solid #ffffff11;
+  background: rgba(255, 255, 255, 0.027);
+  outline: none;
+  box-sizing: border-box;
+  color: white;
+}
+
+.password-input,
+.text-input::placeholder{
+  left: 5px; 
+  color: #ffffff25;
+  height: 40px;
+  line-height: 40px;
+}
+
+.password-input {
+  letter-spacing: 2px;
+  color: white;
+}
+
+.password-input::placeholder {
+  letter-spacing: 2px;
+}
+
+
+/* ================= LEFT SIDE ================= */
+.product-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  border: 1px solid transparent;
+  background-color: rgba(44, 0, 61, 0.075);
+
+  width: 35%;
+  height: 100%;
+}
+
+.filter-options {
+  flex: 0 0 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  padding: 0 20px;
+  margin: 0;
+
+  box-sizing: border-box;
+
+  font-family: 'DM Sans';
+  font-weight: 500;
+  font-size: 15px;
+  color: white;
+}
+
+.product-list-container {
+  flex: 1;          
+  min-height: 0; 
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.158);
+  width: calc(100% - 40px);
+  background-color: rgba(153, 0, 255, 0.082);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+
+  overflow-y: auto;
+  box-sizing: border-box;
+
+  padding: 10px;
+  margin: 0 20px;
+}
+
+.product-item {
+  box-sizing: border-box;
+
+  width: 100%;
+  height: 100px;
+  flex-shrink: 0;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.02);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  transition: all 0.1s ease;
+}
+
+.product-item.selected {
+  border-color: rgba(174, 0, 255, 0.541);
+  background-color: rgba(204, 0, 255, 0.01);
+  transform: scale(1.02);
+}
+
+.product-item:hover:not(.selected) {
+  cursor: pointer;
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.product-info-avatar,
+.product-item-avatar {
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.02);
+
+  margin: 15px 15px;
+
+  overflow: hidden;
+}
+
+.product-item-avatar img,
+.product-info-avatar img {
+  width: 100%;
+  height: 100%;
+}
+
+.product-info-avatar {
+  width: 100px;
+  height: 100px;
+
+  margin: 20px;
+}
+
+.product-item-details-box {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex: 1;
+}
+
+.product-item-details {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  padding: 0;
+  margin: 0 5px 0 0;
+
+  box-sizing: border-box;
+}
+
+.product-item-title {
+  font-family: 'Orbitron';
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  margin: 3px 0;
+  padding: 0;
+}
+
+.product-item-subtitle,
+.product-item-date {
+  font-family: 'DM Sans';
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 5px 0;
+  padding: 0;
+}
+
+.product-item-date{
+  margin: 5px 0;
+}
+
+
+.product-status-box {
+  width: fit-content;
+  height: fit-content;
+
+  min-width: 70px;
+
+  padding: 5px 10px;
+  margin: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+
+  font-size: 12px;
+  font-family: 'Inter';
+  color: white;
+
+  text-align: center;
+}
+
+.product-status-box.active {
+  background-color: rgba(0, 255, 34, 0.075);
+  border-color: rgba(0, 255, 34, 0.5);
+  color: rgb(0, 255, 34);
+}
+
+.product-status-box.maintenance {
+  background-color: rgba(255, 238, 0, 0.075);
+  border-color: rgba(255, 238, 0, 0.5);
+  color: rgba(255, 238, 0);
+}
+
+.product-status-box.inactive {
+  background-color: rgba(255, 0, 0, 0.075);
+  border-color: rgba(255, 0, 0, 0.5);
+  color: rgba(255, 0, 0);
+}
+
+.add-button {
+  width: 100px;
+  height: auto;
+
+  padding: 12px;
+  margin: 0;
+
+  border: 1px solid transparent;
+  background-color: rgba(183, 0, 255, 0.4);
+  border-radius: 50px;
+
+  font-family: 'Rajdhani';
+  font-weight: 500px;
+  font-size: 15px;
+  color: white;
+
+  text-align: center;
+}
+
+.add-button:hover {
+  cursor: pointer;
+
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(162, 0, 255, 0.5);
+}
+
+.add-button:active {
+  cursor: pointer;
+
+  border-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(183, 0, 255, 0.2);
+  box-shadow: 0 0 15px rgba(162, 0, 255, 0.5);
+}
+
+/* ================= RIGHT SIDE ================= */
+.product-settings-wrapper {
+  width: 65%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.detail-placeholder-state {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.placeholder-title {
+  font-family: 'Orbitron';
+  font-size: 18px;
+  font-weight: 400;
+  color: white;
+  margin: 0 0 8px 0;
+}
+
+.placeholder-subtext {
+  font-family: 'DM Sans';
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.product-settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.158);
+  width: calc(100% - 40px);
+  height: 100%;
+  background-color: rgba(153, 0, 255, 0.082);
+  border-radius: 10px;
+
+  overflow-y: auto;
+}
+
+.product-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 22%;
+
+  margin: 0;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.product-stats {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-evenly;
+  min-height: 0; /* allow shrinking below content size */
+
+  padding: 0 20px 0 0;
+}
+
+.stat-separator {
+  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
+
+  width: 1px;
+  align-self: stretch;
+  margin: 25px 10px;
+}
+
+.info-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  
+  height: auto;
+  width: auto;
+  min-height: 90px;
+  min-width: 120px;
+
+  color: white;
+}
+
+.game-name,
+.package-name,
+.info-name,
+.info-value {
+  font-family: 'DM Sans';
+  color: white;
+
+  margin: 3px;
+  padding: 0;
+
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.game-name {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.package-name{
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.info-name {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.info-value {
+  font-size: 13px;
+}
+
+
+.game-tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: end;
+  gap: 0;
+  min-height: 0;
+
+  box-sizing: border-box;
+}
+
+.tab-button {
+  height: 35px;
+  min-width: 120px;
+  flex: 1;
+
+  padding: 0;
+  margin: 0;
+
+  font-family: 'DM Sans';
+  font-weight: 300;
+  font-size: 16px;
+  color: white;
+
+  background-color: transparent;
+  border: 2px solid transparent;
+
+  text-align: center;
+
+  box-sizing: border-box;
+}
+
+.tab-button:hover {
+  cursor: pointer;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.tab-button.selected {
+  border-bottom: 3px solid rgba(153, 0, 255);
+}
+
+
+/* ================== INFORMATION TAB ===================== */
+.information-page {
+  display: grid;
+  grid-template-columns: 7fr 3fr;
+  grid-template-rows: 6fr 4fr;
+  grid-template-areas:
+    "information status"
+    "information action";
+  gap: 15px;
+
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.information-box,
+.status-box,
+.action-box {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
+
+  padding: 20px;
+  margin: 0;
+}
+
+.information-box h1,
+.status-box h1,
+.action-box h1{
+  font-family: 'Orbitron';
+  font-weight: 400;
+  font-size: 20px;
+  color: white;
+
+  margin: 0 0 20px 0;
+}
+
+.information-box {
+  grid-area: information;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.status-box {
+  grid-area: status;
+  border-top-right-radius: 15px;
+}
+
+.action-box {
+  grid-area: action;
+  border-bottom-right-radius: 15px;
+}
+
+/* ----- INFORMATION GROUP ---------- */
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 50px);
+  gap: 25px;
+  box-sizing: border-box;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  gap: 25px;
+  box-sizing: border-box;
+}
+
+.image-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.image-upload-label {
+  font-family: 'DM Sans';
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  padding: 0;
+}
+
+.image-upload-box {
+  width: 100px;
+  height: 100px;
+
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: none;
+  border-radius: 10px;
+  background-color: transparent;
+
+  font-size: 28px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.5);
+
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.image-upload-box.updated {
+  box-shadow: 0 0 15px rgba(239, 255, 92, 0.7);
+}
+
+/* Empty slot (no image yet) — plain dim, no icon */
+.image-upload-box:not(.active):not(.updated):hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Has an image (active or updated) — dim + config icon on hover */
+.image-upload-box.active::after,
+.image-upload-box.updated::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0);
+  background-image: url('/images/config-icon.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 32px 32px;
+  opacity: 0;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+  pointer-events: none;
+}
+
+.image-upload-box.active:hover::after,
+.image-upload-box.updated:hover::after {
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 1;
+}
+
+/* ---------------- STATUS GROUP ----------------- */
+.status-toggle-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-toggle-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.status-toggle-option input[type="radio"] {
+  display: none; /* hide native radio, we build our own */
+}
+
+.status-toggle-circle {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.status-toggle-circle::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  background-color: transparent;
+  transition: background-color 0.15s ease;
+}
+
+.status-toggle-option:hover .status-toggle-circle {
+  border-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.status-toggle-option input[type="radio"]:checked + .status-toggle-circle {
+  border-color: rgba(153, 0, 255, 0.9);
+}
+
+.status-toggle-option input[type="radio"]:checked + .status-toggle-circle::after {
+  background-color: rgba(153, 0, 255, 0.9);
+}
+
+.status-toggle-label {
+  font-family: 'DM Sans';
+  font-size: 14px;
+  font-weight: 400;
+  color: white;
+}
+
+
+/* --------------------- ACTION GROUP ----------------- */
+.action-buttons-row {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.btn-save,
+.btn-delete {
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+  background-color: transparent;
+
+  font-family: 'Rajdhani';
+  font-weight: 500;
+  font-size: 15px;
+
+  cursor: pointer;
+  transition: background-color 0.1s ease, color 0.1s ease;
+  box-sizing: border-box;
+}
+
+.btn-save {
+  border: 1px solid rgba(0, 255, 100, 0.5);
+  color: rgba(0, 255, 100, 0.9);
+}
+
+.btn-save:hover {
+  background-color: rgba(0, 255, 102, 0.5);
+  color: rgb(255, 255, 255);
+}
+
+.btn-save:active {
+  background-color: rgba(0, 255, 100, 0.2);
+}
+
+.btn-delete {
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  color: rgba(255, 60, 60, 0.9);
+}
+
+.btn-delete:hover {
+  background-color: rgba(255, 0, 0, 0.5);
+  color: rgb(255, 255, 255);
+}
+
+.btn-delete:active {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.btn-save:disabled {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+.btn-save:disabled:hover {
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.3);
+}

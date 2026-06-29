@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="content">
+  
+  <div class="orders-wrapper">
+    <div class="order-list-wrapper">
+      
+      <!-- Filter options goes here -->
+      <div class="filter-options">
+
+        <div class="dropdown-wrapper">
+          <p class="dropdown-label">Games</p>
+          <div class="custom-dropdown filter-dropdown" id="gameFilterDropdown">
+
+            <div class="dropdown-selected">
+              <span class="dropdown-selected-text">All Games</span>
+              <span class="dropdown-arrow"></span>
+            </div>
+
+            <div class="dropdown-options" id="games-filter">
+              <div class="dropdown-option selected" data-value="">All Games</div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="dropdown-wrapper">
+          <p class="dropdown-label">Status</p>
+          <div class="custom-dropdown filter-dropdown" id="statusFilterDropdown">
+
+            <div class="dropdown-selected">
+              <span class="dropdown-selected-text">All</span>
+              <span class="dropdown-arrow"></span>
+            </div>
+
+            <div class="dropdown-options" id="status-filter">
+              <div class="dropdown-option selected" data-value="">All</div>
+              <div class="dropdown-option" data-value="COMPLETED">Complete</div>
+              <div class="dropdown-option" data-value="PENDING">Pending</div>
+              <div class="dropdown-option" data-value="FAILED">Failed</div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+      <!-- Order list will be here -->
+      <div class="order-list-container">
+        
+      </div>
+
+      <!-- Page selection will be here -->
+       <div class="pagenav-container">
+        <button class="pagenav-button" id="prevPageBtn">Prev</button>
+        
+        <div class="pagenav-display">
+          <!-- Page input here-->
+          <p>Page </p><input class="pagenav-input">
+
+          <!-- Total pages here-->
+          <p> of <span id="total-pages">0</span></p>
+        </div>
+        
+        <button class="pagenav-button" id="nextPageBtn">Next</button>  
+       </div>
+    </div>
+
+    <div class="order-description-wrapper">
+      <div class="order-placeholder-state">
+        <p class="placeholder-title">No Order Selected</p>
+        <p class="placeholder-subtext">Click on an order from the list to view its transaction details.</p>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- SCRIPT -->
+  <script th:src="@{/js/transactions.js}"></script>
+</th:block>
+
+</body>
+</html>

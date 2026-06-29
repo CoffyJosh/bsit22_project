@@ -15,4 +15,6 @@ public interface TopupPackageRepo extends JpaRepository<TopupPackage, Long> {
     List<TopupPackage> findByStatus(TopupPackageStatus status);
 
     List<TopupPackage> findByGameAndStatus(Game game, TopupPackageStatus status);
+
+    int countByGameId(Long gameId);
 }

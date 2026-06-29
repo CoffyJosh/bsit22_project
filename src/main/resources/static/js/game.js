@@ -2,7 +2,7 @@
 let isLoggedIn = $("#voucher-section").data("auth") === true;
 let gameId = null;
 let gameName = null;
-let currencyName = null;
+let packageName = null;
 
 let selectedPackageId = null;
 let paymentMethod = null;
@@ -76,7 +76,7 @@ async function getTopupPackages(){
 
       const packageBase = $(this).data("package-base");
       const bonusAmount = $(this).data("bonus-amount");
-      const currencyName = $(this).data("currency-name");
+      const packageName = $(this).data("currency-name");
       const basePrice = $(this).data("base-price");
 
       const packageDisplay = $("#package-base");
@@ -92,7 +92,7 @@ async function getTopupPackages(){
           selectedPackageId = id;
           selectedPackagePrice = parseFloat(basePrice);
           gameNameDisplay.text(gameName);
-          packageDisplay.text(`${packageBase} ${currencyName}`);
+          packageDisplay.text(`${packageBase} ${packageName}`);
           bonusAmountDisplay.text(`+${bonusAmount} Bonus`);    
           baseAmountDisplay.text(`₱ ${basePrice}`);
           totalAmountDisplay.text(`₱ ${basePrice}`);
@@ -122,7 +122,7 @@ function loadTitle() {
 
 function updateToDefaultValues(){
   $("#game-name").text(`${gameName}`);
-  $("#package-base").text(`0 ${currencyName}`);
+  $("#package-base").text(`0 ${packageName}`);
   $("#bonus-amount").text(`+0 Bonus`);
   $("#processing-fee").text(`₱ 0.00`);
   $("#total-price").text(`₱ 0.00`);
@@ -136,7 +136,7 @@ function getImageUrl(gameId, imageType) {
 
 async function createPackageFragment(pkg){
   const amount = pkg.amount;
-  const name = pkg.currencyName;
+  const name = pkg.game.packageName;
   const price = pkg.price;
   const bonus = pkg.bonus ?? 0;
   const totalValue = amount + bonus;
@@ -144,8 +144,8 @@ async function createPackageFragment(pkg){
   const gameId = pkg.game.id;
   const topupId = pkg.id;
 
-  const img = getImageUrl(gameId, "currency");
-  currencyName = name;
+  const img = getImageUrl(gameId, "package");
+  packageName = name;
 
   return `
     <div class="package-grid-item" 
@@ -736,7 +736,7 @@ function onOtpConfirm($btn) {
 async function handleFakeAssTransactionScreen() {
   setStartMessage("pb1", "Verifying OTP");
   setStartMessage("pb2", `Authorizing ${paymentMethod}`);
-  setStartMessage("pb3", `Dispatching ${currencyName}`);
+  setStartMessage("pb3", `Dispatching ${packageName}`);
 
   await setStep("pb1", 2000, "OTP Verified");
   await setStep("pb2", 4000, `Authorizing ${paymentMethod}`);
@@ -794,7 +794,7 @@ async function processTransaction(){
   const currentAction = parent.find("#process-message");
   parent.addClass("processing");
   dot.addClass("processing");
-  currentAction.text(`Dispatching ${currencyName}`);
+  currentAction.text(`Dispatching ${packageName}`);
 
   await sleep(4000);
 
@@ -838,7 +838,7 @@ async function processTransaction(){
 
   parent.removeClass("processing").addClass("done");
   dot.removeClass("processing").addClass("done");
-  currentAction.text(`${currencyName} Dispatched!`);
+  currentAction.text(`${packageName} Dispatched!`);
 
   return true;
 }

@@ -24,6 +24,10 @@ public class VoucherService {
         return voucherRepo.save(voucher);
     }
 
+    public Optional<Voucher> findById(Long id) {
+        return voucherRepo.findById(id);
+    }
+
     public Optional<Voucher> findByCode(String code) {
         return voucherRepo.findByCode(code);
     }

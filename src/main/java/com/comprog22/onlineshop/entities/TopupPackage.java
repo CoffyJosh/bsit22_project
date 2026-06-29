@@ -20,7 +20,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
 @Entity
 @Data
 @Table(name = "topup_packages")
@@ -33,9 +32,6 @@ public class TopupPackage {
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
-
-    @Column(name = "currency_name", nullable = false)
-    private String currencyName;
 
     @Column(name = "amount", nullable = false)
     private Integer amount;
@@ -55,6 +51,7 @@ public class TopupPackage {
     @Formula("FLOOR(price / 100) * 10")
     private Integer bonus;
 
+    // Amount + Bonus base on price
     @Formula("amount + FLOOR(price / 100) * 10")
     private BigDecimal totalAmount;
 }

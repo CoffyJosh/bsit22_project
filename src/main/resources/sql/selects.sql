@@ -11,6 +11,8 @@ SELECT * FROM payments;
 SELECT * FROM token;
 SELECT * FROM verification_code;
 
+SELECT * FROM users
+WHERE role = 'USER';
 
 -- DEBUG
 SET SQL_SAFE_UPDATES = 0;
@@ -22,3 +24,13 @@ SELECT MIN(id), MAX(id), COUNT(*) FROM users;
 SELECT MIN(id), MAX(id), COUNT(*) FROM topup_packages;
 SELECT MIN(id), MAX(id), COUNT(*) FROM vouchers;
 SELECT MIN(id), MAX(id), COUNT(*) FROM orders;
+
+SELECT order_id, COUNT(*) 
+FROM order_items 
+GROUP BY order_id 
+HAVING COUNT(*) > 1;
+
+SELECT COUNT(*) FROM orders;
+
+SHOW CREATE TABLE games;
+UPDATE games SET provider_id = NULL WHERE provider_id = 0;

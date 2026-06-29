@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="content">
+  
+  <div class="product-wrapper">
+    <div class="product-list-wrapper">
+      
+      <!-- Filter options goes here -->
+      <div class="filter-options">
+
+        <!-- Search Bar -->
+        <div class="input-wrapper" id="search-bar">
+          <img class="input-icon" th:src="@{/images/search_icon.png}">
+            <input class="search-input" 
+                    type="text"
+                    name="search"
+                    placeholder="Filter by name">
+        </div>
+
+        <!-- Create new button -->
+        <div class="add-button" id="add-game">
+          <p style="margin: 0;">NEW GAME+</p>
+        </div>
+
+      </div>
+
+
+      <!-- Games list will be here -->
+      <div class="product-list-container">
+      </div>
+
+      <!-- Page selection will be here -->
+       <div class="pagenav-container">
+        <button class="pagenav-button" id="prevPageBtn">Prev</button>
+        
+        <div class="pagenav-display">
+          <!-- Page input here-->
+          <p>Page </p><input class="pagenav-input">
+
+          <!-- Total pages here-->
+          <p> of <span id="total-pages">0</span></p>
+        </div>
+        
+        <button class="pagenav-button" id="nextPageBtn">Next</button>  
+       </div>
+    </div>
+
+    <div class="product-settings-wrapper">
+
+      <!-- Placeholder -->
+      <div id="detail-placeholder" class="product-settings detail-placeholder-state">
+        <p class="placeholder-title">No Game Selected</p>
+        <p class="placeholder-subtext">Click on a game from the list to view its details.</p>
+      </div>
+
+      <div class="product-settings" id="detail-panel-content" style="display: none;">
+        <div class="product-header">
+
+          <!-- Statistics and Information of product -->
+          <div class="product-stats">
+            <div class="product-info-avatar">
+              <img src="">
+            </div>
+
+            <div class="info-column" style="margin:15px 80px 15px 0;" id="game-info">
+              <p class="game-name" id="game-name">VALORANT</p>
+              <p class="package-name" id="package-name"> Package: Valorat Points</p>
+            </div>
+
+            <div class="stat-separator"></div>
+            <div class="info-column" id="total-sales">
+              <p class="info-name">Total Sales</p>
+              <p class="info-value">2,156</p>
+            </div>
+
+            <div class="stat-separator" id="revenue-info"></div>
+            <div class="info-column">
+              <p class="info-name">Revenue</p>
+              <p class="info-value">326,450.00</p>
+            </div>
+
+            <div class="stat-separator" id="package-info"></div>
+            <div class="info-column">
+              <p class="info-name">Packages</p>
+              <p class="info-value">4</p>
+            </div>
+            
+            <div class="stat-separator" id="creation-info"></div>
+            <div class="info-column">
+              <p class="info-name">Created</p>
+              <p class="info-value">May 20, 2026 12:00PM</p>
+            </div>
+          </div>
+
+          <div class="game-tabs">
+            <button class="tab-button selected">Information</button>
+            <button class="tab-button">Packages</button>
+          </div>
+
+        </div>
+
+        <!-- Switchable tab (info <-> packages) -->
+        <div class="information-page">
+
+          <div class="information-box">
+            <h1>INFORMATION</h1>
+
+            <!-- Game Name -->
+            <div class="input-wrapper">
+                <label class="input-label">Game Name</label>
+                <input class="text-input" type="text" id="input-game-name" name="name" placeholder="Enter game name" required>
+            </div>
+
+            <!-- Package Name -->
+            <div class="input-wrapper">
+                <label class="input-label">Package Name</label>
+                <input class="text-input" type="text" id="input-package-name" name="packageName" placeholder="Enter package name" required>
+            </div>
+
+            <br><br>
+            <h1>CONFIGURATION</h1>
+            <div class="config-grid">
+              <div class="dropdown-wrapper">
+                <p class="dropdown-label">Provider</p>
+                <div class="custom-dropdown filter-dropdown" id="providerFilterDropdown">
+
+                  <div class="dropdown-selected">
+                    <span class="dropdown-selected-text"></span>
+                    <span class="dropdown-arrow"></span>
+                  </div>
+
+                  <div class="dropdown-options" id="games-filter">
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="dropdown-wrapper">
+                <p class="dropdown-label">Games</p>
+                <div class="custom-dropdown filter-dropdown" id="gameFilterDropdown">
+
+                  <div class="dropdown-selected">
+                    <span class="dropdown-selected-text"></span>
+                    <span class="dropdown-arrow"></span>
+                  </div>
+
+                  <div class="dropdown-options" id="games-filter">
+  
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <h1>IMAGES</h1>
+            <div class="image-grid">
+
+              <!-- Image upload boxes -->
+              <div class="image-upload-container">
+                <label class="image-upload-label">ICON</label>
+                <button type="button" class="image-upload-box" data-image-type="icon">+</button>
+                <input type="file" class="image-upload-input" data-image-type="icon" accept="image/*" hidden>
+              </div>
+
+              <div class="image-upload-container">
+                <label class="image-upload-label">THUMBNAIL</label>
+                <button type="button" class="image-upload-box" data-image-type="thumbnail">+</button>
+                <input type="file" class="image-upload-input" data-image-type="thumbnail" accept="image/*" hidden>
+              </div>
+
+              <div class="image-upload-container">
+                <label class="image-upload-label">BANNER</label>
+                <button type="button" class="image-upload-box" data-image-type="banner">+</button>
+                <input type="file" class="image-upload-input" data-image-type="banner" accept="image/*" hidden>
+              </div>
+
+              <div class="image-upload-container">
+                <label class="image-upload-label">PACKAGE</label>
+                <button type="button" class="image-upload-box" data-image-type="package">+</button>
+                <input type="file" class="image-upload-input" data-image-type="package" accept="image/*" hidden>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="status-box">
+            <h1>STATUS</h1>
+
+            <div class="status-toggle-group">
+
+              <label class="status-toggle-option">
+                <input type="radio" name="game-status" value="ACTIVE" checked>
+                <span class="status-toggle-circle"></span>
+                <span class="status-toggle-label">Active</span>
+              </label>
+
+              <label class="status-toggle-option">
+                <input type="radio" name="game-status" value="INACTIVE">
+                <span class="status-toggle-circle"></span>
+                <span class="status-toggle-label">Inactive</span>
+              </label>
+
+              <label class="status-toggle-option">
+                <input type="radio" name="game-status" value="MAINTENANCE">
+                <span class="status-toggle-circle"></span>
+                <span class="status-toggle-label">Maintenance</span>
+              </label>
+
+            </div>
+
+          </div>
+
+          <div class="action-box">
+            <h1>ACTIONS</h1>
+
+            <!-- Save button starts disabled -->
+            <div class="action-buttons-row">
+              <button type="button" class="btn-save" id="btn-save" disabled>SAVE</button>
+              <button type="button" class="btn-delete" id="btn-delete">DELETE</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Game Information tab -->
+        <div class="products-tab">
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- SCRIPT -->
+  <script th:src="@{/js/products.js}"></script>
+</th:block>
+
+</body>
+</html>

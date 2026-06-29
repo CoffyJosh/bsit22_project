@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -22,16 +21,27 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.comprog22.onlineshop.dto.CreateOrderRequest;
 import com.comprog22.onlineshop.dto.DashboardMetricsDto;
+import com.comprog22.onlineshop.dto.OrderDetailsDTO;
+import com.comprog22.onlineshop.dto.OrderListItemDTO;
+import com.comprog22.onlineshop.entities.Game;
 import com.comprog22.onlineshop.entities.Order;
 import com.comprog22.onlineshop.entities.OrderItem;
+import com.comprog22.onlineshop.entities.Payment;
 import com.comprog22.onlineshop.entities.TopupPackage;
 import com.comprog22.onlineshop.entities.User;
 import com.comprog22.onlineshop.entities.Voucher;
+
 import com.comprog22.onlineshop.enums.OrderStatus;
+
 import com.comprog22.onlineshop.repository.OrderItemRepo;
 import com.comprog22.onlineshop.repository.OrderRepo;
+import com.comprog22.onlineshop.repository.PaymentRepo;
+
 import com.comprog22.onlineshop.utils.Mathf;
 
 import lombok.RequiredArgsConstructor;
@@ -42,9 +52,12 @@ public class OrderService {
 
     private final OrderRepo orderRepo;
     private final OrderItemRepo orderItemRepo;
+    private final PaymentRepo paymentRepo;
+
     private final TopupPackageService topupPackageService;
     private final VoucherService voucherService;
     private final UserService userService;
+    private final GameService gameService;
 
     @Transactional
     public Order createOrder(CreateOrderRequest request) {
@@ -165,6 +178,68 @@ public class OrderService {
         return metricsList;
     }
 
+    public List<OrderListItemDTO> getAllOrders() {
+        List<Order> orders = orderRepo.findAll();
+
+        return orders.stream().map(order -> {
+            OrderItem item = orderItemRepo.findByOrderId(order.getId()).orElseThrow(() -> new IllegalStateException("Order has no item: " + order.getId()));
+            TopupPackage pkg = item.getTopupPackage();
+            Game game = pkg.getGame();
+
+            String imageUrl = "/api/games/" + game.getId() + "/image/icon";
+            String packageLabel = pkg.getAmount() + " " + pkg.getGame().getPackageName();
+
+            return new OrderListItemDTO(
+                    order.getId(),
+                    order.getTrackingCode(),
+                    game.getId(),
+                    game.getName(),
+                    imageUrl,
+                    packageLabel,
+                    order.getFinalAmount(),
+                    order.getStatus().name(),
+                    order.getCreatedAt());
+        }).collect(Collectors.toList());
+    }
+
+
+
+    // Pagination Stuff
+    public Page<OrderListItemDTO> getAllOrders(Pageable pageable) {
+        return orderRepo.findAll(pageable).map(this::toDto);
+    }
+
+    public Page<OrderListItemDTO> getOrdersByStatusPaged(OrderStatus status, Pageable pageable) {
+        return orderRepo.findByStatus(status, pageable).map(this::toDto);
+    }
+
+    public Page<OrderListItemDTO> getOrdersByGameNamePaged(String gameName, Pageable pageable) {
+        return orderRepo.findByGameName(gameName, pageable).map(this::toDto);
+    }
+
+    public Page<OrderListItemDTO> getOrdersByGameIdPaged(Long gameId, Pageable pageable) {
+        return orderRepo.findByGameId(gameId, pageable).map(this::toDto);
+    }
+
+    public Page<OrderListItemDTO> getOrdersByStatusAndGameIdPaged(OrderStatus status, Long gameId, Pageable pageable) {
+        return orderRepo.findByStatusAndGameId(status, gameId, pageable).map(this::toDto);
+    }
+
+    public Page<OrderListItemDTO> getOrdersByStatusAndGameNamePaged(OrderStatus status, String gameName, Pageable pageable) {
+        return orderRepo.findByStatusAndGameName(status, gameName, pageable).map(this::toDto);
+    }
+
+    public Page<OrderListItemDTO> getOrdersByDateRangePaged(LocalDateTime start,LocalDateTime end,Pageable pageable) {
+        return orderRepo.findByCreatedAtBetween(start, end, pageable).map(this::toDto);
+    }
+
+    public Page<OrderListItemDTO> getOrdersByStatusAndDateRangePaged(OrderStatus status, LocalDateTime start, LocalDateTime end, Pageable pageable) {
+        return orderRepo.findByStatusAndCreatedAtBetween(status, start, end, pageable).map(this::toDto);
+    }
+
+
+
+    // Generic ahh stuff
     public Optional<Order> findById(Long id) {
         return orderRepo.findById(id);
     }
@@ -187,6 +262,53 @@ public class OrderService {
 
         order.setStatus(status);
         return orderRepo.save(order);
+    }
+
+
+    // Others
+    public Optional<OrderDetailsDTO> getOrderDetailsByOrderId(Long id) {
+        Order order = findById(id).orElseThrow();
+        Payment payment = paymentRepo.findByOrder(order).orElseThrow();
+        OrderItem item = orderItemRepo.findByOrderId(id).orElseThrow();
+        TopupPackage topupPackage = topupPackageService.findById(item.getTopupPackage().getId()).orElseThrow();
+        Game game = gameService.findById(topupPackage.getGame().getId()).orElseThrow();
+
+        OrderDetailsDTO dto = new OrderDetailsDTO();
+
+        // Transaction Details
+        dto.setTrackingCode(order.getTrackingCode());
+        dto.setStatus(order.getStatus().name());
+        dto.setCreatedAt(order.getCreatedAt());
+        dto.setGameName(game.getName());
+        dto.setGameId(game.getId());
+        dto.setAmountPaid(payment.getAmount());
+        dto.setPaymentMethod(payment.getPaymentMethod());
+
+        // Order Description
+        dto.setPackageName(topupPackage.getGame().getPackageName());
+        dto.setPackageAmount(topupPackage.getTotalAmount());
+        dto.setPackagePrice(topupPackage.getPrice());
+
+        // Voucher (nullable, order may not have used one)
+        if (order.getVoucher() != null) {
+            Voucher voucher = voucherService.findById(order.getVoucher().getId()).orElseThrow();
+            dto.setVoucherCode(voucher.getCode());
+            dto.setDiscountValue(voucher.getDiscountValue());
+            dto.setDiscountType(voucher.getType().name());
+        }
+
+        // Customer Details (nullable, guest checkout)
+        if (order.getUser() != null) {
+            User user = userService.findById(order.getUser().getId()).orElseThrow();
+            dto.setUsername(user.getName());
+        } else {
+            dto.setUsername("Guest");
+        }
+
+        dto.setEmail(order.getEmail());
+        dto.setAccountId(item.getAccountId());
+
+        return Optional.of(dto);
     }
 
 
@@ -218,5 +340,26 @@ public class OrderService {
             case PERCENT -> total.multiply(voucher.getDiscountValue()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
             case FIXED -> voucher.getDiscountValue();
         };
+    }
+
+    private OrderListItemDTO toDto(Order order) {
+        OrderItem item = orderItemRepo.findByOrderId(order.getId())
+                .orElseThrow(() -> new IllegalStateException("Order has no item: " + order.getId()));
+        TopupPackage pkg = item.getTopupPackage();
+        Game game = pkg.getGame();
+
+        String imageUrl = "/api/games/" + game.getId() + "/image/icon";
+        String packageLabel = pkg.getAmount() + " " + pkg.getGame().getPackageName();
+
+        return new OrderListItemDTO(
+                order.getId(),
+                order.getTrackingCode(),
+                game.getId(),
+                game.getName(),
+                imageUrl,
+                packageLabel,
+                order.getFinalAmount(),
+                order.getStatus().name(),
+                order.getCreatedAt());
     }
 }
