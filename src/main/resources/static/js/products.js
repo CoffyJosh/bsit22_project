@@ -499,7 +499,10 @@ function populateProductDetails(game) {
   showDetailContent();
   updateProductListItem(game);
   imageChanged = { icon: false, thumbnail: false, banner: false, package: false };
-
+  
+  // Clear stale file selections from any previously viewed game
+  $('.image-upload-input').val('');
+  
   originalGameData = {
     name: game.name,
     packageName: game.packageName,

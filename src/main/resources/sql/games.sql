@@ -8,6 +8,12 @@ SET SQL_SAFE_UPDATES = 0;
 DELETE FROM games;
 ALTER TABLE games AUTO_INCREMENT = 1;
 SET SQL_SAFE_UPDATES = 1;
+
+-- ==================== RESET STATUS ====================
+SET SQL_SAFE_UPDATES = 0;
+UPDATE games
+SET status = 'ACTIVE';
+SET SQL_SAFE_UPDATES = 1;
  
 -- ==================== INSERT ====================
 INSERT INTO games (name, package_name, platform, status, product_code, provider_id, created_at) VALUES
@@ -110,3 +116,4 @@ UPDATE games SET provider_id = 1 WHERE id = 20; -- Crossfire (CF-ZP -> MOL Globa
 UPDATE games SET provider_id = 2 WHERE id = 21; -- Honkai: Star Rail (HSR-SJ -> Razer Gold)
 UPDATE games SET provider_id = 3 WHERE id = 22; -- PUBG Mobile (PUBGM-UC -> Xsolla)
 UPDATE games SET provider_id = 4 WHERE id = 23; -- Clash of Clans (COC-GEMS -> Coda Payments)
+

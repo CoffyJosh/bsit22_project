@@ -97,6 +97,7 @@ public class OrderService {
         order.setDiscountAmount(discount);
         order.setFinalAmount(finalAmount);
         order.setStatus(OrderStatus.PENDING);
+        order.setEmail(request.getEmail());
 
         order = orderRepo.save(order);
 

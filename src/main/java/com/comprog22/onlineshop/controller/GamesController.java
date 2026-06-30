@@ -47,7 +47,7 @@ public class GamesController {
 
     @GetMapping("/popular")
     public ResponseEntity<List<Game>> getPopularGames() {
-        return ResponseEntity.ok(gameService.getRecent());
+        return ResponseEntity.ok(gameService.getPopular());
     }
     
     @GetMapping("/all")

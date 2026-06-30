@@ -474,6 +474,13 @@ body {
   opacity: 0.4;
 }
 
+.spacer {
+  width: 320px;
+  height: 0;
+
+  margin: 15px 0;
+}
+
 .oauth-buttons {
   display: flex;
   justify-content: center;

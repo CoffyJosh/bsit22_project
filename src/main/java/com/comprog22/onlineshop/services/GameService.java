@@ -82,6 +82,10 @@ public class GameService {
         return gameRepo.findTop5ByOrderByCreatedAtDesc();
     }
 
+    public List<Game> getPopular() {
+        return orderItemRepo.findTop5GamesByOrderCount();
+    }
+
 
     // ---------- Pagination ----------
     public Page<GameListItemDTO> getAllGamesPaged(Pageable pageable) {
@@ -153,7 +157,7 @@ public class GameService {
             gameImageService.saveGameImage(gameId, "icon", request.getIcon());
         }
         if (request.getThumbnail() != null && !request.getThumbnail().isEmpty()) {
-            gameImageService.saveGameImage(gameId, "thumbnail", request.getThumbnail());
+            gameImageService.saveGameImage(gameId, "image", request.getThumbnail());
         }
         if (request.getBanner() != null && !request.getBanner().isEmpty()) {
             gameImageService.saveGameImage(gameId, "banner", request.getBanner());
@@ -194,7 +198,7 @@ public class GameService {
             gameImageService.saveGameImage(saved.getId(), "icon", request.getIcon());
         }
         if (request.getThumbnail() != null && !request.getThumbnail().isEmpty()) {
-            gameImageService.saveGameImage(saved.getId(), "thumbnail", request.getThumbnail());
+            gameImageService.saveGameImage(saved.getId(), "image", request.getThumbnail());
         }
         if (request.getBanner() != null && !request.getBanner().isEmpty()) {
             gameImageService.saveGameImage(saved.getId(), "banner", request.getBanner());

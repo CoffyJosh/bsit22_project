@@ -84,6 +84,7 @@ body {
 
 .grid-item:hover {
   box-shadow: 0 0 70px rgba(0, 153, 255, 0.3);
+  cursor:pointer;
 }
 
 .grid-item:active {

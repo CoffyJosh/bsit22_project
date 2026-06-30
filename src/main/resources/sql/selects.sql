@@ -26,6 +26,10 @@ SELECT * FROM orders
 ORDER BY id DESC 
 LIMIT 500;
 
+UPDATE orders
+SET email = 'jrcofreros@gmail.com'
+WHERE id IN (3026, 3027, 3028);
+
 SELECT MIN(id), MAX(id), COUNT(*) FROM users;
 SELECT MIN(id), MAX(id), COUNT(*) FROM topup_packages;
 SELECT MIN(id), MAX(id), COUNT(*) FROM vouchers;
