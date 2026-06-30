@@ -1,148 +1,138 @@
 <div th:fragment="content" data-page-title="AURA GAMES | Register">
-    <form th:action="@{/register}" method="post">
-        <div id="registration-section" class="fade">
-            <div>
-                <h1 class="title">
-                    <span style="color:#8A3FFC;">R</span><span style="color:#E0218A;">EGISTER</span>
-                </h1>
-                <div style="font-family: Orbitron; font-size: 9px; color:#ffffff85; letter-spacing: 2px;">
-                    <p>
-                        Already have an account?
-                        <a class="hyperlink-3" 
-                            href="/login"
-                            hx-target="#auth-form-content"
-                            hx-swap="innerHTML"
-                            hx-push-url="true">
-                            SIGN IN →
-                        </a>
-                    </p>
-                </div>
-            </div>
-
-            <div class="input-wrapper">
-                <label class="input-label">USERNAME</label>
-                <img class="input-icon" th:src="@{/images/user_icon.png}">
-                <input class="text-input" type="text"
-                        name="name"
-                        placeholder="username"
-                        required>
-            </div>
-
-            <div class="input-wrapper">
-                <label class="input-label">EMAIL ADDRESS</label>
-                <img class="input-icon" th:src="@{/images/email_icon.png}">
-                <input class="text-input" type="    "
-                        name="email"
-                        placeholder="username@domain.com"
-                        required>
-            </div>
-
-            <div class="input-wrapper">
-                <label class="input-label">PASSWORD</label>
-                <img class="input-icon" th:src="@{/images/password_icon.png}">
-                <input class="password-input"
-                        type="password"
-                        name="password"
-                        placeholder="••••••••••••"
-                        required>
-            </div>
-
-            <div class="strength-bar-container">
-                <div class="strength-bar"></div>
-            </div>
-
-            <div class="requirement-row">
-                <div class="requirement-strength"><p class="requirement-strength">Requirements</p></div>
-                <div class="requirement-box"><p>8+ CHR</p></div>
-                <div class="requirement-box"><p>a-Z</p></div>
-                <div class="requirement-box"><p>0-9</p></div>
-                <div class="requirement-box"><p>!@#</p></div>
-            </div>
-
-            <div class="input-wrapper">
-                <label class="input-label">CONFIRM PASSWORD</label>
-                <img class="input-icon" th:src="@{/images/password_icon.png}">
-                <input class="password-input"
-                        type="password"
-                        name="confirm-password"
-                        placeholder="••••••••••••"
-                        required>
-            </div>
-
-            <div style="padding-top:10px;"></div>
-
-            <div class="check-box" >
-                <label>
-                    <input type="checkbox" class="check-box-label"> 
-                    <span style="color: #8888A4;">I agree to</span>
-                    <span class="hyperlink-3" style="color:#8A3FFC">Terms of Service</span>
-                    <span style="color: #8888A4;">and</span>
-                    <span class="hyperlink-3" style="color:#8A3FFC">Privacy Policy</span>
-                </label>
-            </div>
-
-            <div>
-                <button class="submit-button" id="submit-registration" type="button">CREATE ACCOUNT +</button>
-            </div>
-
-
-
-            <div class="spacer"></div>
-
-
-            <p class="warning-text" id="warningText"></p>
+  <form th:action="@{/register}" method="post">
+    <div id="registration-section" class="fade">
+      <div>
+        <h1 class="title">
+          <span style="color:#8A3FFC;">R</span><span style="color:#E0218A;">EGISTER</span>
+        </h1>
+        <div style="font-family: Orbitron; font-size: 9px; color:#ffffff85; letter-spacing: 2px;">
+          <p>
+            Already have an account?
+            <a class="hyperlink-3" href="/login" hx-target="#auth-form-content" hx-swap="innerHTML" hx-push-url="true">
+              SIGN IN →
+            </a>
+          </p>
         </div>
+      </div>
 
-        <div id="confirmation-section" class="fade hidden" style="display:none;">
-            <div>
-                <h1 class="title">
-                    <span style="color:#8A3FFC;">V</span><span style="color:#E0218A;">ERIFY</span>
-                </h1>
-                <div style="font-family: Orbitron; font-size: 9px; color:#ffffff85; letter-spacing: 2px; padding-bottom: 15px; padding: 0;">
-                    <p>We've sent a 6-digit code to your email.</p>
-                </div>
-            </div>
+      <div class="input-wrapper">
+        <label class="input-label">USERNAME</label>
+        <img class="input-icon" th:src="@{/images/user_icon.png}">
+        <input class="text-input" type="text" name="name" placeholder="username" required>
+      </div>
 
-            <!-- 6 CODE BOXES -->
-            <p class="warning-text" id="confirmWarningText"></p>
-            <div id="code-boxes" style="display: flex; gap: 10px; justify-content: center;">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-                <input class="code-box" type="text" maxlength="1" inputmode="numeric">
-            </div>
+      <div class="input-wrapper">
+        <label class="input-label">EMAIL ADDRESS</label>
+        <img class="input-icon" th:src="@{/images/email_icon.png}">
+        <input class="text-input" type="    " name="email" placeholder="username@domain.com" required>
+      </div>
 
-            <button class="confirm-button" id="confirm-button" type="button">CONFIRM →</button>
+      <div class="input-wrapper">
+        <label class="input-label">PASSWORD</label>
+        <img class="input-icon" th:src="@{/images/password_icon.png}">
+        <input class="password-input" type="password" name="password" placeholder="••••••••••••" required>
+      </div>
 
-            <div class="resend-row">
-                <span style="font-family: Orbitron; font-size: 9px; color:#ffffff55; letter-spacing: 1.5px;">
-                    Didn't get the email?
-                </span>
-                <span id="resend-button" class="resend-link">Resend</span>
-            </div>
+      <div class="strength-bar-container">
+        <div class="strength-bar"></div>
+      </div>
 
-            <button class="back-button" id="return-button" type="button">← BACK</button>
+      <div class="requirement-row">
+        <div class="requirement-strength">
+          <p class="requirement-strength">Requirements</p>
         </div>
-
-        <div id="success-display-section" class="fade hidden" style="display:none;">
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center;">
-                
-                <h1 class="title">
-                    <span style="color:#8A3FFC;">S</span><span style="color:#E0218A;">UCCESS</span>
-                </h1>
-
-                <p style="font-family: Orbitron; font-size: 9px; color:#ffffff85; letter-spacing: 2px;">
-                    Your account has been created!
-                </p>
-
-                <p style="font-family: Orbitron; font-size: 9px; color:#ffffff85; letter-spacing: 2px;">
-                    Redirecting in <span id="redirect-countdown">3</span>s...
-                </p>
-
-            </div>
+        <div class="requirement-box">
+          <p>8+ CHR</p>
         </div>
+        <div class="requirement-box">
+          <p>a-Z</p>
+        </div>
+        <div class="requirement-box">
+          <p>0-9</p>
+        </div>
+        <div class="requirement-box">
+          <p>!@#</p>
+        </div>
+      </div>
 
-    </form>
+      <div class="input-wrapper">
+        <label class="input-label">CONFIRM PASSWORD</label>
+        <img class="input-icon" th:src="@{/images/password_icon.png}">
+        <input class="password-input" type="password" name="confirm-password" placeholder="••••••••••••" required>
+      </div>
+
+      <div style="padding-top:10px;"></div>
+
+      <div class="check-box">
+        <label>
+          <input type="checkbox" class="check-box-label">
+          <span style="color: #8888A4;">I agree to</span>
+          <span class="hyperlink-3" id="open-terms" style="color:#8A3FFC">Terms of Service</span>
+          <span style="color: #8888A4;">and</span>
+          <span class="hyperlink-3" id="open-privacy" style="color:#8A3FFC">Privacy Policy</span>
+        </label>
+      </div>
+
+      <div>
+        <button class="submit-button" id="submit-registration" type="button">CREATE ACCOUNT +</button>
+      </div>
+
+      <div class="spacer"></div>
+
+      <p class="warning-text" id="warningText"></p>
+    </div>
+
+    <div id="confirmation-section" class="fade hidden" style="display:none;">
+      <div>
+        <h1 class="title">
+          <span style="color:#8A3FFC;">V</span><span style="color:#E0218A;">ERIFY</span>
+        </h1>
+        <div
+          style="font-family: Orbitron; font-size: 9px; color:#ffffff85; letter-spacing: 2px; padding-bottom: 15px; padding: 0;">
+          <p>We've sent a 6-digit code to your email.</p>
+        </div>
+      </div>
+
+      <!-- 6 CODE BOXES -->
+      <p class="warning-text" id="confirmWarningText"></p>
+      <div id="code-boxes" style="display: flex; gap: 10px; justify-content: center;">
+        <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+        <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+        <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+        <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+        <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+        <input class="code-box" type="text" maxlength="1" inputmode="numeric">
+      </div>
+
+      <button class="confirm-button" id="confirm-button" type="button">CONFIRM →</button>
+
+      <div class="resend-row">
+        <span style="font-family: Orbitron; font-size: 9px; color:#ffffff55; letter-spacing: 1.5px;">
+          Didn't get the email?
+        </span>
+        <span id="resend-button" class="resend-link">Resend</span>
+      </div>
+
+      <button class="back-button" id="return-button" type="button">← BACK</button>
+    </div>
+
+    <div id="success-display-section" class="fade hidden" style="display:none;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center;">
+
+        <h1 class="title">
+          <span style="color:#8A3FFC;">S</span><span style="color:#E0218A;">UCCESS</span>
+        </h1>
+
+        <p style="font-family: Orbitron; font-size: 9px; color:#ffffff85; letter-spacing: 2px;">
+          Your account has been created!
+        </p>
+
+        <p style="font-family: Orbitron; font-size: 9px; color:#ffffff85; letter-spacing: 2px;">
+          Redirecting in <span id="redirect-countdown">3</span>s...
+        </p>
+
+      </div>
+    </div>
+
+  </form>
 </div>

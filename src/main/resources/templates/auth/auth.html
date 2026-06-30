@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@400..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <link rel="stylesheet" th:href="@{/css/conditions.css}">
   </head>
 
   <body>
@@ -27,6 +28,24 @@
       </div>
 
       <div class="right-container">
+        
+        <!-- Displaying terms or policies -->
+        <div class="to-overlay" id="termsOverlay">
+          <div class="to-modal" role="dialog" aria-modal="true" aria-labelledby="termsOverlayTitle">
+            <div class="to-header">
+              <h2 id="termsOverlayTitle"></h2>
+              <button class="to-close" aria-label="Close">&times;</button>
+            </div>
+
+            <div class="to-content" id="termsOverlayContent">
+            </div>
+
+            <div class="to-footer">
+              <button class="to-footer-btn">Close</button>
+            </div>
+          </div>
+        </div>
+
         <div class="form-box" id="auth-form-container">
           <div id="auth-form-content" hx-boost="true">
             <div th:replace="~{__${view}__}"></div>
