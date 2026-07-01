@@ -186,7 +186,8 @@ html::-webkit-scrollbar-thumb:hover {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  flex: 0 1 auto;
+  min-width: 0;
+  flex: 1 1 auto;    
 
   gap: 10px;
 }
@@ -305,7 +306,7 @@ html::-webkit-scrollbar-thumb:hover {
   min-width: 0; 
   font-family: 'DM Sans';
   width: 200px;
-  flex: 1 1 160px;
+  flex: 1 1 100px;
 }
 
 

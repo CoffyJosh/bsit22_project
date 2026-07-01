@@ -25,6 +25,7 @@
 .filter-options {
   width: 100%;
   height: 80px;
+  gap: 15px;
 }
 
 .order-list-container {
