@@ -291,6 +291,22 @@ html::-webkit-scrollbar-thumb:hover {
   color: rgba(255, 255, 255, 0.50);
 }
 
+.order-search-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  cursor: text;
+  color: #fff;
+  min-width: 0; 
+  font-family: 'DM Sans';
+  width: 200px;
+}
+
+
 
 /* ========= CUSTOM PAGE NAVIGATOR ============*/
 .pagenav-button {

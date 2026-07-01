@@ -3,6 +3,8 @@ const ORDER_PAGE_SIZE = 10;
 
 let selectedGame = '';
 let selectedOrder = null;
+let selectedSearch = '';
+let searchDebounceTimer = null;
 
 let currentRequestId = 0;
 
@@ -81,6 +83,18 @@ $(document).ready(function () {
     selectedOrder = $(this).data('order-id');
 
     fetchOrderDetails(selectedOrder);
+  });
+
+
+  $(document).on('input', '#orderSearchInput', function () {
+    const value = $(this).val();
+
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+      selectedSearch = value.trim();
+      orderPage = 0;
+      fetchOrders();
+    }, 300);
   });
   
 });
@@ -259,6 +273,10 @@ function fetchOrders() {
 
   if (selectedGame) {
     params.gameId = selectedGame;
+  }
+
+  if (selectedSearch) {
+    params.search = selectedSearch;
   }
 
   $.ajax({

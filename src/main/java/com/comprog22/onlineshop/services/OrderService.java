@@ -239,6 +239,10 @@ public class OrderService {
         return orderRepo.findByStatusAndCreatedAtBetween(status, start, end, pageable).map(this::toDto);
     }
 
+    public Page<OrderListItemDTO> searchOrders(OrderStatus status, Long gameId, String search, Pageable pageable) {
+        return orderRepo.searchOrders(status, gameId, search, pageable).map(this::toDto);
+    }
+
 
     public Page<OrderListItemDTO> getMyCompletedOrders(Long userId, Pageable pageable) {
         return orderRepo.findCompletedByUserId(userId, pageable).map(this::toDto);
@@ -248,6 +252,14 @@ public class OrderService {
         return orderRepo.findCompletedByUserIdAndGameId(userId, gameId, pageable).map(this::toDto);
     }
 
+    public Page<OrderListItemDTO> getMyCompletedOrdersSearch(Long userId, String search, Pageable pageable) {
+        return orderRepo.findCompletedByUserIdAndSearch(userId, search, pageable).map(this::toDto);
+    }
+
+    public Page<OrderListItemDTO> getMyCompletedOrdersByGameAndSearch(Long userId, Long gameId, String search,
+            Pageable pageable) {
+        return orderRepo.findCompletedByUserIdAndGameIdAndSearch(userId, gameId, search, pageable).map(this::toDto);
+    }
 
 
     // Generic ahh stuff

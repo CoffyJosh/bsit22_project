@@ -48,43 +48,23 @@ public class OrderController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) Long gameId) {
+            @RequestParam(required = false) Long gameId,
+            @RequestParam(required = false) String search) {
         Pageable pageable = PageRequest.of(
                 page,
                 size,
                 Sort.by("createdAt").descending());
 
-        Page<OrderListItemDTO> result;
+        OrderStatus statusEnum = (status != null && !status.isBlank())
+                ? OrderStatus.valueOf(status.toUpperCase())
+                : null;
 
-        boolean hasStatus = status != null && !status.isBlank();
-        boolean hasGame = gameId != null;
-
-        if (hasStatus && hasGame) {
-
-            result = orderService.getOrdersByStatusAndGameIdPaged(
-                    OrderStatus.valueOf(status.toUpperCase()),
-                    gameId,
-                    pageable);
-
-        } else if (hasStatus) {
-
-            result = orderService.getOrdersByStatusPaged(
-                    OrderStatus.valueOf(status.toUpperCase()),
-                    pageable);
-
-        } else if (hasGame) {
-
-            result = orderService.getOrdersByGameIdPaged(
-                    gameId,
-                    pageable);
-
-        } else {
-
-            result = orderService.getAllOrders(pageable);
-        }
+        Page<OrderListItemDTO> result = orderService.searchOrders(statusEnum, gameId, search, pageable);
 
         return ResponseEntity.ok(result);
     }
+
+    
 
     // Getting User order list
     @GetMapping("/mine")
@@ -92,16 +72,28 @@ public class OrderController {
             @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) Long gameId) {
+            @RequestParam(required = false) Long gameId,
+            @RequestParam(required = false) String search) {
 
         User user = userService.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
-        Page<OrderListItemDTO> result = gameId != null
-            ? orderService.getMyCompletedOrdersByGame(user.getId(), gameId, pageable)
-            : orderService.getMyCompletedOrders(user.getId(), pageable);
+        boolean hasGame = gameId != null;
+        boolean hasSearch = search != null && !search.isBlank();
+
+        Page<OrderListItemDTO> result;
+
+        if (hasGame && hasSearch) {
+            result = orderService.getMyCompletedOrdersByGameAndSearch(user.getId(), gameId, search, pageable);
+        } else if (hasSearch) {
+            result = orderService.getMyCompletedOrdersSearch(user.getId(), search, pageable);
+        } else if (hasGame) {
+            result = orderService.getMyCompletedOrdersByGame(user.getId(), gameId, pageable);
+        } else {
+            result = orderService.getMyCompletedOrders(user.getId(), pageable);
+        }
 
         return ResponseEntity.ok(result);
     }

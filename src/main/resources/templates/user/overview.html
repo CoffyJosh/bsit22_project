@@ -45,6 +45,15 @@
     <div class="order-list-wrapper">
       <!-- Filter options goes here -->
       <div class="filter-options">
+        <div class="dropdown-wrapper search-wrapper">
+          <p class="dropdown-label">Code</p>
+          <input
+            type="text"
+            class="order-search-input"
+            id="orderSearchInput"
+            placeholder="Tracking code or reference no."
+            autocomplete="off">
+        </div>
 
         <div class="dropdown-wrapper">
           <p class="dropdown-label">Games</p>
@@ -61,26 +70,6 @@
 
           </div>
         </div>
-
-        <div class="dropdown-wrapper">
-          <p class="dropdown-label">Status</p>
-          <div class="custom-dropdown filter-dropdown" id="statusFilterDropdown">
-
-            <div class="dropdown-selected">
-              <span class="dropdown-selected-text">All</span>
-              <span class="dropdown-arrow"></span>
-            </div>
-
-            <div class="dropdown-options" id="status-filter">
-              <div class="dropdown-option selected" data-value="">All</div>
-              <div class="dropdown-option" data-value="COMPLETED">Complete</div>
-              <div class="dropdown-option" data-value="PENDING">Pending</div>
-              <div class="dropdown-option" data-value="FAILED">Failed</div>
-            </div>
-          </div>
-        </div>
-
-
       </div>
 
 

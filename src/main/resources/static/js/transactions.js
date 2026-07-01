@@ -4,6 +4,8 @@ const ORDER_PAGE_SIZE = 50;
 let selectedStatus = '';
 let selectedGame = '';
 let selectedOrder = null;
+let selectedSearch = '';
+let searchDebounceTimer = null;
 
 let currentRequestId = 0;
 
@@ -90,6 +92,18 @@ $(document).ready(function () {
     console.log('Selected Order:', selectedOrder);
 
     fetchOrderDetails(selectedOrder);
+  });
+
+  // For Searching by order or payment code
+  $(document).on('input', '#orderSearchInput', function () {
+    const value = $(this).val();
+
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+      selectedSearch = value.trim();
+      orderPage = 0;
+      fetchOrders();
+    }, 300);
   });
 });
 
@@ -248,7 +262,8 @@ function fetchOrders() {
       page: orderPage,
       size: ORDER_PAGE_SIZE,
       status: selectedStatus,
-      gameId: selectedGame
+      gameId: selectedGame,
+      search: selectedSearch
     },
 
     dataType: 'json',
